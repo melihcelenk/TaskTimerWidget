@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet build:*)",
+      "Bash(move Task.cs TaskItem.cs)",
+      "Bash(dir \"C:\\Kodlar\\Desktop\\TaskTimerWidget\\src\\TaskTimerWidget\\Models\")",
+      "Bash(cat:*)",
+      "Bash(dotnet restore:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

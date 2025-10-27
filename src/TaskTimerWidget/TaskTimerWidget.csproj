@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+        <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+        <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <RootNamespace>TaskTimerWidget</RootNamespace>
+        <AssemblyName>TaskTimerWidget</AssemblyName>
+
+        <!-- Project Info -->
+        <Title>Task Timer Widget</Title>
+        <Company>TaskTimerWidget</Company>
+        <Authors>Development Team</Authors>
+        <Product>Task Timer Widget</Product>
+        <Description>A lightweight, minimal task timer widget for Windows 11</Description>
+        <Version>0.1.0</Version>
+        <InformationalVersion>0.1.0+build.local</InformationalVersion>
+
+        <!-- Build Configuration -->
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWinUI>true</UseWinUI>
+        <WindowsAppSDKVersion>1.7.250310001</WindowsAppSDKVersion>
+        <EnableMsixTooling>true</EnableMsixTooling>
+
+        <!-- Packaging for Windows Store -->
+        <WindowsPackageType>None</WindowsPackageType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- WinUI 3 Dependencies -->
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+
+        <!-- Logging and Diagnostics -->
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+        <PackageReference Include="Serilog" Version="4.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+
+        <!-- Dependency Injection -->
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+
+        <!-- JSON Serialization -->
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+        <!-- Testing (for future use) -->
+        <PackageReference Include="xunit" Version="2.6.4" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>
