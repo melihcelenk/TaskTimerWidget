@@ -86,6 +86,13 @@ namespace TaskTimerWidget
                             UpdateStatusBar();
                         }
                     };
+
+                    // Subscribe to collection changes (for ObservableCollection Items)
+                    _viewModel.Tasks.CollectionChanged += (sender, args) =>
+                    {
+                        UpdateEmptyState();
+                        UpdateStatusBar();
+                    };
                 }
             }
             catch (Exception ex)
