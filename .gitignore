@@ -1,3 +1,9 @@
+# User-specific configurations (do not commit)
+.claude/
+
+# IDE Settings (personal)
+.vscode/settings.json
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
