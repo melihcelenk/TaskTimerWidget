@@ -27,7 +27,7 @@ namespace TaskTimerWidget.Services
             EnsureStorageDirectoryExists();
         }
 
-        public async System.Threading.Tasks.Task<IEnumerable<TaskItem>> LoadTasksAsync()
+        public System.Threading.Tasks.Task<IEnumerable<TaskItem>> LoadTasksAsync()
         {
             try
             {
@@ -36,28 +36,28 @@ namespace TaskTimerWidget.Services
                     if (!File.Exists(_tasksFilePath))
                     {
                         Log.Information("No existing tasks file found, returning empty collection");
-                        return Enumerable.Empty<TaskItem>();
+                        return Task.FromResult(Enumerable.Empty<TaskItem>());
                     }
 
                     var json = File.ReadAllText(_tasksFilePath);
                     if (string.IsNullOrWhiteSpace(json))
                     {
-                        return Enumerable.Empty<TaskItem>();
+                        return Task.FromResult(Enumerable.Empty<TaskItem>());
                     }
 
                     var tasks = JsonConvert.DeserializeObject<List<TaskItem>>(json) ?? new List<TaskItem>();
                     Log.Information($"Loaded {tasks.Count} tasks from {_tasksFilePath}");
-                    return tasks;
+                    return Task.FromResult(tasks.AsEnumerable());
                 }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Error loading tasks from storage");
-                return Enumerable.Empty<TaskItem>();
+                return Task.FromResult(Enumerable.Empty<TaskItem>());
             }
         }
 
-        public async System.Threading.Tasks.Task SaveTasksAsync(IEnumerable<TaskItem> tasks)
+        public System.Threading.Tasks.Task SaveTasksAsync(IEnumerable<TaskItem> tasks)
         {
             try
             {
@@ -67,6 +67,7 @@ namespace TaskTimerWidget.Services
                     File.WriteAllText(_tasksFilePath, json);
                     Log.Debug($"Saved {tasks.Count()} tasks to {_tasksFilePath}");
                 }
+                return Task.CompletedTask;
             }
             catch (Exception ex)
             {
@@ -75,7 +76,7 @@ namespace TaskTimerWidget.Services
             }
         }
 
-        public async System.Threading.Tasks.Task ClearAsync()
+        public System.Threading.Tasks.Task ClearAsync()
         {
             try
             {
@@ -87,6 +88,7 @@ namespace TaskTimerWidget.Services
                         Log.Information("Tasks storage cleared");
                     }
                 }
+                return Task.CompletedTask;
             }
             catch (Exception ex)
             {

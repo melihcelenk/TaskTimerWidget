@@ -136,7 +136,7 @@ namespace TaskTimerWidget.ViewModels
         /// <summary>
         /// Selects a task and starts/pauses its timer appropriately.
         /// </summary>
-        private async Task SelectTaskAsync(TaskViewModel taskVm)
+        private Task SelectTaskAsync(TaskViewModel taskVm)
         {
             try
             {
@@ -163,11 +163,13 @@ namespace TaskTimerWidget.ViewModels
                 }
 
                 Log.Debug($"Task selected: {taskVm.Name}");
+                return Task.CompletedTask;
             }
             catch (Exception ex)
             {
                 ErrorMessage = "Failed to select task";
                 Log.Error(ex, "Error selecting task");
+                return Task.CompletedTask;
             }
         }
 
