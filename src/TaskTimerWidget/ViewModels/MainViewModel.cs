@@ -211,8 +211,8 @@ namespace TaskTimerWidget.ViewModels
                 var currentElapsed = ActiveTask.ElapsedSeconds + 1;
                 ActiveTask.UpdateElapsedDisplay(currentElapsed);
 
-                // Save the updated model
-                _ = _taskService.AddElapsedTimeAsync(ActiveTask.Id, 1);
+                // Save the updated model to storage
+                _ = _taskService.UpdateTaskAsync(ActiveTask.GetModel());
             }
         }
 

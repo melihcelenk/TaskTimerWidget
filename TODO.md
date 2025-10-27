@@ -236,10 +236,10 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 ## 🔧 Faz 0.3.1: Bug Fix Listesi (Kaçıncı adımda olduğunu görmek için)
 
 ### BUG #1: Timer Sayacı 2 Saniye Artıyor
-- [ ] Dosya: `ViewModels/MainViewModel.cs` - `UpdateActiveTaskTimer()` methodu
-- [ ] Problem: `UpdateElapsedDisplay()` + `AddElapsedTimeAsync()` double count yapıyor
-- [ ] Çözüm: `AddElapsedTimeAsync()` çağrısını `UpdateTaskAsync()` ile değiştir
-- Status: ⏳ BAŞLANMADI
+- [x] Dosya: `ViewModels/MainViewModel.cs` - `UpdateActiveTaskTimer()` methodu
+- [x] Problem: `UpdateElapsedDisplay()` + `AddElapsedTimeAsync()` double count yapıyor
+- [x] Çözüm: `AddElapsedTimeAsync()` çağrısını `UpdateTaskAsync()` ile değiştir
+- Status: ✅ TAMAMLANDI
 
 ### BUG #2: Pencere Boyutu Çok Büyük (Widget boyuta küçült)
 - [ ] Dosya: `Views/MainWindow.xaml` - Window tag'ı
@@ -290,9 +290,9 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 ## 📊 İlerleme Durumu
 
 **Toplam 8 Bug:**
-- ✅ Tamamlanan: 0
+- ✅ Tamamlanan: 1
 - 🔄 Yapılıyor: 0
-- ⏳ Başlanmamış: 8
+- ⏳ Başlanmamış: 7
 
 **Sıra:** Bug #1 → Bug #2 → Bug #3 → Bug #4 → Bug #5 → Bug #6 → Bug #7 → Bug #8
 
