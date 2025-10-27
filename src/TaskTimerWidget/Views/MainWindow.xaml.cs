@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using TaskTimerWidget.ViewModels;
 using Serilog;
 
@@ -28,7 +29,17 @@ namespace TaskTimerWidget
         {
             try
             {
-                Log.Information("MainWindow initialized");
+                // Set window size for widget appearance
+                var appWindow = this.AppWindow;
+                if (appWindow != null)
+                {
+                    appWindow.Resize(new Windows.Graphics.SizeInt32(200, 500));
+                    Log.Information("MainWindow resized to 200x500");
+                }
+                else
+                {
+                    Log.Warning("AppWindow not available");
+                }
             }
             catch (Exception ex)
             {

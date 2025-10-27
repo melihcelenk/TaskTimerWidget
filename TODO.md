@@ -221,14 +221,15 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - [ ] Accessibility improvements
 - [ ] Localization (TR, EN, vb)
 
-## 🎯 Şu Anki Durum: FAZ 3 - Bug Fix Aşaması (v0.3.1)
+## 🎯 Şu Anki Durum: FAZ 3 - Bug Fix & Redesign Aşaması (v0.3.1-v0.3.2)
 
-**Nerede olduğumuz:** Uygulama build oluyor ve çalışıyor. Temel UI ve işlevsellik var. Ama 8 adet bug tespit edildi.
+**Nerede olduğumuz:** Uygulama build oluyor ve çalışıyor. 8 bug tespit edildi. Ayrıca minimal ve temiz design revampı planlanıyor.
 
 **Yapı:**
 - ✅ Faz 0.1: Proje kuruldu
 - ✅ Faz 0.2: Models, Services, ViewModels tamamlandı
 - 🔧 **Faz 0.3.1: 8 BUG FIX (ŞU ANDA BURADADAYIZ)**
+- 🎨 **Faz 0.3.2: MINIMAL DESIGN REVAMP (SONRASINDA)**
 - ⏳ Faz 0.4+: Sonrasında devam edecek
 
 ---
@@ -242,10 +243,10 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - Status: ✅ TAMAMLANDI
 
 ### BUG #2: Pencere Boyutu Çok Büyük (Widget boyuta küçült)
-- [ ] Dosya: `Views/MainWindow.xaml` - Window tag'ı
-- [ ] Problem: Width ve Height attribute'ları yok
-- [ ] Çözüm: `Width="380" Height="600"` ekle
-- Status: ⏳ BAŞLANMADI
+- [x] Dosya: `Views/MainWindow.xaml.cs` - InitializeWindow() methodu
+- [x] Problem: Window boyutu ayarlanmamış
+- [x] Çözüm: AppWindow.Resize() ile 380x600'e ayarla
+- Status: ✅ TAMAMLANDI
 
 ### BUG #3: Sil Butonundaki X Karakteri Kesiliyor
 - [ ] Dosya: `Views/MainWindow.xaml` - Delete Button (line ~113)
@@ -290,9 +291,9 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 ## 📊 İlerleme Durumu
 
 **Toplam 8 Bug:**
-- ✅ Tamamlanan: 1
+- ✅ Tamamlanan: 2
 - 🔄 Yapılıyor: 0
-- ⏳ Başlanmamış: 7
+- ⏳ Başlanmamış: 6
 
 **Sıra:** Bug #1 → Bug #2 → Bug #3 → Bug #4 → Bug #5 → Bug #6 → Bug #7 → Bug #8
 
@@ -318,6 +319,25 @@ Her bug'ı tamamladıktan sonra:
 | 0.8 | Testing | - | ⏳ Beklemede |
 | 0.9 | Store Ready | - | ⏳ Beklemede |
 | 1.0 | Release | - | ⏳ Beklemede |
+
+---
+
+## 🎨 Faz 0.3.2: Minimal Design Revamp (Sonra Yapılacak)
+
+### UI/UX İyileştirmeleri
+- [ ] Koyu gri kartlar (Dark Gray background)
+- [ ] Kalın beyaz başlık (Bold white text for task name)
+- [ ] Minimal timer gösterimi (sadece "3m 6s" şeklinde, saat olmadıkça saat gösterme)
+- [ ] Running/Paused satırını kaldır (renk ile halledecek)
+- [ ] "Task Timer" başlığı kaldır (gereksiz kalabalık)
+- [ ] + Butonu: Direkt yeni task kartı ekle ve inline edittext aç
+- [ ] Enter tuşu: Task adını kaydet
+- [ ] Minimum efor, maksimum kullanılabilirlik
+
+### Tasarım Referansı
+- Python versiyonundan esinlenildi
+- Göze çarpan minimal tasarım
+- Temiz ve sade UI
 
 ## 📝 Notlar
 - Her faz tamamlanırsa version bump et
