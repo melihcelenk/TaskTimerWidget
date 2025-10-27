@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Windows.Graphics;
+using Windows.UI;
 using TaskTimerWidget.ViewModels;
 using Serilog;
 
@@ -166,7 +167,8 @@ namespace TaskTimerWidget
                     var visual = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(container, 0) as Border;
                     if (visual?.Tag is TaskViewModel taskVm)
                     {
-                        var color = taskVm.IsActive ? Microsoft.UI.Colors.Gold : Microsoft.UI.Colors.LightGray;
+                        // Active (running) = Gold, Inactive (paused) = Dark Gray (#2A2A2A)
+                        var color = taskVm.IsActive ? Microsoft.UI.Colors.Gold : new Color { A = 255, R = 0x2A, G = 0x2A, B = 0x2A };
                         visual.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(color);
                     }
                 }
@@ -178,10 +180,11 @@ namespace TaskTimerWidget
         /// </summary>
         private void TaskItem_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            if (sender is Border border)
+            if (sender is Border border && border.Tag is TaskViewModel taskVm)
             {
-                border.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                    Microsoft.UI.Colors.LightGray);
+                // Hover: Slightly lighter dark gray (#3A3A3A) for subtle effect
+                var hoverColor = new Color { A = 255, R = 0x3A, G = 0x3A, B = 0x3A };
+                border.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(hoverColor);
             }
         }
 
@@ -192,7 +195,8 @@ namespace TaskTimerWidget
         {
             if (sender is Border border && border.Tag is TaskViewModel taskVm)
             {
-                var color = taskVm.IsActive ? Microsoft.UI.Colors.Gold : Microsoft.UI.Colors.LightGray;
+                // Restore: Active = Gold, Inactive = Dark Gray (#2A2A2A)
+                var color = taskVm.IsActive ? Microsoft.UI.Colors.Gold : new Color { A = 255, R = 0x2A, G = 0x2A, B = 0x2A };
                 border.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(color);
             }
         }

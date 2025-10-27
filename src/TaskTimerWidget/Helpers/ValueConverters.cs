@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Media;
 namespace TaskTimerWidget.Helpers
 {
     /// <summary>
-    /// Converts task active state to background color.
+    /// Converts task active state to background color (for card backgrounds).
     /// </summary>
     public class TaskColorConverter : IValueConverter
     {
@@ -16,6 +16,26 @@ namespace TaskTimerWidget.Helpers
                 return new SolidColorBrush(Microsoft.UI.Colors.Gold);
             }
             return new SolidColorBrush(Microsoft.UI.Colors.LightGray);
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// Converts IsActive state to text color (Black if active, White if inactive).
+    /// </summary>
+    public class RunningTextColorConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, string language)
+        {
+            if (value is bool isActive && isActive)
+            {
+                return new SolidColorBrush(Microsoft.UI.Colors.Black);
+            }
+            return new SolidColorBrush(Microsoft.UI.Colors.White);
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, string language)

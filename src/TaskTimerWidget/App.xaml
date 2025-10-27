@@ -3,8 +3,16 @@
     x:Class="TaskTimerWidget.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TaskTimerWidget">
+    xmlns:local="using:TaskTimerWidget"
+    xmlns:helpers="using:TaskTimerWidget.Helpers">
     <Application.Resources>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Value Converters -->
+            <helpers:RunningTextColorConverter x:Key="RunningTextColorConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

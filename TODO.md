@@ -221,15 +221,16 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - [ ] Accessibility improvements
 - [ ] Localization (TR, EN, vb)
 
-## 🎯 Şu Anki Durum: FAZ 3 - Bug Fix & Redesign Aşaması (v0.3.1-v0.3.2)
+## 🎯 Şu Anki Durum: FAZ 3 - Design Revamp Aşaması (v0.3.2-v0.3.3)
 
-**Nerede olduğumuz:** Uygulama build oluyor ve çalışıyor. 8 bug tespit edildi. Ayrıca minimal ve temiz design revampı planlanıyor.
+**Nerede olduğumuz:** Bug fix fası tamamlandı (5/6 bug). Şimdi minimal design revampına başlıyoruz.
 
 **Yapı:**
 - ✅ Faz 0.1: Proje kuruldu
 - ✅ Faz 0.2: Models, Services, ViewModels tamamlandı
-- 🔧 **Faz 0.3.1: 8 BUG FIX (ŞU ANDA BURADADAYIZ)**
-- 🎨 **Faz 0.3.2: MINIMAL DESIGN REVAMP (SONRASINDA)**
+- ✅ **Faz 0.3.1: 8 BUG FIX TAMAMLANDI**
+- 🎨 **Faz 0.3.2: DESIGN REVAMP A - Colors & Typography (ŞU ANDA BURADADAYIZ)**
+- 🎨 **Faz 0.3.3: DESIGN REVAMP B - UX & Layout (SONRASINDA)**
 - ⏳ Faz 0.4+: Sonrasında devam edecek
 
 ---
@@ -321,13 +322,27 @@ Her bug'ı tamamladıktan sonra:
 
 ---
 
-## 🎨 Faz 0.3.2: Minimal Design Revamp (Sonra Yapılacak)
+## 🎨 Faz 0.3.2: Minimal Design Revamp A - Colors & Typography
 
-### UI/UX İyileştirmeleri
-- [ ] Koyu gri kartlar (Dark Gray background)
-- [ ] Kalın beyaz başlık (Bold white text for task name)
-- [ ] Minimal timer gösterimi (sadece "3m 6s" şeklinde, saat olmadıkça saat gösterme)
-- [ ] Running/Paused satırını kaldır (renk ile halledecek)
+### UI/UX İyileştirmeleri (A)
+- [x] Koyu gri kartlar (Dark Gray background #2A2A2A)
+- [x] Kalın beyaz başlık (Bold white text for task name)
+- [x] Minimal timer gösterimi (sadece "3m 6s" şeklinde, saat olmadıkça saat gösterme)
+- [x] Running/Paused satırını kaldır (renk ile halledecek - sarı=running, siyah=paused)
+- [x] XAML Resources syntax'i fix et (ResourceDictionary.MergedDictionaries kullan)
+- [x] RunningTextColorConverter ekle ve uygulamaya bağla
+- [x] Text rengi binding'i IsActive'e çevir (IsRunning yerine)
+- [x] Hover effect'i hafif aydınlık (#3A3A3A) yap
+- [x] Timer font normal (bold değil) ve IsActive binding
+- [x] Yeni task ekleme sonrası auto-select kaldır (non-active başlanması için)
+
+**Status:** ✅ TAMAMLANDI - Build başarılı, renk sistemi aktif, tüm text renkleri tutarlı
+
+---
+
+## 🎨 Faz 0.3.3: Minimal Design Revamp B - UX & Layout
+
+### UI/UX İyileştirmeleri (B)
 - [ ] "Task Timer" başlığı kaldır (gereksiz kalabalık)
 - [ ] + Butonu: Direkt yeni task kartı ekle ve inline edittext aç
 - [ ] Enter tuşu: Task adını kaydet
@@ -337,6 +352,8 @@ Her bug'ı tamamladıktan sonra:
 - Python versiyonundan esinlenildi
 - Göze çarpan minimal tasarım
 - Temiz ve sade UI
+
+**Status:** ⏳ YAPILACAK
 
 ## 📝 Notlar
 - Her faz tamamlanırsa version bump et

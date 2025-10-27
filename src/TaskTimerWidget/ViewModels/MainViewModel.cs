@@ -122,8 +122,7 @@ namespace TaskTimerWidget.ViewModels
                 viewModel.OnTaskDeleted += (sender, id) => OnTaskDeleted(id);
                 Tasks.Add(viewModel);
 
-                // Select the newly created task
-                await SelectTaskAsync(viewModel);
+                // Don't auto-select new task, let user click it
                 Log.Information($"Task added: {newTask.Name}");
             }
             catch (Exception ex)
