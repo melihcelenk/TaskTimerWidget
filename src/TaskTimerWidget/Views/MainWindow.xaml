@@ -111,9 +111,10 @@
                                     <Button
                                         Grid.Column="1"
                                         Content="✕"
-                                        Width="32"
-                                        Height="32"
-                                        FontSize="14"
+                                        Width="36"
+                                        Height="36"
+                                        FontSize="16"
+                                        Padding="0"
                                         Background="#D32F2F"
                                         Foreground="White"
                                         CornerRadius="4"

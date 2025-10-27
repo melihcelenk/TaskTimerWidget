@@ -256,20 +256,20 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - Status: ✅ TAMAMLANDI
 
 ### BUG #4: "No Tasks Yet" Gösterilmiyor
-- [ ] Dosya: `Views/MainWindow.xaml.cs` - UpdateEmptyState() methodu
-- [ ] Problem: EmptyStatePanel ilk açılışta görünüyor, yeni task eklenmiş olsa da kapanmıyor
-- [ ] Çözüm: PropertyChanged event'te EmptyStatePanel visibility'i dinamik güncelle
-- Status: ⏳ YAPILACAK
+- [x] Dosya: `Views/MainWindow.xaml.cs` - InitializeViewModel() methodu
+- [x] Problem: EmptyStatePanel ilk açılışta görünüyor, yeni task eklenmiş olsa da kapanmıyor
+- [x] Çözüm: Tasks.CollectionChanged event'ini subscribe ederek dinamik güncelle
+- Status: ✅ TAMAMLANDI
 
 ### BUG #5: Task Statüsü "Running/Paused" Gösterilmiyor
 - [x] ATILDI - Running/Paused satırı kaldırılacak, renk ile ifade edilecek
 - Status: ✅ ATILDI (Design Revamp'ta ele alınacak)
 
 ### BUG #6: Sil Butonundaki X Karakteri Kesiliyor
-- [ ] Dosya: `Views/MainWindow.xaml` - Delete Button (line ~113)
-- [ ] Problem: Width="32" Height="32" çok dar
-- [ ] Çözüm: Width="36" Height="36" yap, Padding="0" ekle
-- Status: ⏳ YAPILACAK
+- [x] Dosya: `Views/MainWindow.xaml` - Delete Button (line ~113)
+- [x] Problem: Width="32" Height="32" çok dar, X karakteri kesiliyor
+- [x] Çözüm: Width="36" Height="36", FontSize="16", Padding="0" ekle
+- Status: ✅ TAMAMLANDI
 
 ### BUG #7: Pencere Chrome'u Kaldırılmadı (Title bar vs)
 - [ ] Dosya: `Views/MainWindow.xaml` ve `MainWindow.xaml.cs`
@@ -284,16 +284,16 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 
 ## 📊 İlerleme Durumu
 
-**Tamamlanan:** 3 / 7 Bug
+**Tamamlanan:** 5 / 7 Bug
 - ✅ BUG #1: Timer Sayacı 2 Saniye Artıyor
 - ✅ BUG #2: Pencere Boyutu Çok Büyük
 - ✅ BUG #3: Diğer Taskların Rengi Güncellenmiyor
+- ✅ BUG #4: "No Tasks Yet" Gösterilmiyor
+- ✅ BUG #6: Sil Butonundaki X Kesiliyor
 - ❌ BUG #5: ATILDI (Design Revamp'ta ele alınacak)
 
-**Sırada:**
-- 🔜 BUG #4: "No Tasks Yet" Gösterilmiyor
-- 🔜 BUG #6: Sil Butonundaki X Kesiliyor
-- 🔜 BUG #7: Pencere Chrome'u Kaldırılmadı
+**Son Kalan:**
+- 🔜 BUG #7: Pencere Chrome'u Kaldırılmadı (En karmaşık)
 
 Her bug'ı tamamladıktan sonra:
 1. Uygulamayı test et
