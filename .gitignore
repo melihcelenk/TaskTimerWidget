@@ -29,6 +29,7 @@ bld/
 
 # Rider
 .idea/
+*.sln
 *.sln.iml
 
 # User-specific files

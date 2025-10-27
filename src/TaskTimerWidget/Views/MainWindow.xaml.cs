@@ -134,8 +134,22 @@ namespace TaskTimerWidget
         /// </summary>
         private void UpdateTaskItemColors()
         {
-            // This would iterate through ItemsControl and update colors
-            // For now, we can use data binding or update on each item
+            if (TasksItemsControl == null)
+                return;
+
+            // Iterate through all task items and update their background colors
+            for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+            {
+                if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                {
+                    var visual = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(container, 0) as Border;
+                    if (visual?.Tag is TaskViewModel taskVm)
+                    {
+                        var color = taskVm.IsActive ? Microsoft.UI.Colors.Gold : Microsoft.UI.Colors.LightGray;
+                        visual.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(color);
+                    }
+                }
+            }
         }
 
         /// <summary>

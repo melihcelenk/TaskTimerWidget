@@ -248,54 +248,52 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - [x] Çözüm: AppWindow.Resize() ile 380x600'e ayarla
 - Status: ✅ TAMAMLANDI
 
-### BUG #3: Sil Butonundaki X Karakteri Kesiliyor
+### BUG #3: Diğer Taskların Rengi Güncellenmiyor
+- [x] Dosya: `Views/MainWindow.xaml.cs` - UpdateTaskItemColors() methodu
+- [x] Problem: Background sabit gri renk, dinamik güncelleme yok
+- [x] Çözüm: Visual Tree traversal ile tüm items'ın rengini güncelle
+- [x] Not: Aktif task sarı, diğerleri açık gri oldu
+- Status: ✅ TAMAMLANDI
+
+### BUG #4: "No Tasks Yet" Gösterilmiyor
+- [ ] Dosya: `Views/MainWindow.xaml.cs` - UpdateEmptyState() methodu
+- [ ] Problem: EmptyStatePanel ilk açılışta görünüyor, yeni task eklenmiş olsa da kapanmıyor
+- [ ] Çözüm: PropertyChanged event'te EmptyStatePanel visibility'i dinamik güncelle
+- Status: ⏳ YAPILACAK
+
+### BUG #5: Task Statüsü "Running/Paused" Gösterilmiyor
+- [x] ATILDI - Running/Paused satırı kaldırılacak, renk ile ifade edilecek
+- Status: ✅ ATILDI (Design Revamp'ta ele alınacak)
+
+### BUG #6: Sil Butonundaki X Karakteri Kesiliyor
 - [ ] Dosya: `Views/MainWindow.xaml` - Delete Button (line ~113)
 - [ ] Problem: Width="32" Height="32" çok dar
 - [ ] Çözüm: Width="36" Height="36" yap, Padding="0" ekle
-- Status: ⏳ BAŞLANMADI
+- Status: ⏳ YAPILACAK
 
-### BUG #4: Taska Tıklandığında Sarı Olmuyoruz
-- [ ] Dosya: `Views/MainWindow.xaml` - Border tag'ı (line ~62)
-- [ ] Problem: Background sabit gri renk, binding yok
-- [ ] Çözüm: Background binding ekle (IsActive property'e bağla)
-- [ ] Not: Converter yazılmış, sadece binding yapılacak
-- Status: ⏳ BAŞLANMADI
-
-### BUG #5: Task Statüsü "Running/Paused" Gösterilmiyor
-- [ ] Dosya: `Views/MainWindow.xaml` - StatusText TextBlock (line ~105)
-- [ ] Problem: Sabit "Status" text, binding yok
-- [ ] Çözüm: Text binding ekle (IsRunning property'e bağla converter ile)
-- Status: ⏳ BAŞLANMADI
-
-### BUG #6: "No Tasks Yet" Gösterilmiyor
-- [ ] Dosya: `Views/MainWindow.xaml` - EmptyStatePanel (line ~135)
-- [ ] Problem: Sabit Visibility="Visible", dinamik değil
-- [ ] Çözüm: Visibility binding ekle (TaskCount'a bağla converter ile)
-- Status: ⏳ BAŞLANMADI
-
-### BUG #7: Diğer Taskların Sarı Rengi Güncellenmiyor
-- [ ] Dosya: `Views/MainWindow.xaml.cs` - UpdateTaskItemColors() (line ~124)
-- [ ] Problem: Method boş, işlemi yapmuyor
-- [ ] Çözüm: Binding'den handle edilecek (BUG #4 ile beraber çözülecek)
-- Status: ⏳ BAŞLANMADI
-
-### BUG #8: Pencere Chrome'u Kaldırılmadı (Title bar vs)
+### BUG #7: Pencere Chrome'u Kaldırılmadı (Title bar vs)
 - [ ] Dosya: `Views/MainWindow.xaml` ve `MainWindow.xaml.cs`
 - [ ] Problem: Penceredede minimize/maximize/close butonları var, title bar var
 - [ ] Çözüm: ExtendsContentIntoTitleBar ve custom title bar yapması gerekiyor
-- [ ] Not: Bunu son yapacağız (en karmaşık)
-- Status: ⏳ BAŞLANMADI
+- Status: ⏳ YAPILACAK (En karmaşık)
+
+### BUG #8: (Yeni gerekli mi?)
+- Status: ⏳ PLANLANACAK
 
 ---
 
 ## 📊 İlerleme Durumu
 
-**Toplam 8 Bug:**
-- ✅ Tamamlanan: 2
-- 🔄 Yapılıyor: 0
-- ⏳ Başlanmamış: 6
+**Tamamlanan:** 3 / 7 Bug
+- ✅ BUG #1: Timer Sayacı 2 Saniye Artıyor
+- ✅ BUG #2: Pencere Boyutu Çok Büyük
+- ✅ BUG #3: Diğer Taskların Rengi Güncellenmiyor
+- ❌ BUG #5: ATILDI (Design Revamp'ta ele alınacak)
 
-**Sıra:** Bug #1 → Bug #2 → Bug #3 → Bug #4 → Bug #5 → Bug #6 → Bug #7 → Bug #8
+**Sırada:**
+- 🔜 BUG #4: "No Tasks Yet" Gösterilmiyor
+- 🔜 BUG #6: Sil Butonundaki X Kesiliyor
+- 🔜 BUG #7: Pencere Chrome'u Kaldırılmadı
 
 Her bug'ı tamamladıktan sonra:
 1. Uygulamayı test et
