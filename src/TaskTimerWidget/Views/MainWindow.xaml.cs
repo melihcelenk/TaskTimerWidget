@@ -119,9 +119,65 @@ namespace TaskTimerWidget
         /// <summary>
         /// Handles the Add Task button click event.
         /// </summary>
-        private async void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            await ShowTaskInputDialog();
+            // Toggle inline textbox visibility
+            if (NewTaskTextBox.Visibility == Visibility.Collapsed)
+            {
+                NewTaskTextBox.Visibility = Visibility.Visible;
+                NewTaskTextBox.Text = string.Empty;
+                NewTaskTextBox.Focus(FocusState.Programmatic);
+            }
+            else
+            {
+                // If already visible, create the task
+                CreateTaskFromInput();
+            }
+        }
+
+        /// <summary>
+        /// Handles key press in the new task textbox.
+        /// </summary>
+        private void NewTaskTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                e.Handled = true;
+                CreateTaskFromInput();
+            }
+            else if (e.Key == Windows.System.VirtualKey.Escape)
+            {
+                e.Handled = true;
+                CancelTaskInput();
+            }
+        }
+
+        /// <summary>
+        /// Creates a task from the textbox input.
+        /// </summary>
+        private void CreateTaskFromInput()
+        {
+            var taskName = NewTaskTextBox.Text?.Trim();
+            if (!string.IsNullOrWhiteSpace(taskName) && _viewModel != null)
+            {
+                _viewModel.AddTaskCommand.Execute(taskName);
+                NewTaskTextBox.Text = string.Empty;
+                NewTaskTextBox.Visibility = Visibility.Collapsed;
+            }
+            else if (string.IsNullOrWhiteSpace(taskName))
+            {
+                CancelTaskInput();
+            }
+        }
+
+        /// <summary>
+        /// Cancels task input and hides the textbox.
+        /// </summary>
+        private void CancelTaskInput()
+        {
+            NewTaskTextBox.Text = string.Empty;
+            NewTaskTextBox.Visibility = Visibility.Collapsed;
+            AddTaskButton.Focus(FocusState.Programmatic);
         }
 
         /// <summary>
@@ -233,55 +289,6 @@ namespace TaskTimerWidget
                     StatusBar.Text = $"{count} task{(count != 1 ? "s" : "")}";
                     StatusBar.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
                         Microsoft.UI.Colors.Gray);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Shows a dialog for user to input new task name.
-        /// </summary>
-        private async Task ShowTaskInputDialog()
-        {
-            var stackPanel = new StackPanel
-            {
-                Spacing = 12,
-                Padding = new Thickness(12)
-            };
-
-            var label = new TextBlock
-            {
-                Text = "Task Name:",
-                FontSize = 14,
-                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                    Microsoft.UI.Colors.Black)
-            };
-
-            var textBox = new TextBox
-            {
-                PlaceholderText = "Enter task name...",
-                FontSize = 14,
-                Height = 40
-            };
-
-            stackPanel.Children.Add(label);
-            stackPanel.Children.Add(textBox);
-
-            var dialog = new ContentDialog
-            {
-                Title = "New Task",
-                Content = stackPanel,
-                PrimaryButtonText = "Create",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.Content.XamlRoot
-            };
-
-            var result = await dialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary && !string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                if (_viewModel != null)
-                {
-                    _viewModel.AddTaskCommand.Execute(textBox.Text);
                 }
             }
         }

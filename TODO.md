@@ -343,17 +343,19 @@ Her bug'ı tamamladıktan sonra:
 ## 🎨 Faz 0.3.3: Minimal Design Revamp B - UX & Layout
 
 ### UI/UX İyileştirmeleri (B)
-- [ ] "Task Timer" başlığı kaldır (gereksiz kalabalık)
-- [ ] + Butonu: Direkt yeni task kartı ekle ve inline edittext aç
-- [ ] Enter tuşu: Task adını kaydet
-- [ ] Minimum efor, maksimum kullanılabilirlik
+- [x] "Task Timer" başlığı kaldırıldı (gereksiz kalabalık)
+- [x] + Butonu: Direkt inline textbox aç, ikinci tıklaşta task ekle
+- [x] Enter tuşu: Task adını kaydet
+- [x] Esc tuşu: Input'u iptal et
+- [x] Minimum efor, maksimum kullanılabilirlik
+- [x] Dialog kaldırıldı, inline editing ile değiştirildi
 
 ### Tasarım Referansı
 - Python versiyonundan esinlenildi
 - Göze çarpan minimal tasarım
 - Temiz ve sade UI
 
-**Status:** ⏳ YAPILACAK
+**Status:** ✅ TAMAMLANDI
 
 ## 📝 Notlar
 - Her faz tamamlanırsa version bump et

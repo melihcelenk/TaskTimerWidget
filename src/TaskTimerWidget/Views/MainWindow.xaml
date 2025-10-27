@@ -13,20 +13,22 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Header with Title and Add Button -->
+        <!-- Header with Add Button and Input -->
         <Grid Grid.Row="0" ColumnSpacing="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock
+            <TextBox
+                x:Name="NewTaskTextBox"
                 Grid.Column="0"
-                Text="Task Timer"
-                FontSize="20"
-                FontWeight="Bold"
-                Foreground="Black"
-                VerticalAlignment="Center" />
+                PlaceholderText="New task..."
+                FontSize="14"
+                Height="40"
+                Padding="12,8"
+                Visibility="Collapsed"
+                KeyDown="NewTaskTextBox_KeyDown" />
 
             <Button
                 x:Name="AddTaskButton"
