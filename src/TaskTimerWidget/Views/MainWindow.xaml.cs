@@ -121,10 +121,10 @@ namespace TaskTimerWidget
         /// </summary>
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            // Toggle inline textbox visibility
-            if (NewTaskTextBox.Visibility == Visibility.Collapsed)
+            // Toggle new task input card visibility
+            if (NewTaskBorder.Visibility == Visibility.Collapsed)
             {
-                NewTaskTextBox.Visibility = Visibility.Visible;
+                NewTaskBorder.Visibility = Visibility.Visible;
                 NewTaskTextBox.Text = string.Empty;
                 NewTaskTextBox.Focus(FocusState.Programmatic);
             }
@@ -162,7 +162,7 @@ namespace TaskTimerWidget
             {
                 _viewModel.AddTaskCommand.Execute(taskName);
                 NewTaskTextBox.Text = string.Empty;
-                NewTaskTextBox.Visibility = Visibility.Collapsed;
+                NewTaskBorder.Visibility = Visibility.Collapsed;
             }
             else if (string.IsNullOrWhiteSpace(taskName))
             {
@@ -171,12 +171,12 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
-        /// Cancels task input and hides the textbox.
+        /// Cancels task input and hides the input card.
         /// </summary>
         private void CancelTaskInput()
         {
             NewTaskTextBox.Text = string.Empty;
-            NewTaskTextBox.Visibility = Visibility.Collapsed;
+            NewTaskBorder.Visibility = Visibility.Collapsed;
             AddTaskButton.Focus(FocusState.Programmatic);
         }
 

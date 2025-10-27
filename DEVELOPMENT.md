@@ -302,6 +302,75 @@ git push origin feature/my-feature
 # Create pull request on GitHub
 ```
 
+## 🛠️ Development Commands (CLI Shortcuts)
+
+### Build and Run
+
+```bash
+# Build Debug
+cd C:\Kodlar\Desktop\TaskTimerWidget\src\TaskTimerWidget
+dotnet build --configuration Debug
+
+# Build Release
+dotnet build --configuration Release
+
+# Run application
+dotnet run --configuration Debug
+```
+
+### Application Control
+
+```powershell
+# Kill running app instance (PowerShell)
+powershell -NoProfile -Command "Get-Process TaskTimerWidget -ErrorAction Ignore | Stop-Process -Force -ErrorAction Ignore; Start-Sleep -Milliseconds 500"
+
+# Launch app directly
+cd "C:\Kodlar\Desktop\TaskTimerWidget\src\TaskTimerWidget\bin\Debug\net8.0-windows10.0.19041.0"
+start TaskTimerWidget.exe
+```
+
+### Quick Build + Test Cycle
+
+```bash
+# From project root, after code changes:
+cd C:\Kodlar\Desktop\TaskTimerWidget\src\TaskTimerWidget
+dotnet build --configuration Debug 2>&1 | tail -5
+```
+
+### Git Operations
+
+```bash
+# Check status
+git status
+
+# Stage all changes
+git add -A
+
+# View diff
+git diff src/TaskTimerWidget/Views/MainWindow.xaml
+
+# Commit with message
+git commit -m "Faz X.X: Description"
+
+# View log
+git log --oneline | head -5
+```
+
+### Troubleshooting Build Errors
+
+**File locked error** (app still running):
+```powershell
+# Kill app and wait before rebuilding
+powershell -NoProfile -Command "Get-Process TaskTimerWidget -ErrorAction Ignore | Stop-Process -Force -ErrorAction Ignore; Start-Sleep -Milliseconds 500"
+```
+
+**Clean rebuild** (if stuck):
+```bash
+cd C:\Kodlar\Desktop\TaskTimerWidget\src\TaskTimerWidget
+dotnet clean
+dotnet build --configuration Debug
+```
+
 ---
 
 **Last Updated**: October 27, 2025

@@ -349,13 +349,16 @@ Her bug'ı tamamladıktan sonra:
 - [x] Esc tuşu: Input'u iptal et
 - [x] Minimum efor, maksimum kullanılabilirlik
 - [x] Dialog kaldırıldı, inline editing ile değiştirildi
+- [x] Yeni task kartı tasklist içinde (ScrollView içinde), en alttaki task'ın altında
+- [x] TextBox padding düzeltildi (hafif sağdan başlıyor)
+- [x] Buton aşağıda ortada ve rengi #3A3A3A (uyumlu koyu gri)
 
 ### Tasarım Referansı
 - Python versiyonundan esinlenildi
 - Göze çarpan minimal tasarım
 - Temiz ve sade UI
 
-**Status:** ✅ TAMAMLANDI
+**Status:** ✅ TAMAMLANDI - Faz 0.3 (Design Revamp) tam bitmiş!
 
 ## 📝 Notlar
 - Her faz tamamlanırsa version bump et
