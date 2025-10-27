@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
+using Windows.Graphics;
 using TaskTimerWidget.ViewModels;
 using Serilog;
 
@@ -29,12 +30,25 @@ namespace TaskTimerWidget
         {
             try
             {
-                // Set window size for widget appearance
                 var appWindow = this.AppWindow;
                 if (appWindow != null)
                 {
-                    appWindow.Resize(new Windows.Graphics.SizeInt32(200, 500));
+                    // Set window size for widget appearance
+                    appWindow.Resize(new SizeInt32(200, 500));
                     Log.Information("MainWindow resized to 200x500");
+
+                    // Remove window chrome (title bar, min/max/close buttons)
+                    var titleBar = appWindow.TitleBar;
+                    if (titleBar != null)
+                    {
+                        // Extend content into title bar area
+                        titleBar.ExtendsContentIntoTitleBar = true;
+
+                        // Set drag region for the top of the window (for window dragging)
+                        titleBar.SetDragRectangles(new[] { new RectInt32(0, 0, 200, 40) });
+
+                        Log.Information("Window chrome removed, custom title bar enabled");
+                    }
                 }
                 else
                 {

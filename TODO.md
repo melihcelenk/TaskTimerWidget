@@ -275,7 +275,8 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - [ ] Dosya: `Views/MainWindow.xaml` ve `MainWindow.xaml.cs`
 - [ ] Problem: Penceredede minimize/maximize/close butonları var, title bar var
 - [ ] Çözüm: ExtendsContentIntoTitleBar ve custom title bar yapması gerekiyor
-- Status: ⏳ YAPILACAK (En karmaşık)
+- [ ] Not: WinUI 3 title bar management karmaşık, sonraya alındı
+- Status: ⏳ ERTELENDI (Son yapılacak, karmaşık)
 
 ### BUG #8: (Yeni gerekli mi?)
 - Status: ⏳ PLANLANACAK
@@ -284,7 +285,7 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 
 ## 📊 İlerleme Durumu
 
-**Tamamlanan:** 5 / 7 Bug
+**Tamamlanan:** 5 / 6 Bug
 - ✅ BUG #1: Timer Sayacı 2 Saniye Artıyor
 - ✅ BUG #2: Pencere Boyutu Çok Büyük
 - ✅ BUG #3: Diğer Taskların Rengi Güncellenmiyor
@@ -292,8 +293,8 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile task'lar olu
 - ✅ BUG #6: Sil Butonundaki X Kesiliyor
 - ❌ BUG #5: ATILDI (Design Revamp'ta ele alınacak)
 
-**Son Kalan:**
-- 🔜 BUG #7: Pencere Chrome'u Kaldırılmadı (En karmaşık)
+**Ertelenen:**
+- ⏳ BUG #7: Pencere Chrome'u Kaldırılmadı (WinUI 3 title bar karmaşık, sonra yapılacak)
 
 Her bug'ı tamamladıktan sonra:
 1. Uygulamayı test et

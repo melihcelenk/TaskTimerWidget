@@ -6,7 +6,7 @@
     Title="Task Timer Widget"
     Closed="Window_Closed">
 
-    <Grid Padding="12" RowSpacing="12" Background="#F9F9F9">
+    <Grid Padding="12,32,12,12" RowSpacing="12" Background="#F9F9F9">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
