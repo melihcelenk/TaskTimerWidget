@@ -6,6 +6,7 @@ using Windows.Graphics;
 using Windows.UI;
 using TaskTimerWidget.ViewModels;
 using Serilog;
+using Microsoft.UI.Input;
 
 namespace TaskTimerWidget
 {
@@ -16,12 +17,14 @@ namespace TaskTimerWidget
     public sealed partial class MainWindow : Window
     {
         private MainViewModel? _viewModel;
+        private AppWindow? _appWindow;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeWindow();
             InitializeViewModel();
+            SubscribeToWindowEvents();
         }
 
         /// <summary>
@@ -31,15 +34,15 @@ namespace TaskTimerWidget
         {
             try
             {
-                var appWindow = this.AppWindow;
-                if (appWindow != null)
+                _appWindow = this.AppWindow;
+                if (_appWindow != null)
                 {
                     // Set window size for widget appearance
-                    appWindow.Resize(new SizeInt32(220, 500));
+                    _appWindow.Resize(new SizeInt32(220, 500));
                     Log.Information("MainWindow resized to 220x500");
 
                     // Configure title bar to look like a widget (no minimize/maximize buttons)
-                    var titleBar = appWindow.TitleBar;
+                    var titleBar = _appWindow.TitleBar;
                     if (titleBar != null)
                     {
                         // Extend content into title bar area (removes default chrome)
@@ -60,6 +63,48 @@ namespace TaskTimerWidget
             catch (Exception ex)
             {
                 Log.Error(ex, "Error initializing MainWindow");
+            }
+        }
+
+        /// <summary>
+        /// Subscribe to window activation state changes (Sticky Notes style)
+        /// </summary>
+        private void SubscribeToWindowEvents()
+        {
+            // Window_Activated event is subscribed in XAML
+            Log.Information("Window activation events subscription ready");
+        }
+
+        /// <summary>
+        /// Handle window activation state changes (Sticky Notes style)
+        /// </summary>
+        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            try
+            {
+                bool isActive = args.WindowActivationState != WindowActivationState.Deactivated;
+                UpdateTitleBar(isActive);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error handling window activation");
+            }
+        }
+
+        /// <summary>
+        /// Update title bar visibility based on window activation state
+        /// </summary>
+        private void UpdateTitleBar(bool isActive)
+        {
+            try
+            {
+                // Show/hide close button based on window activation
+                CloseButton.Opacity = isActive ? 1.0 : 0.3;
+                Log.Information($"Title bar updated: isActive={isActive}");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating title bar");
             }
         }
 
