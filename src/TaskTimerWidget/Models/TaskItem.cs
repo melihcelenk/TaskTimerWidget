@@ -81,12 +81,23 @@ namespace TaskTimerWidget.Models
         }
 
         /// <summary>
-        /// Returns a formatted time string (HH:MM:SS).
+        /// Returns a formatted time string (e.g., "1h 30m 5s", "23m 12s", "35s").
         /// </summary>
         public string GetFormattedTime()
         {
             var timeSpan = TimeSpan.FromSeconds(ElapsedSeconds);
-            return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+            var parts = new List<string>();
+
+            if (timeSpan.Hours > 0)
+                parts.Add($"{timeSpan.Hours}h");
+
+            if (timeSpan.Minutes > 0)
+                parts.Add($"{timeSpan.Minutes}m");
+
+            if (timeSpan.Seconds > 0 || parts.Count == 0)
+                parts.Add($"{timeSpan.Seconds}s");
+
+            return string.Join(" ", parts);
         }
 
         public override string ToString()

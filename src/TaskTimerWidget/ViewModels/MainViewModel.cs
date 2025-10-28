@@ -139,25 +139,36 @@ namespace TaskTimerWidget.ViewModels
         {
             try
             {
-                // Pause previous active task
-                if (ActiveTask != null && ActiveTask != taskVm)
+                // If same task is clicked, toggle its active state (pause/resume)
+                if (ActiveTask == taskVm)
                 {
-                    ActiveTask.IsRunning = false;
-                    ActiveTask.IsActive = false;
-                }
-
-                // Set new active task
-                SelectedTask = taskVm;
-                ActiveTask = taskVm;
-                ActiveTask.IsActive = true;
-
-                // Toggle running state
-                if (ActiveTask.IsRunning)
-                {
-                    ActiveTask.IsRunning = false;
+                    if (taskVm.IsRunning)
+                    {
+                        // Pause the task
+                        taskVm.IsRunning = false;
+                        taskVm.IsActive = false;
+                    }
+                    else
+                    {
+                        // Resume the task
+                        taskVm.IsRunning = true;
+                        taskVm.IsActive = true;
+                    }
                 }
                 else
                 {
+                    // Different task is clicked
+                    // Pause previous active task
+                    if (ActiveTask != null)
+                    {
+                        ActiveTask.IsRunning = false;
+                        ActiveTask.IsActive = false;
+                    }
+
+                    // Set new active task
+                    SelectedTask = taskVm;
+                    ActiveTask = taskVm;
+                    ActiveTask.IsActive = true;
                     ActiveTask.IsRunning = true;
                 }
 

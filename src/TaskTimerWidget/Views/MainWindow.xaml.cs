@@ -238,8 +238,18 @@ namespace TaskTimerWidget
         {
             if (sender is Border border && border.Tag is TaskViewModel taskVm)
             {
-                // Hover: Slightly lighter dark gray (#3A3A3A) for subtle effect
-                var hoverColor = new Color { A = 255, R = 0x3A, G = 0x3A, B = 0x3A };
+                // Hover: Lighter tone (active=lighter gold, inactive=lighter gray)
+                Color hoverColor;
+                if (taskVm.IsActive)
+                {
+                    // Lighter gold for active tasks (#FFD700 -> lighter)
+                    hoverColor = new Color { A = 255, R = 0xFF, G = 0xE0, B = 0x50 };
+                }
+                else
+                {
+                    // Slightly lighter dark gray (#3A3A3A) for inactive tasks
+                    hoverColor = new Color { A = 255, R = 0x3A, G = 0x3A, B = 0x3A };
+                }
                 border.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(hoverColor);
             }
         }
