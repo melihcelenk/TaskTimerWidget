@@ -6,7 +6,6 @@ using Windows.Graphics;
 using Windows.UI;
 using TaskTimerWidget.ViewModels;
 using Serilog;
-using Microsoft.UI.Input;
 
 namespace TaskTimerWidget
 {
@@ -53,6 +52,19 @@ namespace TaskTimerWidget
                         titleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
 
                         Log.Information("Window configured as widget (minimize/maximize buttons hidden)");
+                    }
+
+                    // Set the custom title bar for dragging support
+                    // This uses the native WinUI 3 API for smooth, system-integrated window dragging
+                    try
+                    {
+                        this.ExtendsContentIntoTitleBar = true;
+                        this.SetTitleBar(TitleBarGrid);
+                        Log.Information("Custom title bar set for dragging");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Could not set custom title bar");
                     }
                 }
                 else
@@ -391,5 +403,6 @@ namespace TaskTimerWidget
             _viewModel?.Dispose();
             Log.Information("MainWindow closing");
         }
+
     }
 }

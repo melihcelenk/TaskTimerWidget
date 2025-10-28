@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Title Bar (Sticky Notes Style) -->
+        <!-- Title Bar (Sticky Notes Style) - Draggable via SetTitleBar -->
         <Grid Grid.Row="0" Height="32" Padding="12,4,4,4" Background="#B8B8B8" x:Name="TitleBarGrid" Opacity="0" IsHitTestVisible="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
