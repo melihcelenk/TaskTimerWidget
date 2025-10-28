@@ -42,30 +42,26 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <!-- Task Name -->
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Text="{Binding Name}"
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
-                                        TextTrimming="CharacterEllipsis" />
+                                    <!-- Task Name + Delete Button (Top Row) -->
+                                    <Grid Grid.Row="0" ColumnSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <!-- Timer Display -->
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Text="{Binding FormattedTime}"
-                                        FontSize="18"
-                                        FontWeight="Normal"
-                                        Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
-                                        FontFamily="Courier New" />
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Text="{Binding Name}"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
+                                            TextTrimming="CharacterEllipsis"
+                                            VerticalAlignment="Center" />
 
-                                    <!-- Delete Button -->
-                                    <Grid Grid.Row="2" HorizontalAlignment="Right">
                                         <Button
+                                            Grid.Column="1"
                                             Content="✕"
                                             Width="36"
                                             Height="36"
@@ -76,6 +72,15 @@
                                             CornerRadius="4"
                                             Command="{Binding DeleteCommand}" />
                                     </Grid>
+
+                                    <!-- Timer Display -->
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{Binding FormattedTime}"
+                                        FontSize="18"
+                                        FontWeight="Normal"
+                                        Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
+                                        FontFamily="Courier New" />
                                 </Grid>
                             </Border>
                         </DataTemplate>

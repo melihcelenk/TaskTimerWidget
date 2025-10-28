@@ -35,8 +35,8 @@ namespace TaskTimerWidget
                 if (appWindow != null)
                 {
                     // Set window size for widget appearance
-                    appWindow.Resize(new SizeInt32(200, 500));
-                    Log.Information("MainWindow resized to 200x500");
+                    appWindow.Resize(new SizeInt32(220, 500));
+                    Log.Information("MainWindow resized to 220x500");
 
                     // Remove window chrome (title bar, min/max/close buttons)
                     var titleBar = appWindow.TitleBar;
