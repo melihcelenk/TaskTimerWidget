@@ -104,3 +104,8 @@ catch (Exception ex)
 - [ ] Performance uygun
 - [ ] Exception handling var
 - [ ] Documentation güncellenmiş
+- WinUI 3 Custom Window Dragging:
+    Use SetTitleBar(UIElement) for smooth, system-integrated dragging
+    Guide: docs/WINUI3_WINDOW_DRAGGING.md
+    Applies to all C# WinUI 3 projects
+    Only 2 lines of code needed
