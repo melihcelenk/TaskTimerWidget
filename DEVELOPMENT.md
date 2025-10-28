@@ -373,6 +373,29 @@ dotnet build --configuration Debug
 
 ---
 
-**Last Updated**: October 27, 2025
+## 🎯 WinUI 3 Resources and Guides
+
+### Window Customization & Dragging
+
+**Guide**: [WinUI 3 Custom Window Dragging](./docs/WINUI3_WINDOW_DRAGGING.md)
+
+Quick reference for implementing smooth window dragging in WinUI 3 applications:
+- Using `SetTitleBar()` native API (recommended)
+- Complete examples and code snippets
+- Troubleshooting guide
+- Applicable to all C# WinUI 3 projects
+
+**Use Case**: Widget-style applications, custom title bars, frameless windows
+
+### Other WinUI 3 Common Tasks
+
+- **Window Sizing & Positioning**: Check AppWindow in Microsoft docs
+- **Theme Support**: ExtendsContentIntoTitleBar with BackgroundColor
+- **DPI Awareness**: WinUI 3 handles automatically with SetTitleBar
+- **System Integration**: Double-click maximize, right-click menu (automatic with SetTitleBar)
+
+---
+
+**Last Updated**: October 28, 2025
 **Maintainer**: Development Team
 **Status**: Active Development

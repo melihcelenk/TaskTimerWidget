@@ -94,6 +94,14 @@ Please refer to [CLAUDE.md](./CLAUDE.md) for:
 - Error handling standards
 - Documentation requirements
 
+### Development Guides and Resources
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup and guides, including:
+- Setup instructions
+- Project structure
+- Development workflow
+- **[WinUI 3 Custom Window Dragging Guide](./docs/WINUI3_WINDOW_DRAGGING.md)** - Applicable to all C# WinUI 3 projects
+
 ### Development Roadmap
 
 See [TODO.md](./TODO.md) for the complete development roadmap with phases and milestones.
