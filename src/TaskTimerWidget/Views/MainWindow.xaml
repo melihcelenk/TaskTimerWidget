@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title Bar (Sticky Notes Style) -->
-        <Grid Grid.Row="0" Height="32" Padding="12,4,4,4" Background="#B8B8B8" x:Name="TitleBarGrid">
+        <Grid Grid.Row="0" Height="32" Padding="12,4,4,4" Background="#B8B8B8" x:Name="TitleBarGrid" Opacity="0" IsHitTestVisible="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -42,8 +42,7 @@
                 Background="Transparent"
                 Foreground="#333333"
                 CornerRadius="0"
-                Click="CloseButton_Click"
-                Opacity="0" />
+                Click="CloseButton_Click" />
         </Grid>
 
         <!-- Task List -->

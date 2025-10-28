@@ -94,12 +94,28 @@ namespace TaskTimerWidget
         /// <summary>
         /// Update title bar visibility based on window activation state
         /// </summary>
-        private void UpdateTitleBar(bool isActive)
+        private async void UpdateTitleBar(bool isActive)
         {
             try
             {
-                // Show/hide close button based on window activation
-                CloseButton.Opacity = isActive ? 1.0 : 0.3;
+                // Show/hide title bar based on window activation
+                // Use Opacity to keep space reserved but invisible
+                // Use IsHitTestVisible to disable interactions when inactive
+                TitleBarGrid.Opacity = isActive ? 1.0 : 0.0;
+
+                // If deactivating, immediately disable hit test
+                if (!isActive)
+                {
+                    TitleBarGrid.IsHitTestVisible = false;
+                }
+                else
+                {
+                    // If activating, add a small delay before enabling hit test
+                    // This prevents the user's click from immediately hitting the button
+                    await System.Threading.Tasks.Task.Delay(100);
+                    TitleBarGrid.IsHitTestVisible = true;
+                }
+
                 Log.Information($"Title bar updated: isActive={isActive}");
             }
             catch (Exception ex)
