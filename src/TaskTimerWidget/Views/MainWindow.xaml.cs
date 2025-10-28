@@ -38,17 +38,18 @@ namespace TaskTimerWidget
                     appWindow.Resize(new SizeInt32(220, 500));
                     Log.Information("MainWindow resized to 220x500");
 
-                    // Remove window chrome (title bar, min/max/close buttons)
+                    // Configure title bar to look like a widget (no minimize/maximize buttons)
                     var titleBar = appWindow.TitleBar;
                     if (titleBar != null)
                     {
-                        // Extend content into title bar area
+                        // Extend content into title bar area (removes default chrome)
                         titleBar.ExtendsContentIntoTitleBar = true;
 
-                        // Set drag region for the top of the window (for window dragging)
-                        titleBar.SetDragRectangles(new[] { new RectInt32(0, 0, 200, 40) });
+                        // Collapse title bar height to hide minimize/maximize buttons
+                        // Only close button will remain visible
+                        titleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
 
-                        Log.Information("Window chrome removed, custom title bar enabled");
+                        Log.Information("Window configured as widget (minimize/maximize buttons hidden)");
                     }
                 }
                 else
@@ -114,6 +115,14 @@ namespace TaskTimerWidget
             {
                 Log.Error(ex, "Error initializing ViewModel");
             }
+        }
+
+        /// <summary>
+        /// Handles the Close button click event.
+        /// </summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         /// <summary>

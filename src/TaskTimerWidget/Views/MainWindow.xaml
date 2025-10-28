@@ -124,32 +124,49 @@
         </ScrollView>
 
         <!-- Bottom Controls (Button and Status) -->
-        <StackPanel
-            Grid.Row="1"
-            Spacing="8">
+        <Grid Grid.Row="1" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Add Button (Centered) -->
-            <StackPanel
-                HorizontalAlignment="Center">
-                <Button
-                    x:Name="AddTaskButton"
-                    Content="+"
-                    Width="40"
-                    Height="40"
-                    FontSize="20"
-                    Background="#3A3A3A"
-                    Foreground="White"
-                    CornerRadius="4"
-                    Click="AddTaskButton_Click" />
-            </StackPanel>
+            <!-- Close Button (Left) -->
+            <Button
+                Grid.Column="0"
+                x:Name="CloseButton"
+                Content="✕"
+                Width="36"
+                Height="36"
+                FontSize="16"
+                Padding="0"
+                Background="#D32F2F"
+                Foreground="White"
+                CornerRadius="4"
+                Click="CloseButton_Click" />
 
-            <!-- Status Bar -->
+            <!-- Add Button (Center) -->
+            <Button
+                Grid.Column="1"
+                x:Name="AddTaskButton"
+                Content="+"
+                Width="40"
+                Height="40"
+                FontSize="20"
+                Background="#3A3A3A"
+                Foreground="White"
+                CornerRadius="4"
+                HorizontalAlignment="Center"
+                Click="AddTaskButton_Click" />
+
+            <!-- Status Bar (Right) -->
             <TextBlock
+                Grid.Column="2"
                 x:Name="StatusBar"
                 FontSize="11"
                 Foreground="#999999"
-                TextAlignment="Center" />
-        </StackPanel>
+                VerticalAlignment="Center" />
+        </Grid>
 
         <!-- Empty State Message (Overlay in Row 0) -->
         <StackPanel
