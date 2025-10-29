@@ -21,6 +21,11 @@ namespace TaskTimerWidget
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
 
+        // Drag and drop state
+        private TaskViewModel? _draggingTask;
+        private bool _isDragging = false;
+        private Windows.Foundation.Point _dragStartPoint;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -589,6 +594,207 @@ namespace TaskTimerWidget
             NewTaskTextBox.Tag = null; // Clear rename reference
             AddTaskButton.Focus(FocusState.Programmatic);
         }
+
+        #region Drag and Drop
+
+        /// <summary>
+        /// Handles pointer pressed event to start drag operation.
+        /// </summary>
+        private void TaskItem_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (sender is Border border && border.Tag is TaskViewModel taskVm)
+            {
+                _dragStartPoint = e.GetCurrentPoint(border).Position;
+                _draggingTask = taskVm;
+                border.CapturePointer(e.Pointer);
+            }
+        }
+
+        /// <summary>
+        /// Handles pointer moved event to show drop indicator.
+        /// </summary>
+        private void TaskItem_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (_draggingTask == null || sender is not Border border) return;
+
+            var currentPoint = e.GetCurrentPoint(border).Position;
+            var distance = Math.Sqrt(
+                Math.Pow(currentPoint.X - _dragStartPoint.X, 2) +
+                Math.Pow(currentPoint.Y - _dragStartPoint.Y, 2)
+            );
+
+            // Start dragging if moved more than 10 pixels
+            if (!_isDragging && distance > 10)
+            {
+                _isDragging = true;
+                Log.Information($"Started dragging: {_draggingTask.Name}");
+            }
+
+            if (_isDragging)
+            {
+                // Update drop indicator position
+                UpdateDropIndicator(e.GetCurrentPoint(TaskScrollView).Position);
+            }
+        }
+
+        /// <summary>
+        /// Handles pointer released event to complete drop operation.
+        /// </summary>
+        private void TaskItem_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.ReleasePointerCapture(e.Pointer);
+            }
+
+            if (_isDragging && _draggingTask != null)
+            {
+                // Perform drop operation
+                PerformDrop();
+            }
+
+            // Reset state
+            _draggingTask = null;
+            _isDragging = false;
+            DropIndicatorLine.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Updates the drop indicator line position.
+        /// </summary>
+        private void UpdateDropIndicator(Windows.Foundation.Point pointerPosition)
+        {
+            try
+            {
+                if (_viewModel?.Tasks == null || TasksItemsControl?.ItemsPanelRoot is not StackPanel panel)
+                    return;
+
+                DropIndicatorLine.Visibility = Visibility.Visible;
+
+                // Find the closest gap between tasks
+                double closestDistance = double.MaxValue;
+                double bestY = 0;
+                int targetIndex = -1;
+
+                // Check position before first task
+                if (TasksItemsControl.Items.Count > 0 &&
+                    TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(0) is FrameworkElement firstContainer)
+                {
+                    var firstPos = firstContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                    var topGapY = firstPos.Y;
+                    var distance = Math.Abs(pointerPosition.Y - topGapY);
+
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        bestY = topGapY;
+                        targetIndex = 0;
+                    }
+                }
+
+                // Check gaps between consecutive tasks
+                for (int i = 0; i < TasksItemsControl.Items.Count - 1; i++)
+                {
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement currentContainer &&
+                        TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i + 1) is FrameworkElement nextContainer)
+                    {
+                        var currentPos = currentContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        var nextPos = nextContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+
+                        // Gap is between bottom of current and top of next - place line in the middle
+                        var gapY = (currentPos.Y + currentContainer.ActualHeight + nextPos.Y) / 2;
+                        var distance = Math.Abs(pointerPosition.Y - gapY);
+
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            bestY = gapY;
+                            targetIndex = i + 1;
+                        }
+                    }
+                }
+
+                // Check position after last task
+                if (TasksItemsControl.Items.Count > 0)
+                {
+                    var lastIndex = TasksItemsControl.Items.Count - 1;
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(lastIndex) is FrameworkElement lastContainer)
+                    {
+                        var lastPos = lastContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        var bottomGapY = lastPos.Y + lastContainer.ActualHeight;
+                        var distance = Math.Abs(pointerPosition.Y - bottomGapY);
+
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            bestY = bottomGapY;
+                            targetIndex = TasksItemsControl.Items.Count;
+                        }
+                    }
+                }
+
+                // Position the line at the best Y coordinate (convert from ScrollView to DropIndicatorLine's parent Grid)
+                if (targetIndex >= 0 && DropIndicatorLine.Parent is FrameworkElement parent)
+                {
+                    var scrollViewPos = TaskScrollView.TransformToVisual(parent).TransformPoint(new Windows.Foundation.Point(0, bestY));
+                    DropIndicatorLine.Margin = new Thickness(24, scrollViewPos.Y - 1.5, 24, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating drop indicator");
+            }
+        }
+
+        /// <summary>
+        /// Performs the drop operation to reorder tasks.
+        /// </summary>
+        private void PerformDrop()
+        {
+            try
+            {
+                if (_draggingTask == null || _viewModel?.Tasks == null) return;
+
+                // Parse the indicator line's Y position to determine target index
+                var indicatorY = DropIndicatorLine.Margin.Top;
+                int targetIndex = 0;
+
+                for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                {
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                    {
+                        var containerPos = container.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, 0));
+
+                        if (indicatorY < containerPos.Y)
+                        {
+                            targetIndex = i;
+                            break;
+                        }
+                        targetIndex = i + 1;
+                    }
+                }
+
+                int oldIndex = _viewModel.Tasks.IndexOf(_draggingTask);
+
+                if (oldIndex >= 0 && targetIndex != oldIndex && targetIndex != oldIndex + 1)
+                {
+                    _viewModel.Tasks.RemoveAt(oldIndex);
+
+                    // Adjust target index if we removed an item before it
+                    if (targetIndex > oldIndex)
+                        targetIndex--;
+
+                    _viewModel.Tasks.Insert(targetIndex, _draggingTask);
+                    Log.Information($"Moved task from {oldIndex} to {targetIndex}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error performing drop");
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Handles window closing event for cleanup.
