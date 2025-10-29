@@ -107,6 +107,8 @@
                                             FontSize="16"
                                             FontWeight="Normal"
                                             Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
+                                            TextWrapping="Wrap"
+                                            MaxLines="3"
                                             TextTrimming="CharacterEllipsis"
                                             VerticalAlignment="Center" />
 
