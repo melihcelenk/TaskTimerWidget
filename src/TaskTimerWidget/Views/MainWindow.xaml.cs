@@ -204,7 +204,7 @@ namespace TaskTimerWidget
         /// <summary>
         /// Handles the Add Task button click event.
         /// </summary>
-        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        private async void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
             // Toggle new task input card visibility
             if (NewTaskBorder.Visibility == Visibility.Collapsed)
@@ -212,6 +212,10 @@ namespace TaskTimerWidget
                 NewTaskBorder.Visibility = Visibility.Visible;
                 NewTaskTextBox.Text = string.Empty;
                 NewTaskTextBox.Focus(FocusState.Programmatic);
+
+                // Scroll to bottom to show the input card
+                await System.Threading.Tasks.Task.Delay(50);
+                ScrollToBottom();
             }
             else
             {
@@ -484,14 +488,9 @@ namespace TaskTimerWidget
                 }
 
                 // Move back to original parent (the main StackPanel in ScrollView)
-                // Find the ScrollView's StackPanel
-                if (NewTaskBorder.Parent == null)
+                if (NewTaskBorder.Parent == null && TaskScrollView?.Content is StackPanel scrollViewStackPanel)
                 {
-                    var scrollViewStackPanel = (NewTaskBorder.XamlRoot?.Content as Grid)?.Children
-                        .OfType<ScrollView>()
-                        .FirstOrDefault()?.Content as StackPanel;
-
-                    if (scrollViewStackPanel != null && !scrollViewStackPanel.Children.Contains(NewTaskBorder))
+                    if (!scrollViewStackPanel.Children.Contains(NewTaskBorder))
                     {
                         scrollViewStackPanel.Children.Add(NewTaskBorder);
                     }
