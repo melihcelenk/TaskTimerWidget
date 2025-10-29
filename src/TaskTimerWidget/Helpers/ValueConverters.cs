@@ -143,4 +143,27 @@ namespace TaskTimerWidget.Helpers
             throw new NotImplementedException();
         }
     }
+
+    /// <summary>
+    /// Converts boolean to Visibility (true=Visible, false=Collapsed).
+    /// Supports ConverterParameter for inversion (any value inverts the logic).
+    /// </summary>
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, string language)
+        {
+            if (value is bool boolValue)
+            {
+                // If parameter is provided, invert the logic
+                bool shouldBeVisible = parameter != null ? !boolValue : boolValue;
+                return shouldBeVisible ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

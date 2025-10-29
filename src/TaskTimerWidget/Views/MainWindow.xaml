@@ -69,6 +69,7 @@
                                 PointerEntered="TaskItem_PointerEntered"
                                 PointerExited="TaskItem_PointerExited"
                                 Tapped="TaskItem_Tapped"
+                                RightTapped="TaskItem_RightTapped"
                                 Tag="{Binding}">
 
                                 <Grid RowSpacing="8">

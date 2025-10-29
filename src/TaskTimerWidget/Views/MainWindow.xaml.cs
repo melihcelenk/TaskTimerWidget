@@ -17,6 +17,8 @@ namespace TaskTimerWidget
     {
         private MainViewModel? _viewModel;
         private AppWindow? _appWindow;
+        private TaskViewModel? _editingTask;
+        private int _editingTaskIndex = -1;
 
         public MainWindow()
         {
@@ -234,33 +236,6 @@ namespace TaskTimerWidget
             }
         }
 
-        /// <summary>
-        /// Creates a task from the textbox input.
-        /// </summary>
-        private void CreateTaskFromInput()
-        {
-            var taskName = NewTaskTextBox.Text?.Trim();
-            if (!string.IsNullOrWhiteSpace(taskName) && _viewModel != null)
-            {
-                _viewModel.AddTaskCommand.Execute(taskName);
-                NewTaskTextBox.Text = string.Empty;
-                NewTaskBorder.Visibility = Visibility.Collapsed;
-            }
-            else if (string.IsNullOrWhiteSpace(taskName))
-            {
-                CancelTaskInput();
-            }
-        }
-
-        /// <summary>
-        /// Cancels task input and hides the input card.
-        /// </summary>
-        private void CancelTaskInput()
-        {
-            NewTaskTextBox.Text = string.Empty;
-            NewTaskBorder.Visibility = Visibility.Collapsed;
-            AddTaskButton.Focus(FocusState.Programmatic);
-        }
 
         /// <summary>
         /// Handles task item click to select and toggle timer.
@@ -393,6 +368,132 @@ namespace TaskTimerWidget
             var window = this;
             // Window centering can be done by AppWindow if available
             // This is a placeholder for future implementation
+        }
+
+        /// <summary>
+        /// Handles right-click on task item to show rename option.
+        /// </summary>
+        private void TaskItem_RightTapped(object sender, Microsoft.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            if (sender is Border border && border.Tag is TaskViewModel taskVm)
+            {
+                e.Handled = true;
+
+                // Create and show flyout menu
+                var flyout = new MenuFlyout();
+
+                // Rename menu item
+                var renameItem = new MenuFlyoutItem
+                {
+                    Text = "Rename",
+                    Icon = new SymbolIcon { Symbol = Symbol.Rename }
+                };
+
+                renameItem.Click += (s, args) =>
+                {
+                    // Show rename input using the new task card
+                    ShowRenameInput(taskVm);
+                };
+
+                flyout.Items.Add(renameItem);
+
+                // Show at pointer position
+                flyout.ShowAt(border, e.GetPosition(border));
+            }
+        }
+
+        /// <summary>
+        /// Shows rename input card at the position of the task being edited.
+        /// </summary>
+        private void ShowRenameInput(TaskViewModel taskVm)
+        {
+            if (_viewModel?.Tasks == null)
+                return;
+
+            // If already editing a different task, restore it first
+            if (_editingTask != null && _editingTaskIndex >= 0)
+            {
+                _viewModel.Tasks.Insert(_editingTaskIndex, _editingTask);
+            }
+
+            // Find the index of the task being renamed
+            var index = _viewModel.Tasks.IndexOf(taskVm);
+            if (index < 0)
+                return;
+
+            // Store the editing task and its index
+            _editingTask = taskVm;
+            _editingTaskIndex = index;
+
+            // Remove the task from the list temporarily
+            _viewModel.Tasks.RemoveAt(index);
+
+            // Insert the input card (as a placeholder) at the same position
+            // Actually, we'll show the input border instead
+            NewTaskBorder.Visibility = Visibility.Visible;
+            NewTaskTextBox.Text = taskVm.Name;
+            NewTaskTextBox.Focus(FocusState.Programmatic);
+            NewTaskTextBox.SelectAll();
+
+            // Store reference to the task being renamed
+            NewTaskTextBox.Tag = taskVm;
+        }
+
+        /// <summary>
+        /// Creates a task from input or renames if editing existing task.
+        /// </summary>
+        private void CreateTaskFromInput()
+        {
+            var taskName = NewTaskTextBox.Text?.Trim();
+            if (!string.IsNullOrWhiteSpace(taskName) && _viewModel != null)
+            {
+                // Check if we're renaming an existing task
+                if (NewTaskTextBox.Tag is TaskViewModel existingTask)
+                {
+                    existingTask.Name = taskName;
+
+                    // Restore the edited task to its original position
+                    if (_editingTaskIndex >= 0 && _editingTask != null)
+                    {
+                        _viewModel.Tasks.Insert(_editingTaskIndex, _editingTask);
+                        _editingTask = null;
+                        _editingTaskIndex = -1;
+                    }
+
+                    NewTaskTextBox.Tag = null;
+                }
+                else
+                {
+                    // Creating new task
+                    _viewModel.AddTaskCommand.Execute(taskName);
+                }
+
+                NewTaskTextBox.Text = string.Empty;
+                NewTaskBorder.Visibility = Visibility.Collapsed;
+            }
+            else if (string.IsNullOrWhiteSpace(taskName))
+            {
+                CancelTaskInput();
+            }
+        }
+
+        /// <summary>
+        /// Cancels task input and hides the input card.
+        /// </summary>
+        private void CancelTaskInput()
+        {
+            // If editing a task, restore it to its original position
+            if (_editingTask != null && _editingTaskIndex >= 0 && _viewModel?.Tasks != null)
+            {
+                _viewModel.Tasks.Insert(_editingTaskIndex, _editingTask);
+                _editingTask = null;
+                _editingTaskIndex = -1;
+            }
+
+            NewTaskTextBox.Text = string.Empty;
+            NewTaskTextBox.Tag = null; // Clear rename reference
+            NewTaskBorder.Visibility = Visibility.Collapsed;
+            AddTaskButton.Focus(FocusState.Programmatic);
         }
 
         /// <summary>
