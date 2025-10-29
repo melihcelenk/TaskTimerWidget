@@ -786,6 +786,9 @@ namespace TaskTimerWidget
 
                     _viewModel.Tasks.Insert(targetIndex, _draggingTask);
                     Log.Information($"Moved task from {oldIndex} to {targetIndex}");
+
+                    // Save the new order to database
+                    _ = _viewModel.UpdateTaskOrdersAsync();
                 }
             }
             catch (Exception ex)

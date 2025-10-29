@@ -44,6 +44,12 @@ namespace TaskTimerWidget.Models
         public DateTime ModifiedAt { get; set; }
 
         /// <summary>
+        /// Display order (lower values appear first).
+        /// </summary>
+        [JsonProperty("order")]
+        public int Order { get; set; }
+
+        /// <summary>
         /// Constructor with default values.
         /// </summary>
         public TaskItem()
@@ -51,6 +57,7 @@ namespace TaskTimerWidget.Models
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
             ModifiedAt = DateTime.UtcNow;
+            Order = 0;
         }
 
         /// <summary>
