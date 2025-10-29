@@ -96,9 +96,9 @@
                                         <Button
                                             Grid.Column="1"
                                             Content="✕"
-                                            Width="36"
-                                            Height="36"
-                                            FontSize="16"
+                                            Width="28"
+                                            Height="28"
+                                            FontSize="14"
                                             Padding="0"
                                             Background="#D32F2F"
                                             Foreground="White"
@@ -113,7 +113,8 @@
                                         FontSize="18"
                                         FontWeight="Normal"
                                         Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
-                                        FontFamily="Courier New" />
+                                        FontFamily="Adobe Caslon Pro" />
+                                    <!--Adobe Caslon Pro-->
                                 </Grid>
                             </Border>
                         </DataTemplate>
