@@ -97,6 +97,9 @@ namespace TaskTimerWidget.ViewModels
                     Tasks.Add(viewModel);
                 }
 
+                // Initial percentage update
+                UpdateTaskPercentages();
+
                 Log.Information($"Loaded {Tasks.Count} tasks into UI");
             }
             catch (Exception ex)
@@ -121,6 +124,9 @@ namespace TaskTimerWidget.ViewModels
                 var viewModel = new TaskViewModel(newTask, _taskService);
                 viewModel.OnTaskDeleted += (sender, id) => OnTaskDeleted(id);
                 Tasks.Add(viewModel);
+
+                // Update percentages with new task
+                UpdateTaskPercentages();
 
                 // Don't auto-select new task, let user click it
                 Log.Information($"Task added: {newTask.Name}");
@@ -212,7 +218,7 @@ namespace TaskTimerWidget.ViewModels
         }
 
         /// <summary>
-        /// Updates the active task's elapsed time display.
+        /// Updates the active task's elapsed time display and recalculates percentages.
         /// </summary>
         private void UpdateActiveTaskTimer()
         {
@@ -223,6 +229,22 @@ namespace TaskTimerWidget.ViewModels
 
                 // Save the updated model to storage
                 _ = _taskService.UpdateTaskAsync(ActiveTask.GetModel());
+            }
+
+            // Recalculate and update percentages for all tasks
+            UpdateTaskPercentages();
+        }
+
+        /// <summary>
+        /// Calculates total elapsed time and updates percentage for each task.
+        /// </summary>
+        private void UpdateTaskPercentages()
+        {
+            long totalElapsedSeconds = Tasks.Sum(t => t.ElapsedSeconds);
+
+            foreach (var task in Tasks)
+            {
+                task.SetTotalElapsedSeconds(totalElapsedSeconds);
             }
         }
 

@@ -88,7 +88,7 @@
                                             Grid.Column="0"
                                             Text="{Binding Name}"
                                             FontSize="16"
-                                            FontWeight="Bold"
+                                            FontWeight="Normal"
                                             Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
                                             TextTrimming="CharacterEllipsis"
                                             VerticalAlignment="Center" />
@@ -106,15 +106,31 @@
                                             Command="{Binding DeleteCommand}" />
                                     </Grid>
 
-                                    <!-- Timer Display -->
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Text="{Binding FormattedTime}"
-                                        FontSize="18"
-                                        FontWeight="Normal"
-                                        Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
-                                        FontFamily="Adobe Caslon Pro" />
-                                    <!--Adobe Caslon Pro-->
+                                    <!-- Timer Display + Percentage (Bottom Row) -->
+                                    <Grid Grid.Row="1" ColumnSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Timer Display -->
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Text="{Binding FormattedTime}"
+                                            FontSize="18"
+                                            FontWeight="Normal"
+                                            Foreground="{Binding IsActive, Converter={StaticResource RunningTextColorConverter}}"
+                                            FontFamily="ms-appx:///Assets/Fonts/TrebuchetMS.ttf#Trebuchet MS" />
+
+                                        <!-- Percentage Display -->
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Text="{Binding TimePercentage}"
+                                            FontSize="12"
+                                            FontWeight="Normal"
+                                            Foreground="#999999"
+                                            VerticalAlignment="Bottom" />
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </DataTemplate>

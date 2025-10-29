@@ -13,6 +13,7 @@ namespace TaskTimerWidget.ViewModels
         private readonly ITaskService _taskService;
         private TaskItem _model;
         private bool _isActive;
+        private long _totalElapsedSeconds;
 
         private ICommand? _startCommand;
         private ICommand? _pauseCommand;
@@ -72,6 +73,18 @@ namespace TaskTimerWidget.ViewModels
 
         public string FormattedTime => _model.GetFormattedTime();
 
+        public string TimePercentage
+        {
+            get
+            {
+                if (_totalElapsedSeconds == 0)
+                    return "0%";
+
+                var percentage = (ElapsedSeconds * 100) / _totalElapsedSeconds;
+                return $"{percentage}%";
+            }
+        }
+
         public DateTime CreatedAt => _model.CreatedAt;
 
         public ICommand StartCommand =>
@@ -105,6 +118,18 @@ namespace TaskTimerWidget.ViewModels
             _model.ElapsedSeconds = seconds;
             OnPropertyChanged(nameof(ElapsedSeconds));
             OnPropertyChanged(nameof(FormattedTime));
+        }
+
+        /// <summary>
+        /// Sets the total elapsed seconds for all tasks (for percentage calculation).
+        /// </summary>
+        public void SetTotalElapsedSeconds(long totalSeconds)
+        {
+            if (_totalElapsedSeconds != totalSeconds)
+            {
+                _totalElapsedSeconds = totalSeconds;
+                OnPropertyChanged(nameof(TimePercentage));
+            }
         }
 
         /// <summary>
