@@ -67,36 +67,46 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 - ✅ Title bar dragging (SetTitleBar ile native sürükleme)
 - ✅ Auto-scroll to bottom on new task
 
+### Faz 0.7: Order Persistence ✅
+- ✅ Task order'ı JSON'a kaydetme (Order property eklendi)
+- ✅ Drag-drop sonrası UpdateTaskOrdersAsync() çağrılıyor
+- ✅ Uygulama açılışında Tasks.OrderBy(t => t.Order) ile sıralama
+- ✅ Test: Drag-drop persistence çalışıyor
+
+### Faz 0.8: UI Fixes & Polish ✅
+- ✅ Multi-line text wrapping for long task names (max 3 lines)
+- ✅ Fix: Rename sonrası active task rengi korunuyor
+- ✅ Fix: Add new task butonu rename sonrası çalışıyor
+- ✅ Auto-scroll when opening new task card
+
+### Faz 0.9: Basic Testing ✅
+- ✅ Uzun task isimleri test edildi
+- ✅ Create, rename, delete, drag-drop test edildi
+- ✅ Data persistence ve order persistence çalışıyor
+
 ---
 
 ## ⏳ Yapılacak Fazlar (v1.0 Release)
 
-### Faz 0.7: Order Persistence (Tahmini: 1-2 saat) 🔥 KRİTİK
-- [ ] Task order'ı JSON'a kaydetme (Order property ekle)
-- [ ] Drag-drop sonrası UpdateTaskOrdersAsync() çağır
-- [ ] Uygulama açılışında Tasks.OrderBy(t => t.Order) ile sırala
-- [ ] Test: Drag-drop yap, uygulamayı kapat-aç, sıralama korunuyor mu?
+### Faz 1.0: Windows Store Hazırlığı (Tahmini: 3-4 saat) 📦
+- [ ] Application icons (AI/Canva ile 256x256, 150x150, 44x44, 16x16) ⚠️ **Manuel gerekli**
+- [ ] Store logos (1240x600, 2400x1200) ⚠️ **Manuel gerekli**
+- [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan) ⚠️ **Manuel gerekli**
+- [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
+  - [✅] GitHub username güncelle (melihcelenk)
+  - [ ] GitHub Pages'e yükle ve URL al (repo public yapıldıktan sonra)
+- [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
+  - [✅] GitHub username güncelle (melihcelenk)
+  - [✅] Privacy Policy URL'i eklendi (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
+  - [✅] Support URL güncellendi (https://github.com/melihcelenk/TaskTimerWidget)
+- [✅] Package.appxmanifest configuration (Version 1.0.0.0, Publisher: Melih Celenk)
+- [ ] MSIX package creation ve signing ⚠️ **Manuel gerekli** (Signing için sertifika gerekli)
+- [ ] WACK (Windows App Certification Kit) testi ⚠️ **Manuel gerekli**
 
-### Faz 0.8: Basic Testing & Polish (Tahmini: 30-60 dakika) ✅
-- [ ] Uzun task isimleri test (TextTrimming çalışıyor mu?)
-- [ ] 10-15 task ekle, hepsini test (create, rename, delete, drag-drop)
-- [ ] Aç-kapat testi (data persistence)
-- [ ] Memory leak basic check (Task Manager'da 1 saat açık bırak)
-
-### Faz 0.9: Windows Store Hazırlığı (Tahmini: 3-4 saat) 📦
-- [ ] Application icons (AI/Canva ile 256x256, 150x150, 44x44, 16x16)
-- [ ] Store logos (1240x600, 2400x1200)
-- [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan)
-- [ ] Privacy policy (template kullan, GitHub Pages'e koy)
-- [ ] Store listing: Short description (EN & TR)
-- [ ] Package.appxmanifest configuration
-- [ ] MSIX package creation ve signing
-- [ ] WACK (Windows App Certification Kit) testi
-
-### Faz 1.0: Final Release (Tahmini: 1 saat) 🚀
-- [ ] Version number → 1.0.0.0
-- [ ] Release build test
-- [ ] Store submission
+### Faz 1.1: Final Release (Tahmini: 1 saat) 🚀
+- [✅] Version number → 1.0.0.0 (Package.appxmanifest'te ayarlandı)
+- [ ] Release build test ⚠️ **Manuel gerekli**
+- [ ] Store submission ⚠️ **Manuel gerekli** (Microsoft hesabı gerekli)
 - [ ] Wait for Microsoft review (1-3 gün)
 - [ ] Publish! 🎉
 
@@ -156,28 +166,22 @@ git log --oneline | head -5
 
 ## 📊 Current Status
 
-**Current Version**: 0.6
-**Status**: UI Complete - Core Features Done ✅
-**Next Phase**: 0.7 (Order Persistence) 🔥
+**Current Version**: 0.9
+**Status**: Development & Testing Complete ✅
+**Next Phase**: 1.0 (Store Hazırlığı) 📦
 **Last Updated**: October 30, 2025
 
 ### Session Summary (October 30, 2025)
-- ✅ Faz 0.6 tamamlandı (UI Enhancements)
-- ✅ Custom font (Trebuchet MS) embedded
-- ✅ Time percentage display eklendi
-- ✅ Right-click rename functionality
-- ✅ Drag-and-drop task reordering
-- ✅ Green drop indicator line (tasklar arası kılavuz)
-- ✅ Title bar dragging (SetTitleBar)
-- ✅ Auto-scroll on new task
+- ✅ Faz 0.7 tamamlandı (Order Persistence)
+- ✅ Faz 0.8 tamamlandı (UI Fixes & Polish)
+- ✅ Faz 0.9 tamamlandı (Basic Testing)
+  - Tüm core features test edildi ve çalışıyor
 
 ### 🎯 Release Yol Haritası (MVP Approach)
-**Toplam Kalan Süre: 5-7 saat aktif + 1-3 gün Microsoft review**
+**Toplam Kalan Süre: 3-4 saat aktif + 1-3 gün Microsoft review**
 
-- **Faz 0.7**: 1-2 saat → Order Persistence (KRİTİK) 🔥
-- **Faz 0.8**: 30-60 dakika → Basic Testing ✅
-- **Faz 0.9**: 3-4 saat → Store Hazırlığı (icons, screenshots, MSIX) 📦
-- **Faz 1.0**: 1 saat → Final Release & Submission 🚀
+- **Faz 1.0**: 3-4 saat → Store Hazırlığı (icons, screenshots, MSIX, privacy policy, store listing) 📦
+- **Faz 1.1**: 1 saat → Final Release & Submission 🚀
 - **Microsoft Review**: 1-3 gün (pasif bekleme)
 
 ### ❌ Version 2.0'a Ertelenen

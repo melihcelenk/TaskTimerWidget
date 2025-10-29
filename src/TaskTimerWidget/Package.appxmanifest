@@ -8,12 +8,12 @@
 
   <Identity
     Name="TaskTimerWidget"
-    Publisher="CN=TaskTimerWidget"
-    Version="0.1.0.0" />
+    Publisher="CN=Melih Celenk"
+    Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>Task Timer Widget</DisplayName>
-    <PublisherDisplayName>TaskTimerWidget</PublisherDisplayName>
+    <DisplayName>TaskTimerWidget</DisplayName>
+    <PublisherDisplayName>Melih Celenk</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -29,20 +29,24 @@
   <Applications>
     <Application Id="App" StartPage="TaskTimerWidget.MainWindow">
       <uap:VisualElements
-        DisplayName="Task Timer Widget"
+        DisplayName="TaskTimerWidget"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="A lightweight widget for tracking and managing your tasks with built-in timer"
-        BackgroundColor="transparent">
-        <uap:DefaultTile />
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Description="Track your time efficiently with TaskTimerWidget - a minimalist desktop timer for managing multiple tasks. Simple, clean, and always visible."
+        BackgroundColor="#D0D0D0">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#D0D0D0" />
       </uap:VisualElements>
     </Application>
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
-    <Capability Name="internetClientServer" />
-    <uap:Capability Name="documents" />
+    <!-- No internet capabilities needed - app is fully offline -->
   </Capabilities>
 </Package>
