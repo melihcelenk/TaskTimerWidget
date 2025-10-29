@@ -508,7 +508,7 @@ namespace TaskTimerWidget
         /// <summary>
         /// Creates a task from input or renames if editing existing task.
         /// </summary>
-        private void CreateTaskFromInput()
+        private async void CreateTaskFromInput()
         {
             var taskName = NewTaskTextBox.Text?.Trim();
             if (!string.IsNullOrWhiteSpace(taskName) && _viewModel != null)
@@ -534,6 +534,10 @@ namespace TaskTimerWidget
                     // Creating new task
                     _viewModel.AddTaskCommand.Execute(taskName);
                     NewTaskBorder.Visibility = Visibility.Collapsed;
+
+                    // Scroll to bottom after task is added
+                    await System.Threading.Tasks.Task.Delay(100); // Wait for UI to update
+                    ScrollToBottom();
                 }
 
                 NewTaskTextBox.Text = string.Empty;
@@ -541,6 +545,25 @@ namespace TaskTimerWidget
             else if (string.IsNullOrWhiteSpace(taskName))
             {
                 CancelTaskInput();
+            }
+        }
+
+        /// <summary>
+        /// Scrolls the task list to the bottom.
+        /// </summary>
+        private void ScrollToBottom()
+        {
+            try
+            {
+                if (TaskScrollView != null)
+                {
+                    // Scroll to the maximum vertical offset (bottom)
+                    TaskScrollView.ScrollTo(0, TaskScrollView.ScrollableHeight);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error scrolling to bottom");
             }
         }
 

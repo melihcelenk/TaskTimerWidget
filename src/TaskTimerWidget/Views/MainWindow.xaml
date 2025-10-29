@@ -46,7 +46,7 @@
         </Grid>
 
         <!-- Task List -->
-        <ScrollView Grid.Row="1" Padding="12,12,12,12">
+        <ScrollView x:Name="TaskScrollView" Grid.Row="1" Padding="12,12,12,12">
             <StackPanel Spacing="0">
                 <!-- Tasks from ItemsControl -->
                 <ItemsControl
