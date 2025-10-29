@@ -59,6 +59,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
+                            <!-- Task Card -->
                             <Border
                                 Padding="10"
                                 Margin="0,4"

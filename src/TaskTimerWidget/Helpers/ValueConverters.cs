@@ -166,4 +166,5 @@ namespace TaskTimerWidget.Helpers
             throw new NotImplementedException();
         }
     }
+
 }

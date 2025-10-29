@@ -6,6 +6,7 @@ using Windows.Graphics;
 using Windows.UI;
 using TaskTimerWidget.ViewModels;
 using Serilog;
+using System.Linq;
 
 namespace TaskTimerWidget
 {
@@ -414,6 +415,7 @@ namespace TaskTimerWidget
             if (_editingTask != null && _editingTaskIndex >= 0)
             {
                 _viewModel.Tasks.Insert(_editingTaskIndex, _editingTask);
+                HideEditCard();
             }
 
             // Find the index of the task being renamed
@@ -425,18 +427,82 @@ namespace TaskTimerWidget
             _editingTask = taskVm;
             _editingTaskIndex = index;
 
-            // Remove the task from the list temporarily
+            // Remove the task from the list
             _viewModel.Tasks.RemoveAt(index);
 
-            // Insert the input card (as a placeholder) at the same position
-            // Actually, we'll show the input border instead
-            NewTaskBorder.Visibility = Visibility.Visible;
+            // Move input card from StackPanel to ItemsControl's StackPanel at the correct position
+            MoveEditCardToPosition(index);
+
+            // Setup the input
             NewTaskTextBox.Text = taskVm.Name;
             NewTaskTextBox.Focus(FocusState.Programmatic);
             NewTaskTextBox.SelectAll();
 
             // Store reference to the task being renamed
             NewTaskTextBox.Tag = taskVm;
+        }
+
+        /// <summary>
+        /// Moves the edit card to the specified position in the task list.
+        /// </summary>
+        private void MoveEditCardToPosition(int index)
+        {
+            try
+            {
+                // Get the ItemsControl's StackPanel
+                if (TasksItemsControl?.ItemsPanelRoot is StackPanel itemsPanel)
+                {
+                    // Remove NewTaskBorder from its current parent
+                    if (NewTaskBorder.Parent is StackPanel currentParent)
+                    {
+                        currentParent.Children.Remove(NewTaskBorder);
+                    }
+
+                    // Insert at the correct position
+                    NewTaskBorder.Visibility = Visibility.Visible;
+                    itemsPanel.Children.Insert(index, NewTaskBorder);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error moving edit card to position");
+            }
+        }
+
+        /// <summary>
+        /// Hides and removes the edit card from ItemsControl's panel.
+        /// </summary>
+        private void HideEditCard()
+        {
+            try
+            {
+                // Remove from ItemsControl's StackPanel if it's there
+                if (TasksItemsControl?.ItemsPanelRoot is StackPanel itemsPanel &&
+                    itemsPanel.Children.Contains(NewTaskBorder))
+                {
+                    itemsPanel.Children.Remove(NewTaskBorder);
+                }
+
+                // Move back to original parent (the main StackPanel in ScrollView)
+                // Find the ScrollView's StackPanel
+                if (NewTaskBorder.Parent == null)
+                {
+                    var scrollViewStackPanel = (NewTaskBorder.XamlRoot?.Content as Grid)?.Children
+                        .OfType<ScrollView>()
+                        .FirstOrDefault()?.Content as StackPanel;
+
+                    if (scrollViewStackPanel != null && !scrollViewStackPanel.Children.Contains(NewTaskBorder))
+                    {
+                        scrollViewStackPanel.Children.Add(NewTaskBorder);
+                    }
+                }
+
+                NewTaskBorder.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error hiding edit card");
+            }
         }
 
         /// <summary>
@@ -461,15 +527,16 @@ namespace TaskTimerWidget
                     }
 
                     NewTaskTextBox.Tag = null;
+                    HideEditCard();
                 }
                 else
                 {
                     // Creating new task
                     _viewModel.AddTaskCommand.Execute(taskName);
+                    NewTaskBorder.Visibility = Visibility.Collapsed;
                 }
 
                 NewTaskTextBox.Text = string.Empty;
-                NewTaskBorder.Visibility = Visibility.Collapsed;
             }
             else if (string.IsNullOrWhiteSpace(taskName))
             {
@@ -488,11 +555,15 @@ namespace TaskTimerWidget
                 _viewModel.Tasks.Insert(_editingTaskIndex, _editingTask);
                 _editingTask = null;
                 _editingTaskIndex = -1;
+                HideEditCard();
+            }
+            else
+            {
+                NewTaskBorder.Visibility = Visibility.Collapsed;
             }
 
             NewTaskTextBox.Text = string.Empty;
             NewTaskTextBox.Tag = null; // Clear rename reference
-            NewTaskBorder.Visibility = Visibility.Collapsed;
             AddTaskButton.Focus(FocusState.Programmatic);
         }
 

@@ -19,6 +19,8 @@ namespace TaskTimerWidget.ViewModels
         private ICommand? _pauseCommand;
         private ICommand? _deleteCommand;
 
+        public object? Tag { get; set; }
+
         public Guid Id => _model.Id;
 
         public string Name

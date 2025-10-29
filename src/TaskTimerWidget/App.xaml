@@ -13,7 +13,6 @@
 
             <!-- Value Converters -->
             <helpers:RunningTextColorConverter x:Key="RunningTextColorConverter" />
-            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
