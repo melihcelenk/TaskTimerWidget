@@ -21,6 +21,11 @@ namespace TaskTimerWidget
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
 
+        // Drag and drop state
+        private TaskViewModel? _draggingTask;
+        private bool _isDragging = false;
+        private Windows.Foundation.Point _dragStartPoint;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -589,6 +594,172 @@ namespace TaskTimerWidget
             NewTaskTextBox.Tag = null; // Clear rename reference
             AddTaskButton.Focus(FocusState.Programmatic);
         }
+
+        #region Drag and Drop
+
+        /// <summary>
+        /// Handles pointer pressed event to start drag operation.
+        /// </summary>
+        private void TaskItem_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (sender is Border border && border.Tag is TaskViewModel taskVm)
+            {
+                _dragStartPoint = e.GetCurrentPoint(border).Position;
+                _draggingTask = taskVm;
+                border.CapturePointer(e.Pointer);
+            }
+        }
+
+        /// <summary>
+        /// Handles pointer moved event to show drop indicator.
+        /// </summary>
+        private void TaskItem_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (_draggingTask == null || sender is not Border border) return;
+
+            var currentPoint = e.GetCurrentPoint(border).Position;
+            var distance = Math.Sqrt(
+                Math.Pow(currentPoint.X - _dragStartPoint.X, 2) +
+                Math.Pow(currentPoint.Y - _dragStartPoint.Y, 2)
+            );
+
+            // Start dragging if moved more than 10 pixels
+            if (!_isDragging && distance > 10)
+            {
+                _isDragging = true;
+                Log.Information($"Started dragging: {_draggingTask.Name}");
+            }
+
+            if (_isDragging)
+            {
+                // Update drop indicator position
+                UpdateDropIndicator(e.GetCurrentPoint(TaskScrollView).Position);
+            }
+        }
+
+        /// <summary>
+        /// Handles pointer released event to complete drop operation.
+        /// </summary>
+        private void TaskItem_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.ReleasePointerCapture(e.Pointer);
+            }
+
+            if (_isDragging && _draggingTask != null)
+            {
+                // Perform drop operation
+                PerformDrop();
+            }
+
+            // Reset state
+            _draggingTask = null;
+            _isDragging = false;
+            DropIndicatorLine.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Updates the drop indicator line position.
+        /// </summary>
+        private void UpdateDropIndicator(Windows.Foundation.Point pointerPosition)
+        {
+            try
+            {
+                if (_viewModel?.Tasks == null || TasksItemsControl?.ItemsPanelRoot is not StackPanel panel)
+                    return;
+
+                DropIndicatorLine.Visibility = Visibility.Visible;
+
+                // Calculate which task the pointer is over
+                double currentY = 0;
+                int targetIndex = 0;
+
+                for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                {
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                    {
+                        var containerPosition = container.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        currentY = containerPosition.Y + container.ActualHeight / 2;
+
+                        if (pointerPosition.Y < currentY)
+                        {
+                            targetIndex = i;
+                            break;
+                        }
+                        targetIndex = i + 1;
+                    }
+                }
+
+                // Position the indicator line
+                if (targetIndex < TasksItemsControl.Items.Count &&
+                    TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(targetIndex) is FrameworkElement targetContainer)
+                {
+                    var targetPos = targetContainer.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, 0));
+                    DropIndicatorLine.Margin = new Thickness(24, targetPos.Y - 2, 24, 0);
+                }
+                else if (targetIndex > 0 && targetIndex == TasksItemsControl.Items.Count &&
+                         TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(targetIndex - 1) is FrameworkElement lastContainer)
+                {
+                    var lastPos = lastContainer.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, lastContainer.ActualHeight));
+                    DropIndicatorLine.Margin = new Thickness(24, lastPos.Y - 2, 24, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating drop indicator");
+            }
+        }
+
+        /// <summary>
+        /// Performs the drop operation to reorder tasks.
+        /// </summary>
+        private void PerformDrop()
+        {
+            try
+            {
+                if (_draggingTask == null || _viewModel?.Tasks == null) return;
+
+                // Parse the indicator line's Y position to determine target index
+                var indicatorY = DropIndicatorLine.Margin.Top;
+                int targetIndex = 0;
+
+                for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                {
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                    {
+                        var containerPos = container.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, 0));
+
+                        if (indicatorY < containerPos.Y)
+                        {
+                            targetIndex = i;
+                            break;
+                        }
+                        targetIndex = i + 1;
+                    }
+                }
+
+                int oldIndex = _viewModel.Tasks.IndexOf(_draggingTask);
+
+                if (oldIndex >= 0 && targetIndex != oldIndex && targetIndex != oldIndex + 1)
+                {
+                    _viewModel.Tasks.RemoveAt(oldIndex);
+
+                    // Adjust target index if we removed an item before it
+                    if (targetIndex > oldIndex)
+                        targetIndex--;
+
+                    _viewModel.Tasks.Insert(targetIndex, _draggingTask);
+                    Log.Information($"Moved task from {oldIndex} to {targetIndex}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error performing drop");
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Handles window closing event for cleanup.
