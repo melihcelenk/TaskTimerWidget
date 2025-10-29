@@ -90,7 +90,11 @@ namespace TaskTimerWidget.ViewModels
 
                 // Load tasks from service
                 var tasks = await _taskService.GetAllTasksAsync();
-                foreach (var task in tasks)
+
+                // Sort by Order property (ascending), then by CreatedAt for ties
+                var sortedTasks = tasks.OrderBy(t => t.Order).ThenBy(t => t.CreatedAt);
+
+                foreach (var task in sortedTasks)
                 {
                     var viewModel = new TaskViewModel(task, _taskService);
                     viewModel.OnTaskDeleted += (sender, id) => OnTaskDeleted(id);
@@ -121,6 +125,11 @@ namespace TaskTimerWidget.ViewModels
             try
             {
                 var newTask = await _taskService.CreateTaskAsync(taskName);
+
+                // Set order to place at the end
+                newTask.Order = Tasks.Count;
+                await _taskService.UpdateTaskAsync(newTask);
+
                 var viewModel = new TaskViewModel(newTask, _taskService);
                 viewModel.OnTaskDeleted += (sender, id) => OnTaskDeleted(id);
                 Tasks.Add(viewModel);
@@ -245,6 +254,35 @@ namespace TaskTimerWidget.ViewModels
             foreach (var task in Tasks)
             {
                 task.SetTotalElapsedSeconds(totalElapsedSeconds);
+            }
+        }
+
+        /// <summary>
+        /// Updates the order of all tasks in the database based on their current position in the collection.
+        /// Called after drag-and-drop reordering.
+        /// </summary>
+        public async Task UpdateTaskOrdersAsync()
+        {
+            try
+            {
+                for (int i = 0; i < Tasks.Count; i++)
+                {
+                    var task = Tasks[i];
+                    var model = task.GetModel();
+
+                    // Update order property
+                    model.Order = i;
+                    model.ModifiedAt = DateTime.UtcNow;
+
+                    // Save to database
+                    await _taskService.UpdateTaskAsync(model);
+                }
+
+                Log.Information("Task orders updated successfully");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating task orders");
             }
         }
 
