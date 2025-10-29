@@ -671,38 +671,73 @@ namespace TaskTimerWidget
 
                 DropIndicatorLine.Visibility = Visibility.Visible;
 
-                // Calculate which task the pointer is over
-                double currentY = 0;
-                int targetIndex = 0;
+                // Find the closest gap between tasks
+                double closestDistance = double.MaxValue;
+                double bestY = 0;
+                int targetIndex = -1;
 
-                for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                // Check position before first task
+                if (TasksItemsControl.Items.Count > 0 &&
+                    TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(0) is FrameworkElement firstContainer)
                 {
-                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
-                    {
-                        var containerPosition = container.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
-                        currentY = containerPosition.Y + container.ActualHeight / 2;
+                    var firstPos = firstContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                    var topGapY = firstPos.Y;
+                    var distance = Math.Abs(pointerPosition.Y - topGapY);
 
-                        if (pointerPosition.Y < currentY)
-                        {
-                            targetIndex = i;
-                            break;
-                        }
-                        targetIndex = i + 1;
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        bestY = topGapY;
+                        targetIndex = 0;
                     }
                 }
 
-                // Position the indicator line
-                if (targetIndex < TasksItemsControl.Items.Count &&
-                    TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(targetIndex) is FrameworkElement targetContainer)
+                // Check gaps between consecutive tasks
+                for (int i = 0; i < TasksItemsControl.Items.Count - 1; i++)
                 {
-                    var targetPos = targetContainer.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, 0));
-                    DropIndicatorLine.Margin = new Thickness(24, targetPos.Y - 2, 24, 0);
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement currentContainer &&
+                        TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i + 1) is FrameworkElement nextContainer)
+                    {
+                        var currentPos = currentContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        var nextPos = nextContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+
+                        // Gap is between bottom of current and top of next - place line in the middle
+                        var gapY = (currentPos.Y + currentContainer.ActualHeight + nextPos.Y) / 2;
+                        var distance = Math.Abs(pointerPosition.Y - gapY);
+
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            bestY = gapY;
+                            targetIndex = i + 1;
+                        }
+                    }
                 }
-                else if (targetIndex > 0 && targetIndex == TasksItemsControl.Items.Count &&
-                         TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(targetIndex - 1) is FrameworkElement lastContainer)
+
+                // Check position after last task
+                if (TasksItemsControl.Items.Count > 0)
                 {
-                    var lastPos = lastContainer.TransformToVisual(MainGrid).TransformPoint(new Windows.Foundation.Point(0, lastContainer.ActualHeight));
-                    DropIndicatorLine.Margin = new Thickness(24, lastPos.Y - 2, 24, 0);
+                    var lastIndex = TasksItemsControl.Items.Count - 1;
+                    if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(lastIndex) is FrameworkElement lastContainer)
+                    {
+                        var lastPos = lastContainer.TransformToVisual(TaskScrollView).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        var bottomGapY = lastPos.Y + lastContainer.ActualHeight;
+                        var distance = Math.Abs(pointerPosition.Y - bottomGapY);
+
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            bestY = bottomGapY;
+                            targetIndex = TasksItemsControl.Items.Count;
+                        }
+                    }
+                }
+
+                // Position the line at the best Y coordinate (convert from ScrollView to DropIndicatorLine's parent Grid)
+                if (targetIndex >= 0 && DropIndicatorLine.Parent is FrameworkElement parent)
+                {
+                    var scrollViewPos = TaskScrollView.TransformToVisual(parent).TransformPoint(new Windows.Foundation.Point(0, bestY));
+                    DropIndicatorLine.Margin = new Thickness(24, scrollViewPos.Y - 1.5, 24, 0);
                 }
             }
             catch (Exception ex)
