@@ -46,7 +46,19 @@
         </Grid>
 
         <!-- Task List -->
-        <ScrollView x:Name="TaskScrollView" Grid.Row="1" Padding="12,12,12,12">
+        <Grid Grid.Row="1">
+            <!-- Drop Indicator Line (floating, positioned dynamically) -->
+            <Border
+                x:Name="DropIndicatorLine"
+                Height="3"
+                Background="#4CAF50"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Margin="24,0,24,0"
+                Visibility="Collapsed"
+                Canvas.ZIndex="999" />
+
+            <ScrollView x:Name="TaskScrollView" Padding="12,12,12,12">
             <StackPanel Spacing="0">
                 <!-- Tasks from ItemsControl -->
                 <ItemsControl
@@ -71,6 +83,9 @@
                                 PointerExited="TaskItem_PointerExited"
                                 Tapped="TaskItem_Tapped"
                                 RightTapped="TaskItem_RightTapped"
+                                PointerPressed="TaskItem_PointerPressed"
+                                PointerMoved="TaskItem_PointerMoved"
+                                PointerReleased="TaskItem_PointerReleased"
                                 Tag="{Binding}">
 
                                 <Grid RowSpacing="8">
@@ -174,6 +189,7 @@
                 </Border>
             </StackPanel>
         </ScrollView>
+        </Grid>
 
         <!-- Bottom Controls -->
         <StackPanel Grid.Row="2" Spacing="8" Padding="12,12,12,12">
