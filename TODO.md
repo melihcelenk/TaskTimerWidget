@@ -58,55 +58,77 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 - ✅ Uygulama açılışında önceki tasklar yükleniyor
 - ✅ Her değişiklikte otomatik save (create, update, delete)
 
+### Faz 0.6: UI Enhancements ✅
+- ✅ Custom font integration (Trebuchet MS embedded)
+- ✅ Time percentage display (her task'ın toplam içindeki oranı)
+- ✅ Right-click rename functionality
+- ✅ Drag-and-drop task reordering
+- ✅ Drop indicator line (tasklar arası yeşil çizgi kılavuz)
+- ✅ Title bar dragging (SetTitleBar ile native sürükleme)
+- ✅ Auto-scroll to bottom on new task
+
 ---
 
-## ⏳ Yapılacak Fazlar
+## ⏳ Yapılacak Fazlar (v1.0 Release)
 
-### Faz 0.6: Styling & Polish
-- [ ] Smooth animations (task appear/disappear, color transitions)
-- [ ] Windows 11 Mica background (opsiyonel)
-- [ ] Fluent Design System uygulanması
-- [ ] Responsive UI iyileştirmeleri
+### Faz 0.7: Order Persistence (Tahmini: 1-2 saat) 🔥 KRİTİK
+- [ ] Task order'ı JSON'a kaydetme (Order property ekle)
+- [ ] Drag-drop sonrası UpdateTaskOrdersAsync() çağır
+- [ ] Uygulama açılışında Tasks.OrderBy(t => t.Order) ile sırala
+- [ ] Test: Drag-drop yap, uygulamayı kapat-aç, sıralama korunuyor mu?
 
-### Faz 0.7: Error Handling & Logging
-- [ ] Try-catch blocks strategic konumlara
-- [ ] User-friendly error messages
-- [ ] Serilog configuration iyileştirmeleri
-- [ ] Log rotation ve cleanup
+### Faz 0.8: Basic Testing & Polish (Tahmini: 30-60 dakika) ✅
+- [ ] Uzun task isimleri test (TextTrimming çalışıyor mu?)
+- [ ] 10-15 task ekle, hepsini test (create, rename, delete, drag-drop)
+- [ ] Aç-kapat testi (data persistence)
+- [ ] Memory leak basic check (Task Manager'da 1 saat açık bırak)
 
-### Faz 0.8: Testing & QA
-- [ ] Unit tests (TaskService, MainViewModel)
-- [ ] Integration tests (UI interactions)
-- [ ] Performance testing (memory, CPU usage)
-- [ ] Manual QA checklist
-
-### Faz 0.9: Windows Store Hazırlığı
+### Faz 0.9: Windows Store Hazırlığı (Tahmini: 3-4 saat) 📦
+- [ ] Application icons (AI/Canva ile 256x256, 150x150, 44x44, 16x16)
+- [ ] Store logos (1240x600, 2400x1200)
+- [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan)
+- [ ] Privacy policy (template kullan, GitHub Pages'e koy)
+- [ ] Store listing: Short description (EN & TR)
 - [ ] Package.appxmanifest configuration
-- [ ] Application icons ve assets (256x256, 120x120)
-- [ ] Store screenshots (1080x1620)
-- [ ] Privacy policy yazısı
-- [ ] Microsoft Store Certification Kit
+- [ ] MSIX package creation ve signing
+- [ ] WACK (Windows App Certification Kit) testi
 
-### Faz 1.0: Release
-- [ ] Final build ve testing
+### Faz 1.0: Final Release (Tahmini: 1 saat) 🚀
+- [ ] Version number → 1.0.0.0
+- [ ] Release build test
 - [ ] Store submission
-- [ ] Launch announcement
+- [ ] Wait for Microsoft review (1-3 gün)
+- [ ] Publish! 🎉
 
 ---
 
-## 📋 Deferred Items
+## 📋 Version 2.0 Features (Deferred)
 
 ### BUG #7: Window Chrome Removal
 - ⏳ Ertelendi - WinUI 3 title bar yönetimi karmaşık
 - Mevcut durum: Custom title bar kısmen implemented
 
-### Future Features (v1.1+)
+### Polish & Animations (v2.0)
+- [ ] Smooth animations (task appear/disappear, fade in/out)
+- [ ] Color transitions (hover, active state)
+- [ ] Drop indicator animation (smooth slide)
+- [ ] Button hover effects polish
+
+### Error Handling & Logging (v2.0)
+- [ ] Comprehensive try-catch blocks
+- [ ] User-friendly error messages (toast notifications)
+- [ ] Log rotation ve cleanup
+- [ ] Crash recovery (corrupted JSON handling)
+
+### Advanced Features (v2.0+)
 - [ ] Task categories/tags
-- [ ] Statistics dashboard
+- [ ] Statistics dashboard (günlük/haftalık raporlar)
 - [ ] Export to CSV/Excel
 - [ ] Notifications/reminders
 - [ ] Cloud sync (OneDrive)
 - [ ] Localization (TR, EN, etc)
+- [ ] Dark/Light theme toggle
+- [ ] Keyboard shortcuts (Ctrl+N: new task, etc)
 
 ---
 
@@ -134,19 +156,35 @@ git log --oneline | head -5
 
 ## 📊 Current Status
 
-**Current Version**: 0.5
-**Status**: Feature Complete (Basic Functionality)
-**Next Phase**: 0.6 (Styling & Polish)
-**Last Updated**: October 28, 2025
+**Current Version**: 0.6
+**Status**: UI Complete - Core Features Done ✅
+**Next Phase**: 0.7 (Order Persistence) 🔥
+**Last Updated**: October 30, 2025
 
-### Session Summary (Today)
-- ✅ Design Revamp (0.3.1, 0.3.2, 0.3.3) tamamlandı
-- ✅ Timer & State Management (0.4) verified
-- ✅ Data Persistence (0.5) confirmed working
-- ✅ Time format updated to h/m/s style
-- ✅ Toggle behavior fixed (active task pause)
-- ✅ Hover colors corrected
-- ✅ UI layout finalized
+### Session Summary (October 30, 2025)
+- ✅ Faz 0.6 tamamlandı (UI Enhancements)
+- ✅ Custom font (Trebuchet MS) embedded
+- ✅ Time percentage display eklendi
+- ✅ Right-click rename functionality
+- ✅ Drag-and-drop task reordering
+- ✅ Green drop indicator line (tasklar arası kılavuz)
+- ✅ Title bar dragging (SetTitleBar)
+- ✅ Auto-scroll on new task
+
+### 🎯 Release Yol Haritası (MVP Approach)
+**Toplam Kalan Süre: 5-7 saat aktif + 1-3 gün Microsoft review**
+
+- **Faz 0.7**: 1-2 saat → Order Persistence (KRİTİK) 🔥
+- **Faz 0.8**: 30-60 dakika → Basic Testing ✅
+- **Faz 0.9**: 3-4 saat → Store Hazırlığı (icons, screenshots, MSIX) 📦
+- **Faz 1.0**: 1 saat → Final Release & Submission 🚀
+- **Microsoft Review**: 1-3 gün (pasif bekleme)
+
+### ❌ Version 2.0'a Ertelenen
+- Animasyonlar & Polish
+- Comprehensive error handling
+- Extensive testing
+- Unit tests
 
 ---
 
@@ -162,13 +200,36 @@ git log --oneline | head -5
 
 ---
 
-## ✅ Checklist Before Store Submission
+## ✅ Store Submission Checklist
 
+### Technical Requirements
 - [ ] All features tested and working
 - [ ] No memory leaks or performance issues
 - [ ] Error handling complete
-- [ ] Unit tests passing
-- [ ] Icons and assets ready
-- [ ] Privacy policy written
+- [ ] Smooth animations implemented
+- [ ] Task order persistence working
+- [ ] Multi-session data integrity verified
+
+### Assets & Documentation
+- [ ] App icons (256x256, 150x150, 44x44, 16x16) ✨
+- [ ] Store logos (1240x600, 2400x1200) ✨
+- [ ] Screenshots (min 3, 1366x768 veya daha yüksek) 📸
+- [ ] Privacy policy published (URL) 📄
+- [ ] Store description written (EN & TR) 📝
+- [ ] Feature list prepared 📋
+- [ ] What's New / Release notes ✍️
+
+### Store Configuration
 - [ ] Package.appxmanifest configured
-- [ ] Microsoft Store Certification passes
+- [ ] App name finalized
+- [ ] Publisher info correct
+- [ ] Capabilities declared (File system access)
+- [ ] Age rating selected
+- [ ] Category selected (Productivity)
+- [ ] Pricing (Free)
+
+### Certification
+- [ ] MSIX package created and signed 📦
+- [ ] Microsoft Store Certification Kit (WACK) passed ✅
+- [ ] Release build tested on clean machine 🖥️
+- [ ] Final smoke test completed ✔️
