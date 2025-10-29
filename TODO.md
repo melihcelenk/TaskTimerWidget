@@ -114,10 +114,6 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 
 ## 📋 Version 2.0 Features (Deferred)
 
-### BUG #7: Window Chrome Removal
-- ⏳ Ertelendi - WinUI 3 title bar yönetimi karmaşık
-- Mevcut durum: Custom title bar kısmen implemented
-
 ### Polish & Animations (v2.0)
 - [ ] Smooth animations (task appear/disappear, fade in/out)
 - [ ] Color transitions (hover, active state)
