@@ -20,6 +20,8 @@ namespace TaskTimerWidget
         private AppWindow? _appWindow;
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
+        private bool _isCompactMode = false;
+        private const int NORMAL_HEIGHT = 500;
 
         public MainWindow()
         {
@@ -239,6 +241,142 @@ namespace TaskTimerWidget
             {
                 presenter.Minimize();
                 Log.Information("Window minimized to taskbar");
+            }
+        }
+
+        /// <summary>
+        /// Handles the Compact Mode toggle button click event.
+        /// </summary>
+        private async void CompactModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isCompactMode = !_isCompactMode;
+
+            if (_isCompactMode)
+            {
+                // Change Grid row height to Auto (content-based)
+                if (MainGrid?.RowDefinitions.Count > 1)
+                {
+                    MainGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
+                }
+
+                // Reduce padding in compact mode
+                if (TaskScrollView != null)
+                {
+                    TaskScrollView.Padding = new Thickness(12, 4, 12, 4);
+                    TaskScrollView.VerticalAlignment = VerticalAlignment.Top;
+                }
+
+                // Hide UI elements first
+                if (NewTaskBorder != null) NewTaskBorder.Visibility = Visibility.Collapsed;
+                if (AddTaskButton != null) AddTaskButton.Visibility = Visibility.Collapsed;
+                if (EmptyStatePanel != null) EmptyStatePanel.Visibility = Visibility.Collapsed;
+                if (StatusBar != null) StatusBar.Visibility = Visibility.Collapsed;
+
+                // Hide non-active tasks and find active task container
+                FrameworkElement? activeContainer = null;
+                if (TasksItemsControl != null)
+                {
+                    for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                    {
+                        if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                        {
+                            var border = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(container, 0) as Border;
+                            if (border?.Tag is TaskViewModel taskVm)
+                            {
+                                if (taskVm.IsActive)
+                                {
+                                    container.Visibility = Visibility.Visible;
+                                    activeContainer = container;
+                                }
+                                else
+                                {
+                                    container.Visibility = Visibility.Collapsed;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Wait for layout to update
+                await System.Threading.Tasks.Task.Delay(100);
+
+                // DEBUG: Measure all components
+                double titleBarHeight = TitleBarGrid?.ActualHeight ?? 32;
+                double scrollViewHeight = TaskScrollView?.ActualHeight ?? 0;
+                double scrollViewContentHeight = 0;
+
+                // Get ScrollView content (StackPanel)
+                if (TaskScrollView?.Content is StackPanel stackPanel)
+                {
+                    scrollViewContentHeight = stackPanel.ActualHeight;
+                }
+
+                // Get task border with margin
+                double taskBorderHeight = 0;
+                double taskMargin = 0;
+                if (activeContainer != null && Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChildrenCount(activeContainer) > 0)
+                {
+                    var border = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(activeContainer, 0) as Border;
+                    if (border != null)
+                    {
+                        taskBorderHeight = border.ActualHeight;
+                        taskMargin = border.Margin.Top + border.Margin.Bottom;
+                    }
+                }
+
+                // ScrollView padding (4 top + 4 bottom)
+                double scrollViewPaddingVertical = 8;
+
+                // Calculate using actual content
+                int compactHeight = (int)Math.Ceiling(titleBarHeight + scrollViewPaddingVertical + taskBorderHeight + taskMargin);
+
+                Log.Information($"DEBUG Heights - TitleBar: {titleBarHeight}, ScrollView: {scrollViewHeight}, " +
+                    $"ScrollContent: {scrollViewContentHeight}, TaskBorder: {taskBorderHeight}, " +
+                    $"TaskMargin: {taskMargin}, Calculated: {compactHeight}");
+
+                // Switch to compact mode with calculated height
+                _appWindow?.Resize(new SizeInt32(220, compactHeight));
+
+                CompactModeButton.Content = "◱";
+                Log.Information($"Switched to compact mode (height: {compactHeight}px)");
+            }
+            else
+            {
+                // Restore Grid row height to fill (*)
+                if (MainGrid?.RowDefinitions.Count > 1)
+                {
+                    MainGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+                }
+
+                // Switch back to normal mode
+                _appWindow?.Resize(new SizeInt32(220, NORMAL_HEIGHT));
+
+                // Restore normal padding and alignment
+                if (TaskScrollView != null)
+                {
+                    TaskScrollView.Padding = new Thickness(12, 12, 12, 12);
+                    TaskScrollView.VerticalAlignment = VerticalAlignment.Stretch;
+                }
+
+                // Show all tasks
+                if (TasksItemsControl != null)
+                {
+                    for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                    {
+                        if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                        {
+                            container.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+
+                // Show UI elements
+                if (AddTaskButton != null) AddTaskButton.Visibility = Visibility.Visible;
+                if (StatusBar != null) StatusBar.Visibility = Visibility.Visible;
+                UpdateEmptyState();
+
+                CompactModeButton.Content = "◧";
+                Log.Information("Switched to normal mode");
             }
         }
 

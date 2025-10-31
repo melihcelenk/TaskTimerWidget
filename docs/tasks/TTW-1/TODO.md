@@ -124,6 +124,7 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 ### Widget Behavior (v1.0 & v2.0)
 - [✅] Always-on-top window (v1.0)
 - [✅] Minimize button in titlebar (v1.0 - taskbar'a minimize eder)
+- [✅] Compact mode toggle (v1.0 - sadece aktif task gösterir, 220x120px)
 - [ ] System tray icon (H.NotifyIcon.WinUI kompleks - v2.0'a ertelendi)
 - [ ] Minimize to tray (system tray ile birlikte - v2.0)
 - [ ] Windows startup (MSIX için karmaşık - v2.0'a ertelendi)
