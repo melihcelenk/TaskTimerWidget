@@ -90,6 +90,7 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 
 ### Faz 1.0: Windows Store Hazırlığı (Tahmini: 3-4 saat) 📦
 - [ ] Application icons (AI/Canva ile 256x256, 150x150, 44x44, 16x16) ⚠️ **Manuel gerekli**
+- https://www.aixploria.com
 - [ ] Store logos (1240x600, 2400x1200) ⚠️ **Manuel gerekli**
 - [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan) ⚠️ **Manuel gerekli**
 - [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
