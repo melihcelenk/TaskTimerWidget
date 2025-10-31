@@ -201,6 +201,15 @@ namespace TaskTimerWidget
                         _isTitleBarTransitioning = false;
 
                         Log.Information($"Compact mode - TitleBar shown, window height increased by {TITLEBAR_HEIGHT}px");
+
+                        // After transition, check if state changed and re-evaluate
+                        // This handles the case where mouse left quickly during transition
+                        bool shouldStillShow = _isWindowActive || _isMouseOver;
+                        if (!shouldStillShow && TitleBarGrid.Visibility == Visibility.Visible)
+                        {
+                            Log.Information("State changed during show transition, hiding TitleBar");
+                            UpdateTitleBarVisibility();
+                        }
                     }
                     else if (!shouldShow && wasTitleBarVisible)
                     {
@@ -227,6 +236,15 @@ namespace TaskTimerWidget
                         _isTitleBarTransitioning = false;
 
                         Log.Information($"Compact mode - TitleBar hidden, window height decreased by {TITLEBAR_HEIGHT}px");
+
+                        // After transition, check if state changed and re-evaluate
+                        // This handles the case where mouse entered quickly during transition
+                        bool shouldStillHide = !_isWindowActive && !_isMouseOver;
+                        if (!shouldStillHide && TitleBarGrid.Visibility == Visibility.Collapsed)
+                        {
+                            Log.Information("State changed during hide transition, showing TitleBar");
+                            UpdateTitleBarVisibility();
+                        }
                     }
 
                     Log.Information($"Compact mode - Title bar visibility: {shouldShow}, isActive={_isWindowActive}, isMouseOver={_isMouseOver}");
