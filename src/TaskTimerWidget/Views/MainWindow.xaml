@@ -7,7 +7,9 @@
     Closed="Window_Closed"
     Activated="Window_Activated">
 
-    <Grid RowSpacing="0" Background="#D0D0D0" x:Name="MainGrid">
+    <Grid RowSpacing="0" Background="#D0D0D0" x:Name="MainGrid"
+          PointerEntered="MainGrid_PointerEntered"
+          PointerExited="MainGrid_PointerExited">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

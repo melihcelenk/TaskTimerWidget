@@ -21,7 +21,10 @@ namespace TaskTimerWidget
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
         private bool _isCompactMode = false;
+        private bool _isMouseOver = false;
+        private bool _isWindowActive = false;
         private const int NORMAL_HEIGHT = 500;
+        private const int TITLEBAR_HEIGHT = 32;
 
         public MainWindow()
         {
@@ -126,8 +129,8 @@ namespace TaskTimerWidget
         {
             try
             {
-                bool isActive = args.WindowActivationState != WindowActivationState.Deactivated;
-                UpdateTitleBar(isActive);
+                _isWindowActive = args.WindowActivationState != WindowActivationState.Deactivated;
+                UpdateTitleBarVisibility();
             }
             catch (Exception ex)
             {
@@ -136,35 +139,95 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
-        /// Update title bar visibility based on window activation state
+        /// Handles mouse entering the main grid
         /// </summary>
-        private async void UpdateTitleBar(bool isActive)
+        private void MainGrid_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _isMouseOver = true;
+            UpdateTitleBarVisibility();
+        }
+
+        /// <summary>
+        /// Handles mouse leaving the main grid
+        /// </summary>
+        private void MainGrid_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _isMouseOver = false;
+            UpdateTitleBarVisibility();
+        }
+
+        /// <summary>
+        /// Update title bar visibility based on window activation state and mouse position
+        /// In compact mode: TitleBar is GONE (Height=0) unless window is active OR mouse is over
+        /// In normal mode: TitleBar uses opacity (visible when active, invisible when inactive)
+        /// </summary>
+        private async void UpdateTitleBarVisibility()
         {
             try
             {
-                // Show/hide title bar based on window activation
-                // Use Opacity to keep space reserved but invisible
-                // Use IsHitTestVisible to disable interactions when inactive
-                TitleBarGrid.Opacity = isActive ? 1.0 : 0.0;
-
-                // If deactivating, immediately disable hit test
-                if (!isActive)
+                if (_isCompactMode)
                 {
-                    TitleBarGrid.IsHitTestVisible = false;
+                    // Compact mode: Show TitleBar only if window is active OR mouse is over
+                    bool shouldShow = _isWindowActive || _isMouseOver;
+                    bool wasTitleBarVisible = TitleBarGrid.Visibility == Visibility.Visible;
+
+                    if (shouldShow && !wasTitleBarVisible)
+                    {
+                        // Show TitleBar (restore height and visibility)
+                        TitleBarGrid.Height = TITLEBAR_HEIGHT;
+                        TitleBarGrid.Visibility = Visibility.Visible;
+                        TitleBarGrid.Opacity = 1.0;
+                        TitleBarGrid.IsHitTestVisible = true;
+
+                        // Increase window height by TITLEBAR_HEIGHT
+                        if (_appWindow != null)
+                        {
+                            var currentSize = _appWindow.Size;
+                            _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height + TITLEBAR_HEIGHT));
+                        }
+
+                        Log.Information($"Compact mode - TitleBar shown, window height increased by {TITLEBAR_HEIGHT}px");
+                    }
+                    else if (!shouldShow && wasTitleBarVisible)
+                    {
+                        // Hide TitleBar (GONE - no space taken)
+                        TitleBarGrid.Height = 0;
+                        TitleBarGrid.Visibility = Visibility.Collapsed;
+                        TitleBarGrid.IsHitTestVisible = false;
+
+                        // Decrease window height by TITLEBAR_HEIGHT
+                        if (_appWindow != null)
+                        {
+                            var currentSize = _appWindow.Size;
+                            _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height - TITLEBAR_HEIGHT));
+                        }
+
+                        Log.Information($"Compact mode - TitleBar hidden, window height decreased by {TITLEBAR_HEIGHT}px");
+                    }
+
+                    Log.Information($"Compact mode - Title bar visibility: {shouldShow}, isActive={_isWindowActive}, isMouseOver={_isMouseOver}");
                 }
                 else
                 {
-                    // If activating, add a small delay before enabling hit test
-                    // This prevents the user's click from immediately hitting the button
-                    await System.Threading.Tasks.Task.Delay(100);
-                    TitleBarGrid.IsHitTestVisible = true;
-                }
+                    // Normal mode: Use opacity (keep space reserved)
+                    TitleBarGrid.Opacity = _isWindowActive ? 1.0 : 0.0;
 
-                Log.Information($"Title bar updated: isActive={isActive}");
+                    if (!_isWindowActive)
+                    {
+                        TitleBarGrid.IsHitTestVisible = false;
+                    }
+                    else
+                    {
+                        await System.Threading.Tasks.Task.Delay(100);
+                        TitleBarGrid.IsHitTestVisible = true;
+                    }
+
+                    Log.Information($"Normal mode - Title bar opacity: {TitleBarGrid.Opacity}, isActive={_isWindowActive}");
+                }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error updating title bar");
+                Log.Error(ex, "Error updating title bar visibility");
             }
         }
 
@@ -253,16 +316,20 @@ namespace TaskTimerWidget
 
             if (_isCompactMode)
             {
+                // Initial TitleBar state (will be controlled by UpdateTitleBarVisibility)
+                // Start with it hidden (GONE)
+                UpdateTitleBarVisibility();
+
                 // Change Grid row height to Auto (content-based)
                 if (MainGrid?.RowDefinitions.Count > 1)
                 {
                     MainGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
                 }
 
-                // Reduce padding in compact mode
+                // Reduce padding in compact mode (but keep small bottom padding)
                 if (TaskScrollView != null)
                 {
-                    TaskScrollView.Padding = new Thickness(12, 4, 12, 4);
+                    TaskScrollView.Padding = new Thickness(12, 4, 12, 8);
                     TaskScrollView.VerticalAlignment = VerticalAlignment.Top;
                 }
 
@@ -300,16 +367,8 @@ namespace TaskTimerWidget
                 // Wait for layout to update
                 await System.Threading.Tasks.Task.Delay(100);
 
-                // DEBUG: Measure all components
-                double titleBarHeight = TitleBarGrid?.ActualHeight ?? 32;
-                double scrollViewHeight = TaskScrollView?.ActualHeight ?? 0;
-                double scrollViewContentHeight = 0;
-
-                // Get ScrollView content (StackPanel)
-                if (TaskScrollView?.Content is StackPanel stackPanel)
-                {
-                    scrollViewContentHeight = stackPanel.ActualHeight;
-                }
+                // Get current TitleBar height (might be 0 if hidden, or 32 if shown)
+                double titleBarHeight = TitleBarGrid?.ActualHeight ?? 0;
 
                 // Get task border with margin
                 double taskBorderHeight = 0;
@@ -324,14 +383,13 @@ namespace TaskTimerWidget
                     }
                 }
 
-                // ScrollView padding (4 top + 4 bottom)
-                double scrollViewPaddingVertical = 8;
+                // ScrollView padding (4 top + 8 bottom)
+                double scrollViewPaddingVertical = 12;
 
-                // Calculate using actual content
+                // Calculate using actual content (TitleBar may or may not be visible)
                 int compactHeight = (int)Math.Ceiling(titleBarHeight + scrollViewPaddingVertical + taskBorderHeight + taskMargin);
 
-                Log.Information($"DEBUG Heights - TitleBar: {titleBarHeight}, ScrollView: {scrollViewHeight}, " +
-                    $"ScrollContent: {scrollViewContentHeight}, TaskBorder: {taskBorderHeight}, " +
+                Log.Information($"Compact mode - TitleBar: {titleBarHeight}, TaskBorder: {taskBorderHeight}, " +
                     $"TaskMargin: {taskMargin}, Calculated: {compactHeight}");
 
                 // Switch to compact mode with calculated height
@@ -342,6 +400,10 @@ namespace TaskTimerWidget
             }
             else
             {
+                // Restore normal mode
+                // Restore TitleBar (will be controlled by UpdateTitleBarVisibility)
+                UpdateTitleBarVisibility();
+
                 // Restore Grid row height to fill (*)
                 if (MainGrid?.RowDefinitions.Count > 1)
                 {
