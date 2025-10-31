@@ -19,6 +19,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <!-- Title (Left, Hidden by Default) -->
@@ -30,9 +31,30 @@
                 VerticalAlignment="Center"
                 x:Name="TitleTextBlock" />
 
-            <!-- Close Button (Right, Minimal Padding) -->
+            <!-- Minimize Button -->
             <Button
                 Grid.Column="1"
+                x:Name="MinimizeButton"
+                Content="−"
+                Width="24"
+                Height="24"
+                Margin="0,0,4,0"
+                FontSize="14"
+                Padding="0"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="MinimizeButton_Click"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <Button.Resources>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#C8C8C8"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#A8A8A8"/>
+                </Button.Resources>
+            </Button>
+
+            <!-- Close Button (Right, Minimal Padding) -->
+            <Button
+                Grid.Column="2"
                 x:Name="CloseButton"
                 Content="✕"
                 Width="24"
