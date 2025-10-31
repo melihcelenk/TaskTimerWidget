@@ -121,11 +121,12 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 
 ## 📋 Version 2.0 Features (Deferred)
 
-### Widget Behavior (v2.0)
-- [✅] Always-on-top window (implemented in v1.0)
-- [ ] System tray icon (H.NotifyIcon.WinUI kompleks - ertelendi)
-- [ ] Minimize to tray (system tray ile birlikte)
-- [ ] Windows startup (MSIX için karmaşık - ertelendi)
+### Widget Behavior (v1.0 & v2.0)
+- [✅] Always-on-top window (v1.0)
+- [✅] Minimize button in titlebar (v1.0 - taskbar'a minimize eder)
+- [ ] System tray icon (H.NotifyIcon.WinUI kompleks - v2.0'a ertelendi)
+- [ ] Minimize to tray (system tray ile birlikte - v2.0)
+- [ ] Windows startup (MSIX için karmaşık - v2.0'a ertelendi)
 
 ### Polish & Animations (v2.0)
 - [ ] Smooth animations (task appear/disappear, fade in/out)

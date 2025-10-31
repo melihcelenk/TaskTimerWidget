@@ -229,6 +229,20 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
+        /// Handles the Minimize button click event.
+        /// </summary>
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Minimize window to taskbar
+            var presenter = _appWindow?.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+            if (presenter != null)
+            {
+                presenter.Minimize();
+                Log.Information("Window minimized to taskbar");
+            }
+        }
+
+        /// <summary>
         /// Handles the Add Task button click event.
         /// </summary>
         private async void AddTaskButton_Click(object sender, RoutedEventArgs e)
