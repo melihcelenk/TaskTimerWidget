@@ -23,6 +23,7 @@ namespace TaskTimerWidget
         private bool _isCompactMode = false;
         private bool _isMouseOver = false;
         private bool _isWindowActive = false;
+        private bool _isTitleBarTransitioning = false;
         private const int NORMAL_HEIGHT = 500;
         private const int TITLEBAR_HEIGHT = 32;
 
@@ -167,12 +168,21 @@ namespace TaskTimerWidget
             {
                 if (_isCompactMode)
                 {
+                    // Prevent concurrent transitions that could cause size calculation errors
+                    if (_isTitleBarTransitioning)
+                    {
+                        Log.Information("TitleBar transition already in progress, skipping");
+                        return;
+                    }
+
                     // Compact mode: Show TitleBar only if window is active OR mouse is over
                     bool shouldShow = _isWindowActive || _isMouseOver;
                     bool wasTitleBarVisible = TitleBarGrid.Visibility == Visibility.Visible;
 
                     if (shouldShow && !wasTitleBarVisible)
                     {
+                        _isTitleBarTransitioning = true;
+
                         // Show TitleBar (restore height and visibility)
                         TitleBarGrid.Height = TITLEBAR_HEIGHT;
                         TitleBarGrid.Visibility = Visibility.Visible;
@@ -186,10 +196,16 @@ namespace TaskTimerWidget
                             _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height + TITLEBAR_HEIGHT));
                         }
 
+                        // Small delay to complete transition
+                        await System.Threading.Tasks.Task.Delay(50);
+                        _isTitleBarTransitioning = false;
+
                         Log.Information($"Compact mode - TitleBar shown, window height increased by {TITLEBAR_HEIGHT}px");
                     }
                     else if (!shouldShow && wasTitleBarVisible)
                     {
+                        _isTitleBarTransitioning = true;
+
                         // First: Decrease window height by TITLEBAR_HEIGHT
                         // This ensures the task remains fully visible during the transition
                         if (_appWindow != null)
@@ -205,6 +221,10 @@ namespace TaskTimerWidget
                         TitleBarGrid.Height = 0;
                         TitleBarGrid.Visibility = Visibility.Collapsed;
                         TitleBarGrid.IsHitTestVisible = false;
+
+                        // Additional delay to complete transition
+                        await System.Threading.Tasks.Task.Delay(40);
+                        _isTitleBarTransitioning = false;
 
                         Log.Information($"Compact mode - TitleBar hidden, window height decreased by {TITLEBAR_HEIGHT}px");
                     }
