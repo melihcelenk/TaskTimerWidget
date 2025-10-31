@@ -20,6 +20,12 @@ namespace TaskTimerWidget
         private AppWindow? _appWindow;
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
+        private bool _isCompactMode = false;
+        private bool _isMouseOver = false;
+        private bool _isWindowActive = false;
+        private bool _isTitleBarTransitioning = false;
+        private const int NORMAL_HEIGHT = 500;
+        private const int TITLEBAR_HEIGHT = 32;
 
         public MainWindow()
         {
@@ -124,8 +130,8 @@ namespace TaskTimerWidget
         {
             try
             {
-                bool isActive = args.WindowActivationState != WindowActivationState.Deactivated;
-                UpdateTitleBar(isActive);
+                _isWindowActive = args.WindowActivationState != WindowActivationState.Deactivated;
+                UpdateTitleBarVisibility();
             }
             catch (Exception ex)
             {
@@ -134,35 +140,136 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
-        /// Update title bar visibility based on window activation state
+        /// Handles mouse entering the main grid
         /// </summary>
-        private async void UpdateTitleBar(bool isActive)
+        private void MainGrid_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _isMouseOver = true;
+            UpdateTitleBarVisibility();
+        }
+
+        /// <summary>
+        /// Handles mouse leaving the main grid
+        /// </summary>
+        private void MainGrid_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _isMouseOver = false;
+            UpdateTitleBarVisibility();
+        }
+
+        /// <summary>
+        /// Update title bar visibility based on window activation state and mouse position
+        /// In compact mode: TitleBar is GONE (Height=0) unless window is active OR mouse is over
+        /// In normal mode: TitleBar uses opacity (visible when active, invisible when inactive)
+        /// </summary>
+        private async void UpdateTitleBarVisibility()
         {
             try
             {
-                // Show/hide title bar based on window activation
-                // Use Opacity to keep space reserved but invisible
-                // Use IsHitTestVisible to disable interactions when inactive
-                TitleBarGrid.Opacity = isActive ? 1.0 : 0.0;
-
-                // If deactivating, immediately disable hit test
-                if (!isActive)
+                if (_isCompactMode)
                 {
-                    TitleBarGrid.IsHitTestVisible = false;
+                    // Prevent concurrent transitions that could cause size calculation errors
+                    if (_isTitleBarTransitioning)
+                    {
+                        Log.Information("TitleBar transition already in progress, skipping");
+                        return;
+                    }
+
+                    // Compact mode: Show TitleBar only if window is active OR mouse is over
+                    bool shouldShow = _isWindowActive || _isMouseOver;
+                    bool wasTitleBarVisible = TitleBarGrid.Visibility == Visibility.Visible;
+
+                    if (shouldShow && !wasTitleBarVisible)
+                    {
+                        _isTitleBarTransitioning = true;
+
+                        // Show TitleBar (restore height and visibility)
+                        TitleBarGrid.Height = TITLEBAR_HEIGHT;
+                        TitleBarGrid.Visibility = Visibility.Visible;
+                        TitleBarGrid.Opacity = 1.0;
+                        TitleBarGrid.IsHitTestVisible = true;
+
+                        // Increase window height by TITLEBAR_HEIGHT
+                        if (_appWindow != null)
+                        {
+                            var currentSize = _appWindow.Size;
+                            _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height + TITLEBAR_HEIGHT));
+                        }
+
+                        // Small delay to complete transition
+                        await System.Threading.Tasks.Task.Delay(50);
+                        _isTitleBarTransitioning = false;
+
+                        Log.Information($"Compact mode - TitleBar shown, window height increased by {TITLEBAR_HEIGHT}px");
+
+                        // After transition, check if state changed and re-evaluate
+                        // This handles the case where mouse left quickly during transition
+                        bool shouldStillShow = _isWindowActive || _isMouseOver;
+                        if (!shouldStillShow && TitleBarGrid.Visibility == Visibility.Visible)
+                        {
+                            Log.Information("State changed during show transition, hiding TitleBar");
+                            UpdateTitleBarVisibility();
+                        }
+                    }
+                    else if (!shouldShow && wasTitleBarVisible)
+                    {
+                        _isTitleBarTransitioning = true;
+
+                        // First: Decrease window height by TITLEBAR_HEIGHT
+                        // This ensures the task remains fully visible during the transition
+                        if (_appWindow != null)
+                        {
+                            var currentSize = _appWindow.Size;
+                            _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height - TITLEBAR_HEIGHT));
+                        }
+
+                        // Then: Hide TitleBar (GONE - no space taken)
+                        // Small delay to ensure resize happens first
+                        await System.Threading.Tasks.Task.Delay(10);
+
+                        TitleBarGrid.Height = 0;
+                        TitleBarGrid.Visibility = Visibility.Collapsed;
+                        TitleBarGrid.IsHitTestVisible = false;
+
+                        // Additional delay to complete transition
+                        await System.Threading.Tasks.Task.Delay(40);
+                        _isTitleBarTransitioning = false;
+
+                        Log.Information($"Compact mode - TitleBar hidden, window height decreased by {TITLEBAR_HEIGHT}px");
+
+                        // After transition, check if state changed and re-evaluate
+                        // This handles the case where mouse entered quickly during transition
+                        bool shouldStillHide = !_isWindowActive && !_isMouseOver;
+                        if (!shouldStillHide && TitleBarGrid.Visibility == Visibility.Collapsed)
+                        {
+                            Log.Information("State changed during hide transition, showing TitleBar");
+                            UpdateTitleBarVisibility();
+                        }
+                    }
+
+                    Log.Information($"Compact mode - Title bar visibility: {shouldShow}, isActive={_isWindowActive}, isMouseOver={_isMouseOver}");
                 }
                 else
                 {
-                    // If activating, add a small delay before enabling hit test
-                    // This prevents the user's click from immediately hitting the button
-                    await System.Threading.Tasks.Task.Delay(100);
-                    TitleBarGrid.IsHitTestVisible = true;
-                }
+                    // Normal mode: Use opacity (keep space reserved)
+                    TitleBarGrid.Opacity = _isWindowActive ? 1.0 : 0.0;
 
-                Log.Information($"Title bar updated: isActive={isActive}");
+                    if (!_isWindowActive)
+                    {
+                        TitleBarGrid.IsHitTestVisible = false;
+                    }
+                    else
+                    {
+                        await System.Threading.Tasks.Task.Delay(100);
+                        TitleBarGrid.IsHitTestVisible = true;
+                    }
+
+                    Log.Information($"Normal mode - Title bar opacity: {TitleBarGrid.Opacity}, isActive={_isWindowActive}");
+                }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error updating title bar");
+                Log.Error(ex, "Error updating title bar visibility");
             }
         }
 
@@ -239,6 +346,141 @@ namespace TaskTimerWidget
             {
                 presenter.Minimize();
                 Log.Information("Window minimized to taskbar");
+            }
+        }
+
+        /// <summary>
+        /// Handles the Compact Mode toggle button click event.
+        /// </summary>
+        private async void CompactModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isCompactMode = !_isCompactMode;
+
+            if (_isCompactMode)
+            {
+                // Initial TitleBar state (will be controlled by UpdateTitleBarVisibility)
+                // Start with it hidden (GONE)
+                UpdateTitleBarVisibility();
+
+                // Change Grid row height to Auto (content-based)
+                if (MainGrid?.RowDefinitions.Count > 1)
+                {
+                    MainGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
+                }
+
+                // Reduce padding in compact mode (but keep small bottom padding)
+                if (TaskScrollView != null)
+                {
+                    TaskScrollView.Padding = new Thickness(12, 4, 12, 8);
+                    TaskScrollView.VerticalAlignment = VerticalAlignment.Top;
+                }
+
+                // Hide UI elements first
+                if (NewTaskBorder != null) NewTaskBorder.Visibility = Visibility.Collapsed;
+                if (AddTaskButton != null) AddTaskButton.Visibility = Visibility.Collapsed;
+                if (EmptyStatePanel != null) EmptyStatePanel.Visibility = Visibility.Collapsed;
+                if (StatusBar != null) StatusBar.Visibility = Visibility.Collapsed;
+
+                // Hide non-active tasks and find active task container
+                FrameworkElement? activeContainer = null;
+                if (TasksItemsControl != null)
+                {
+                    for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                    {
+                        if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                        {
+                            var border = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(container, 0) as Border;
+                            if (border?.Tag is TaskViewModel taskVm)
+                            {
+                                if (taskVm.IsActive)
+                                {
+                                    container.Visibility = Visibility.Visible;
+                                    activeContainer = container;
+                                }
+                                else
+                                {
+                                    container.Visibility = Visibility.Collapsed;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Wait for layout to update
+                await System.Threading.Tasks.Task.Delay(100);
+
+                // Get current TitleBar height (might be 0 if hidden, or 32 if shown)
+                double titleBarHeight = TitleBarGrid?.ActualHeight ?? 0;
+
+                // Get task border with margin
+                double taskBorderHeight = 0;
+                double taskMargin = 0;
+                if (activeContainer != null && Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChildrenCount(activeContainer) > 0)
+                {
+                    var border = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(activeContainer, 0) as Border;
+                    if (border != null)
+                    {
+                        taskBorderHeight = border.ActualHeight;
+                        taskMargin = border.Margin.Top + border.Margin.Bottom;
+                    }
+                }
+
+                // ScrollView padding (4 top + 8 bottom)
+                double scrollViewPaddingVertical = 12;
+
+                // Calculate using actual content (TitleBar may or may not be visible)
+                int compactHeight = (int)Math.Ceiling(titleBarHeight + scrollViewPaddingVertical + taskBorderHeight + taskMargin);
+
+                Log.Information($"Compact mode - TitleBar: {titleBarHeight}, TaskBorder: {taskBorderHeight}, " +
+                    $"TaskMargin: {taskMargin}, Calculated: {compactHeight}");
+
+                // Switch to compact mode with calculated height
+                _appWindow?.Resize(new SizeInt32(220, compactHeight));
+
+                CompactModeButton.Content = "◱";
+                Log.Information($"Switched to compact mode (height: {compactHeight}px)");
+            }
+            else
+            {
+                // Restore normal mode
+                // Restore TitleBar (will be controlled by UpdateTitleBarVisibility)
+                UpdateTitleBarVisibility();
+
+                // Restore Grid row height to fill (*)
+                if (MainGrid?.RowDefinitions.Count > 1)
+                {
+                    MainGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+                }
+
+                // Switch back to normal mode
+                _appWindow?.Resize(new SizeInt32(220, NORMAL_HEIGHT));
+
+                // Restore normal padding and alignment
+                if (TaskScrollView != null)
+                {
+                    TaskScrollView.Padding = new Thickness(12, 12, 12, 12);
+                    TaskScrollView.VerticalAlignment = VerticalAlignment.Stretch;
+                }
+
+                // Show all tasks
+                if (TasksItemsControl != null)
+                {
+                    for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+                    {
+                        if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                        {
+                            container.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+
+                // Show UI elements
+                if (AddTaskButton != null) AddTaskButton.Visibility = Visibility.Visible;
+                if (StatusBar != null) StatusBar.Visibility = Visibility.Visible;
+                UpdateEmptyState();
+
+                CompactModeButton.Content = "◧";
+                Log.Information("Switched to normal mode");
             }
         }
 
