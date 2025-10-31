@@ -190,17 +190,21 @@ namespace TaskTimerWidget
                     }
                     else if (!shouldShow && wasTitleBarVisible)
                     {
-                        // Hide TitleBar (GONE - no space taken)
-                        TitleBarGrid.Height = 0;
-                        TitleBarGrid.Visibility = Visibility.Collapsed;
-                        TitleBarGrid.IsHitTestVisible = false;
-
-                        // Decrease window height by TITLEBAR_HEIGHT
+                        // First: Decrease window height by TITLEBAR_HEIGHT
+                        // This ensures the task remains fully visible during the transition
                         if (_appWindow != null)
                         {
                             var currentSize = _appWindow.Size;
                             _appWindow.Resize(new SizeInt32(currentSize.Width, currentSize.Height - TITLEBAR_HEIGHT));
                         }
+
+                        // Then: Hide TitleBar (GONE - no space taken)
+                        // Small delay to ensure resize happens first
+                        await System.Threading.Tasks.Task.Delay(10);
+
+                        TitleBarGrid.Height = 0;
+                        TitleBarGrid.Visibility = Visibility.Collapsed;
+                        TitleBarGrid.IsHitTestVisible = false;
 
                         Log.Information($"Compact mode - TitleBar hidden, window height decreased by {TITLEBAR_HEIGHT}px");
                     }
