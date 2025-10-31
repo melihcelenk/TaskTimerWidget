@@ -43,6 +43,14 @@ namespace TaskTimerWidget
                     _appWindow.Resize(new SizeInt32(220, 500));
                     Log.Information("MainWindow resized to 220x500");
 
+                    // Set window to always-on-top (widget behavior)
+                    var presenter = _appWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+                    if (presenter != null)
+                    {
+                        presenter.IsAlwaysOnTop = true;
+                        Log.Information("Window set to always-on-top");
+                    }
+
                     // Set window icon for taskbar
                     try
                     {
