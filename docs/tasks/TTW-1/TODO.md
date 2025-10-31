@@ -98,7 +98,7 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 - [✅] Store logos (1240x600, 2400x1200)
 - [✅] .gitignore'dan Assets/ kaldırıldı
 - [✅] README_ASSETS.txt güncellendi
-- [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan) ⚠️ **Manuel gerekli**
+- [✅] Screenshots (3 adet, assets/screenshots/ - normal mode, compact mode, rename feature) 📸
 - [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
   - [ ] GitHub Pages'e yükle ve URL al (repo public yapıldıktan sonra)
