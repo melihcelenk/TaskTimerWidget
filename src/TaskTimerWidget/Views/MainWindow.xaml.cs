@@ -43,6 +43,25 @@ namespace TaskTimerWidget
                     _appWindow.Resize(new SizeInt32(220, 500));
                     Log.Information("MainWindow resized to 220x500");
 
+                    // Set window icon for taskbar
+                    try
+                    {
+                        var iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "app.ico");
+                        if (System.IO.File.Exists(iconPath))
+                        {
+                            _appWindow.SetIcon(iconPath);
+                            Log.Information("Window icon set to: {IconPath}", iconPath);
+                        }
+                        else
+                        {
+                            Log.Warning("Icon file not found at: {IconPath}", iconPath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Could not set window icon");
+                    }
+
                     // Configure title bar to look like a widget (no minimize/maximize buttons)
                     var titleBar = _appWindow.TitleBar;
                     if (titleBar != null)

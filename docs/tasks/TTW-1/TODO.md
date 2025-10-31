@@ -89,9 +89,15 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 ## ⏳ Yapılacak Fazlar (v1.0 Release)
 
 ### Faz 1.0: Windows Store Hazırlığı (Tahmini: 3-4 saat) 📦
-- [ ] Application icons (AI/Canva ile 256x256, 150x150, 44x44, 16x16) ⚠️ **Manuel gerekli**
-- https://www.aixploria.com
-- [ ] Store logos (1240x600, 2400x1200) ⚠️ **Manuel gerekli**
+- [✅] Application icons (AI ile oluşturuldu ve 4 boyuta resize edildi: 256x256, 150x150, 44x44, 16x16)
+  - [✅] Icon'lar Assets klasörüne kopyalandı
+  - [✅] .csproj'a asset referansları eklendi
+  - [✅] app.ico oluşturuldu (taskbar icon için)
+  - [✅] MainWindow.xaml.cs'de runtime icon ayarı yapıldı
+  - [✅] Taskbar'da icon görünüyor (kalite iyileştirme gerekli - online converter ile)
+- [✅] Store logos (1240x600, 2400x1200)
+- [✅] .gitignore'dan Assets/ kaldırıldı
+- [✅] README_ASSETS.txt güncellendi
 - [ ] Screenshots (min 3 adet, 1920x1080 - mevcut uygulamadan) ⚠️ **Manuel gerekli**
 - [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)

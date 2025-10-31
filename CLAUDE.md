@@ -94,6 +94,9 @@ catch (Exception ex)
 - Public API'ler XML documentation comment'lı olmalı
 - Complex logic'te açıklama yap
 - Git commit message'leri anlamlı olmalı
+- **Commit mesajları format:** `[TASK_NUMBER] Description`
+  - Örnek: `[TTW-1] Add application icons and store logos`
+  - Task numarası branch'ten alınır (örn: `feature/TTW-1-complete-v1` → `TTW-1`)
 
 ## ✅ Checklist Önce Commit
 - [ ] Kod formatting kontrol edildi
@@ -103,7 +106,14 @@ catch (Exception ex)
 - [ ] Unit tests pass ediyor
 - [ ] Performance uygun
 - [ ] Exception handling var
-- [ ] Documentation güncellenmiş
+- [ ] **Documentation güncellenmiş (README_ASSETS.txt, TODO.md, vb.)**
+- [ ] **TODO.md güncel (yapılan işlemler işaretlenmiş)**
+
+## 🔄 Her İşlem Sonrası Zorunlu
+**ÖNEMLİ:** Her önemli işlem tamamlandığında:
+1. İlgili README/dokümantasyon dosyalarını güncelle
+2. `docs/tasks/{TASK_NUMBER}/TODO.md` dosyasını güncelle ve işaretleri koy
+3. Bu adımları atlamadan git add/commit yapma
 - WinUI 3 Custom Window Dragging:
     Use SetTitleBar(UIElement) for smooth, system-integrated dragging
     Guide: docs/WINUI3_WINDOW_DRAGGING.md
