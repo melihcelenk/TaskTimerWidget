@@ -101,21 +101,43 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 - [✅] Screenshots (3 adet, assets/screenshots/ - normal mode, compact mode, rename feature) 📸
 - [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
-  - [ ] GitHub Pages'e yükle ve URL al (repo public yapıldıktan sonra)
+  - [ ] GitHub Pages'e yükle ve URL al (~5-10 dakika) 🌐
+    - Repo'yu public yap
+    - Settings → Pages → Enable
+    - PRIVACY_POLICY.md'yi serve et
+    - URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
 - [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
   - [✅] Privacy Policy URL'i eklendi (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
   - [✅] Support URL güncellendi (https://github.com/melihcelenk/TaskTimerWidget)
 - [✅] Package.appxmanifest configuration (Version 1.0.0.0, Publisher: Melih Celenk)
-- [ ] MSIX package creation ve signing ⚠️ **Manuel gerekli** (Signing için sertifika gerekli)
-- [ ] WACK (Windows App Certification Kit) testi ⚠️ **Manuel gerekli**
+- [ ] MSIX package creation ve signing (~30-60 dakika) 📦
+  - Visual Studio'da veya CLI ile MSIX oluştur
+  - Self-signed certificate oluştur (test) veya satın al (production)
+  - Package'ı sign et
+  - Test installation (local)
+- [ ] WACK (Windows App Certification Kit) testi (~15-30 dakika) ✅
+  - WACK tool'unu çalıştır (otomatik test)
+  - Sorun varsa düzelt ve tekrar test et
+  - Rapor kaydet
 
-### Faz 1.1: Final Release (Tahmini: 1 saat) 🚀
+### Faz 1.1: Final Release (Tahmini: 2-3 saat aktif + 1-3 gün review) 🚀
 - [✅] Version number → 1.0.0.0 (Package.appxmanifest'te ayarlandı)
-- [ ] Release build test ⚠️ **Manuel gerekli**
-- [ ] Store submission ⚠️ **Manuel gerekli** (Microsoft hesabı gerekli)
-- [ ] Wait for Microsoft review (1-3 gün)
+- [ ] Release build test (~10-15 dakika) 🔨
+  - Release mode'da build (dotnet build --configuration Release)
+  - Temiz makinede veya VM'de test et
+  - Tüm features çalıştığından emin ol
+- [ ] Store submission (~30-45 dakika) 📤
+  - Microsoft Partner Center'a kayıt
+  - Store listing bilgilerini gir (STORE_LISTING.md'den)
+  - Screenshots, icons, logos yükle
+  - MSIX package yükle
+  - Submit for review
+- [ ] Wait for Microsoft review (1-3 gün pasif bekleme) ⏳
 - [ ] Publish! 🎉
+
+**⏱️ Toplam Kalan Aktif Süre: ~2-3 saat**
+**⏱️ Toplam Bekleme: 1-3 gün (Microsoft review)**
 
 ---
 
