@@ -1,6 +1,13 @@
 # Task Timer Widget
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/platform-Windows%2011-blue.svg)](https://www.microsoft.com/windows)
+[![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
+[![WinUI](https://img.shields.io/badge/WinUI-3-brightgreen.svg)](https://microsoft.github.io/microsoft-ui-xaml/)
+
 A lightweight, minimal task timer widget for Windows 11. Manage your tasks and track time with a simple, distraction-free interface.
+
+![TaskTimerWidget Demo](assets/screenshots/normal-mode.png)
 
 ## 🎯 Features
 
@@ -139,7 +146,15 @@ See [MARKET_RESEARCH.md](./MARKET_RESEARCH.md) for:
 
 ## 📄 License
 
-[Add your license here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+**Why MIT?** This license allows you to:
+- ✅ Use this software for any purpose (personal, commercial, educational)
+- ✅ Modify and distribute the code
+- ✅ Incorporate it into your own projects
+- ✅ Sell software that includes this code
+
+The only requirement is to include the copyright notice and license text.
 
 ## 👥 Contributing
 
@@ -163,6 +178,7 @@ For issues, questions, or suggestions, please:
 
 ---
 
-**Version**: 0.1.0
-**Last Updated**: October 27, 2024
-**Status**: Active Development
+**Version**: 1.0.0 (Release Candidate)
+**Last Updated**: November 1, 2025
+**Status**: Active Development → Public Release
+**License**: MIT
