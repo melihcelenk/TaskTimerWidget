@@ -125,6 +125,13 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
       - Default language: English
       - Saves language preference to localStorage
       - Responsive design (mobile-friendly)
+    - [✅] GitHub Pages rendering fix:
+      - Created index.html as landing page (professional design)
+      - Optimized README.md for GitHub (pure Markdown, no HTML divs)
+      - Gradient header with logo and CTA buttons
+      - Feature grid with icons and hover effects
+      - Screenshot gallery with descriptions
+      - Responsive design for mobile
     - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/)
 - [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
