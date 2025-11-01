@@ -93,3 +93,9 @@ PublishProfiles/
 *.appx
 *.appxbundle
 *.appxupload
+
+# Deprecated Packaging Project (removed - using single-project MSIX now)
+src/TaskTimerWidget.Package/
+
+# Temporary files and test artifacts
+tmp/

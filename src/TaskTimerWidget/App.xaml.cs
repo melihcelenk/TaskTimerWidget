@@ -29,25 +29,32 @@ namespace TaskTimerWidget
         /// </summary>
         private void InitializeLogging()
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.File(
-                    Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "TaskTimerWidget",
-                        "Logs",
-                        "app-.txt"),
-                    rollingInterval: RollingInterval.Day,
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
+            try
+            {
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    .WriteTo.File(
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "TaskTimerWidget",
+                            "Logs",
+                            "app-.txt"),
+                        rollingInterval: RollingInterval.Day,
+                        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                    .CreateLogger();
 
-            Log.Information("TaskTimerWidget Application Starting...");
+                Log.Information("TaskTimerWidget Application Starting...");
+            }
+            catch
+            {
+                // Logging failed, continue anyway
+            }
         }
 
         /// <summary>
         /// Configure dependency injection and services.
         /// </summary>
-        private async void InitializeServices()
+        private void InitializeServices()
         {
             var services = new ServiceCollection();
 
@@ -61,12 +68,7 @@ namespace TaskTimerWidget
             // Create service provider
             _serviceProvider = services.BuildServiceProvider();
 
-            // Initialize TaskService
-            var taskService = _serviceProvider.GetRequiredService<ITaskService>();
-            if (taskService is TaskService taskServiceImpl)
-            {
-                await taskServiceImpl.InitializeAsync();
-            }
+            // Note: TaskService initialization moved to OnLaunched to avoid blocking app startup
         }
 
         /// <summary>
@@ -78,10 +80,27 @@ namespace TaskTimerWidget
                 ?? throw new InvalidOperationException($"Service {typeof(T).Name} not found");
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
-            m_window = new MainWindow();
-            m_window.Activate();
+            try
+            {
+                // Initialize TaskService asynchronously
+                var taskService = _serviceProvider?.GetRequiredService<ITaskService>();
+                if (taskService is TaskService taskServiceImpl)
+                {
+                    await taskServiceImpl.InitializeAsync();
+                }
+
+                m_window = new MainWindow();
+                m_window.Activate();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to launch application");
+                // Show error and still try to open window
+                m_window = new MainWindow();
+                m_window.Activate();
+            }
         }
 
         private Window? m_window;

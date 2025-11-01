@@ -24,11 +24,24 @@
         <WindowsAppSDKVersion>1.7.250310001</WindowsAppSDKVersion>
         <EnableMsixTooling>true</EnableMsixTooling>
 
-        <!-- Packaging for Windows Store -->
-        <WindowsPackageType>None</WindowsPackageType>
+        <!-- Single-Project MSIX Packaging -->
+        <WindowsPackageType>MSIX</WindowsPackageType>
+        <GenerateAppxPackageOnBuild>false</GenerateAppxPackageOnBuild>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <PackageCertificateThumbprint>9EBB0C075BAF2E933930DE9897322B9F7966DEF8</PackageCertificateThumbprint>
+        <AppxBundle>Always</AppxBundle>
+        <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 
         <!-- Application Icon for taskbar -->
         <ApplicationIcon>app.ico</ApplicationIcon>
+        <Platforms>AnyCPU;x64</Platforms>
+        <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+        <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+        <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+        <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+        <GenerateTestArtifacts>True</GenerateTestArtifacts>
+        <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     </PropertyGroup>
 
     <ItemGroup>
