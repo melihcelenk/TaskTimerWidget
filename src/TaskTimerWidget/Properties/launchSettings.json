@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TaskTimerWidget (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "TaskTimerWidget (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

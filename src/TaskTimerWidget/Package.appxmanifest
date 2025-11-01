@@ -4,7 +4,8 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-  IgnorableNamespaces="uap mp uap3">
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap mp uap3 rescap">
 
   <Identity
     Name="TaskTimerWidget"
@@ -27,12 +28,12 @@
   </Resources>
 
   <Applications>
-    <Application Id="App" StartPage="TaskTimerWidget.MainWindow">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
-        DisplayName="TaskTimerWidget"
+        DisplayName="Task Timer Widget"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Track your time efficiently with TaskTimerWidget - a minimalist desktop timer for managing multiple tasks. Simple, clean, and always visible."
+        Description="A lightweight, minimal task timer widget for Windows 11."
         BackgroundColor="#D0D0D0">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
           <uap:ShowNameOnTiles>
@@ -47,6 +48,6 @@
   </Applications>
 
   <Capabilities>
-    <!-- No internet capabilities needed - app is fully offline -->
+    <rescap:Capability Name="runFullTrust" />
   </Capabilities>
 </Package>
