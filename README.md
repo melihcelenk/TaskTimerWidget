@@ -1,13 +1,37 @@
-# Task Timer Widget
+<div align="center">
+  <img src="assets/icons/app-icon-256.png" alt="TaskTimerWidget Logo" width="128" height="128">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-Windows%2011-blue.svg)](https://www.microsoft.com/windows)
-[![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
-[![WinUI](https://img.shields.io/badge/WinUI-3-brightgreen.svg)](https://microsoft.github.io/microsoft-ui-xaml/)
+  # Task Timer Widget
 
-A lightweight, minimal task timer widget for Windows 11. Manage your tasks and track time with a simple, distraction-free interface.
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Platform](https://img.shields.io/badge/platform-Windows%2011-blue.svg)](https://www.microsoft.com/windows)
+  [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
+  [![WinUI](https://img.shields.io/badge/WinUI-3-brightgreen.svg)](https://microsoft.github.io/microsoft-ui-xaml/)
 
-![TaskTimerWidget Demo](assets/screenshots/screenshot-1.png)
+  **A lightweight, minimal task timer widget for Windows 11.**
+
+  Manage your tasks and track time with a simple, distraction-free interface.
+
+  [Download](#-getting-started) • [Features](#-features) • [Documentation](docs/general/DEVELOPMENT.md) • [Privacy Policy](PRIVACY_POLICY.html)
+
+</div>
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="assets/screenshots/screenshot-1.png" alt="Normal Mode" width="45%">
+  <img src="assets/screenshots/screenshot-2.png" alt="Compact Mode" width="45%">
+</div>
+
+<div align="center">
+  <img src="assets/screenshots/screenshot-3.png" alt="Rename Feature" width="45%">
+</div>
+
+<p align="center">
+  <em>Left: Normal mode with multiple tasks • Right: Compact mode showing active task only • Bottom: Inline rename feature</em>
+</p>
 
 ## 🎯 Features
 

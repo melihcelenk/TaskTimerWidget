@@ -41,76 +41,129 @@
         a:hover {
             text-decoration: underline;
         }
-        .language-section {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 3px solid #ecf0f1;
-        }
         ul {
             padding-left: 25px;
         }
         li {
             margin: 8px 0;
         }
+        /* Language Switcher */
+        .lang-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .lang-switcher button {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        .lang-switcher button:hover {
+            color: #2c3e50;
+        }
+        .lang-switcher button.active {
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+        }
+        .lang-switcher button:not(:last-child) {
+            border-right: 1px solid #ecf0f1;
+        }
+        /* Language Content */
+        .lang-content {
+            display: none;
+        }
+        .lang-content.active {
+            display: block;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .lang-switcher {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Privacy Policy for TaskTimerWidget</h1>
-    <p><strong>Last Updated: October 30, 2025</strong></p>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button onclick="switchLang('en')" id="btn-en" class="active">EN</button>
+        <button onclick="switchLang('tr')" id="btn-tr">TR</button>
+    </div>
 
-    <h2>Overview</h2>
-    <p>TaskTimerWidget ("the App") is a simple task timer application for Windows. This Privacy Policy describes how the App handles your information.</p>
+    <!-- English Content -->
+    <div id="content-en" class="lang-content active">
+        <h1>Privacy Policy for TaskTimerWidget</h1>
+        <p><strong>Last Updated: November 1, 2025</strong></p>
 
-    <h2>Information Collection and Use</h2>
-    <p><strong>TaskTimerWidget does NOT collect, transmit, or share any personal data.</strong></p>
+        <h2>Overview</h2>
+        <p>TaskTimerWidget ("the App") is a simple task timer application for Windows. This Privacy Policy describes how the App handles your information.</p>
 
-    <h3>Local Data Storage</h3>
-    <p>The App stores the following information <strong>locally on your device only</strong>:</p>
-    <ul>
-        <li><strong>Task Names</strong>: The names you give to your tasks</li>
-        <li><strong>Time Tracking Data</strong>: Elapsed time for each task</li>
-        <li><strong>Task Settings</strong>: Order and state of your tasks</li>
-    </ul>
+        <h2>Information Collection and Use</h2>
+        <p><strong>TaskTimerWidget does NOT collect, transmit, or share any personal data.</strong></p>
 
-    <p>All data is stored in a local JSON file at:</p>
-    <pre><code>%LOCALAPPDATA%\TaskTimerWidget\Data\tasks.json</code></pre>
+        <h3>Local Data Storage</h3>
+        <p>The App stores the following information <strong>locally on your device only</strong>:</p>
+        <ul>
+            <li><strong>Task Names</strong>: The names you give to your tasks</li>
+            <li><strong>Time Tracking Data</strong>: Elapsed time for each task</li>
+            <li><strong>Task Settings</strong>: Order and state of your tasks</li>
+        </ul>
 
-    <p>This data <strong>never leaves your device</strong> and is <strong>not transmitted to any servers</strong>.</p>
+        <p>All data is stored in a local JSON file at:</p>
+        <pre><code>%LOCALAPPDATA%\TaskTimerWidget\Data\tasks.json</code></pre>
 
-    <h3>No Internet Connection Required</h3>
-    <p>TaskTimerWidget operates entirely offline and does not:</p>
-    <ul>
-        <li>Connect to the internet</li>
-        <li>Collect analytics or telemetry</li>
-        <li>Track user behavior</li>
-        <li>Share data with third parties</li>
-        <li>Use cookies or similar tracking technologies</li>
-    </ul>
+        <p>This data <strong>never leaves your device</strong> and is <strong>not transmitted to any servers</strong>.</p>
 
-    <h3>Data Control</h3>
-    <p>You have complete control over your data:</p>
-    <ul>
-        <li>All data is stored locally on your device</li>
-        <li>You can delete all data by uninstalling the application</li>
-        <li>You can manually access and modify the data file if needed</li>
-    </ul>
+        <h3>No Internet Connection Required</h3>
+        <p>TaskTimerWidget operates entirely offline and does not:</p>
+        <ul>
+            <li>Connect to the internet</li>
+            <li>Collect analytics or telemetry</li>
+            <li>Track user behavior</li>
+            <li>Share data with third parties</li>
+            <li>Use cookies or similar tracking technologies</li>
+        </ul>
 
-    <h2>Children's Privacy</h2>
-    <p>TaskTimerWidget does not collect any personal information from anyone, including children under the age of 13.</p>
+        <h3>Data Control</h3>
+        <p>You have complete control over your data:</p>
+        <ul>
+            <li>All data is stored locally on your device</li>
+            <li>You can delete all data by uninstalling the application</li>
+            <li>You can manually access and modify the data file if needed</li>
+        </ul>
 
-    <h2>Changes to This Privacy Policy</h2>
-    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.</p>
+        <h2>Children's Privacy</h2>
+        <p>TaskTimerWidget does not collect any personal information from anyone, including children under the age of 13.</p>
 
-    <h2>Contact</h2>
-    <p>If you have any questions about this Privacy Policy, please create an issue on our GitHub repository:<br>
-    <a href="https://github.com/melihcelenk/TaskTimerWidget" target="_blank">https://github.com/melihcelenk/TaskTimerWidget</a></p>
+        <h2>Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.</p>
 
-    <h2>Consent</h2>
-    <p>By using TaskTimerWidget, you consent to this Privacy Policy.</p>
+        <h2>Contact</h2>
+        <p>If you have any questions about this Privacy Policy, please create an issue on our GitHub repository:<br>
+        <a href="https://github.com/melihcelenk/TaskTimerWidget" target="_blank">https://github.com/melihcelenk/TaskTimerWidget</a></p>
 
-    <div class="language-section">
-        <h1>Gizlilik Politikası (Türkçe)</h1>
-        <p><strong>Son Güncelleme: 30 Ekim 2025</strong></p>
+        <h2>Consent</h2>
+        <p>By using TaskTimerWidget, you consent to this Privacy Policy.</p>
+    </div>
+
+    <!-- Turkish Content -->
+    <div id="content-tr" class="lang-content">
+        <h1>TaskTimerWidget - Gizlilik Politikası</h1>
+        <p><strong>Son Güncelleme: 1 Kasım 2025</strong></p>
 
         <h2>Genel Bakış</h2>
         <p>TaskTimerWidget ("Uygulama") Windows için basit bir görev zamanlayıcı uygulamasıdır. Bu Gizlilik Politikası, Uygulamanın bilgilerinizi nasıl işlediğini açıklar.</p>
@@ -162,5 +215,37 @@
         <h2>Onay</h2>
         <p>TaskTimerWidget'ı kullanarak bu Gizlilik Politikasını kabul etmiş olursunuz.</p>
     </div>
+
+    <script>
+        function switchLang(lang) {
+            // Hide all content
+            document.querySelectorAll('.lang-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.lang-switcher button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected language
+            document.getElementById('content-' + lang).classList.add('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+
+            // Save preference to localStorage
+            localStorage.setItem('preferredLang', lang);
+        }
+
+        // Load preferred language on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const preferredLang = localStorage.getItem('preferredLang') || 'en';
+            if (preferredLang === 'tr') {
+                switchLang('tr');
+            }
+        });
+    </script>
 </body>
 </html>

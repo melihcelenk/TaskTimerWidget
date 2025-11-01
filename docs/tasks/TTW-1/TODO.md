@@ -113,9 +113,19 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
     - [✅] Updated README.md with license info, badges, and screenshot
     - [✅] Created GITHUB_GROWTH_STRATEGY.md in global goals folder
     - [✅] Updated global CLAUDE.md with GitHub growth objectives
-    - [ ] Repo'yu public yap (GitHub Settings)
-    - [ ] Settings → Pages → Enable (master branch, root folder)
-    - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
+    - [✅] Repo'yu public yap (GitHub Settings)
+    - [✅] Settings → Pages → Enable (master branch, root folder)
+    - [✅] Enhanced README for GitHub Pages:
+      - Added logo (256x256 icon) at header
+      - Added all 3 screenshots in gallery layout
+      - Added quick navigation links (Download, Features, Docs, Privacy)
+      - Improved visual hierarchy with centered header
+    - [✅] Privacy Policy improvements:
+      - Added EN/TR language switcher (top-right, fixed position)
+      - Default language: English
+      - Saves language preference to localStorage
+      - Responsive design (mobile-friendly)
+    - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/)
 - [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
   - [✅] Privacy Policy URL'i eklendi (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
