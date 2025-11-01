@@ -7,7 +7,7 @@
 
 A lightweight, minimal task timer widget for Windows 11. Manage your tasks and track time with a simple, distraction-free interface.
 
-![TaskTimerWidget Demo](assets/screenshots/normal-mode.png)
+![TaskTimerWidget Demo](assets/screenshots/screenshot-1.png)
 
 ## 🎯 Features
 
@@ -55,9 +55,18 @@ TaskTimerWidget/
 │       ├── Assets/              # Images and resources
 │       ├── App.xaml(.cs)        # Application entry point
 │       └── TaskTimerWidget.csproj
+├── docs/
+│   ├── general/                 # General documentation
+│   │   ├── DEVELOPMENT.md       # Development guide
+│   │   ├── MARKET_RESEARCH.md   # Market analysis
+│   │   ├── PRIVACY_POLICY.md    # Privacy policy
+│   │   └── STORE_LISTING.md     # Store submission info
+│   ├── tasks/TTW-1/             # Task-specific documentation
+│   │   └── TODO.md              # Development roadmap
+│   └── WINUI3_WINDOW_DRAGGING.md # WinUI 3 guide
+├── legacy/                      # Old prototypes
 ├── CLAUDE.md                    # Code standards and guidelines
-├── TODO.md                      # Development roadmap
-├── MARKET_RESEARCH.md           # Market analysis and growth plan
+├── LICENSE                      # MIT License
 └── README.md                    # This file
 ```
 
@@ -103,7 +112,7 @@ Please refer to [CLAUDE.md](./CLAUDE.md) for:
 
 ### Development Guides and Resources
 
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup and guides, including:
+See [docs/general/DEVELOPMENT.md](./docs/general/DEVELOPMENT.md) for detailed development setup and guides, including:
 - Setup instructions
 - Project structure
 - Development workflow
@@ -111,38 +120,43 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup and guides
 
 ### Development Roadmap
 
-See [TODO.md](./TODO.md) for the complete development roadmap with phases and milestones.
+See [docs/tasks/TTW-1/TODO.md](./docs/tasks/TTW-1/TODO.md) for the complete development roadmap with phases and milestones.
 
 ## 📊 Market Analysis
 
-See [MARKET_RESEARCH.md](./MARKET_RESEARCH.md) for:
+See [docs/general/MARKET_RESEARCH.md](./docs/general/MARKET_RESEARCH.md) for:
 - Market analysis and competition
 - Growth strategies
 - Monetization plan
 - Timeline and projections
 
-## 🐛 Known Issues
-
-- Initial version (0.1.0)
-- Some UI converters need additional testing
-- Theme switching not yet implemented
-
 ## 🎯 Roadmap
 
-### v0.2 (Next)
-- [ ] Improved UI/UX
-- [ ] Statistics dashboard
-- [ ] Cloud sync preparation
+### v1.0 (Current - Release Candidate) ✅
+- [x] Core timer functionality
+- [x] Task management (create, delete, rename, reorder)
+- [x] Persistent storage
+- [x] Compact mode
+- [x] Always-on-top widget
+- [x] Custom fonts and styling
+- [x] Time percentage display
+- [x] Drag-and-drop reordering
+- [ ] Windows Store submission (in progress)
+- [ ] MSIX packaging
 
-### v1.0 (Release Candidate)
-- [ ] Windows Store submission
-- [ ] Performance optimization
-- [ ] Multi-language support
+### v2.0 (Planned)
+- [ ] Cloud synchronization (OneDrive)
+- [ ] Advanced statistics & reporting
+- [ ] Multiple themes
+- [ ] System tray integration
+- [ ] Windows startup option
+- [ ] Premium tier
 
-### v2.0+ (Future)
-- [ ] Cloud synchronization
-- [ ] Team features
-- [ ] Advanced analytics
+### v3.0+ (Future)
+- [ ] Team collaboration features
+- [ ] Cross-platform (mobile apps)
+- [ ] Integration ecosystem
+- [ ] Enterprise features
 
 ## 📄 License
 
