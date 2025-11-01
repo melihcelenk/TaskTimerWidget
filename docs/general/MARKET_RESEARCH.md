@@ -46,7 +46,6 @@
 ✅ **Offline-First**: No internet connection required
 ✅ **Zero Learning Curve**: No onboarding needed
 ✅ **Lightweight**: Minimal CPU/RAM usage
-✅ **Turkish Support**: Native Turkish interface
 
 ### Pricing Strategy
 1. **Free Model** (Initial Release)

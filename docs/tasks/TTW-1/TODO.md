@@ -101,11 +101,17 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
 - [✅] Screenshots (3 adet, assets/screenshots/ - normal mode, compact mode, rename feature) 📸
 - [✅] Privacy policy (PRIVACY_POLICY.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
-  - [ ] GitHub Pages'e yükle ve URL al (~5-10 dakika) 🌐
-    - Repo'yu public yap
-    - Settings → Pages → Enable
-    - PRIVACY_POLICY.md'yi serve et
-    - URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
+  - [⏳] GitHub Pages'e yükle ve URL al (~5-10 dakika) 🌐
+    - [✅] PRIVACY_POLICY.html oluşturuldu (styled, bilingual EN/TR)
+    - [✅] Project structure cleaned for public release (legacy/ folder created)
+    - [✅] CLAUDE.md updated (commit guidelines clarified - AI suggests only)
+    - [✅] Documentation converted to English (Turkish versions in docs/general/tr/)
+    - [✅] Removed outdated SETUP_INSTRUCTIONS.md (duplicate of DEVELOPMENT.md)
+    - [✅] Converted README_ASSETS.txt to English
+    - [✅] Removed unnecessary 'nul' file from root
+    - [ ] Repo'yu public yap (GitHub Settings)
+    - [ ] Settings → Pages → Enable (master branch, root folder)
+    - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
 - [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
   - [✅] Privacy Policy URL'i eklendi (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)

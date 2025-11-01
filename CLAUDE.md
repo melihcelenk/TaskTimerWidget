@@ -98,24 +98,22 @@ catch (Exception ex)
   - Örnek: `[TTW-1] Add application icons and store logos`
   - Task numarası branch'ten alınır (örn: `feature/TTW-1-complete-v1` → `TTW-1`)
 
-## ✅ Checklist Önce Commit
-- [ ] Kod formatting kontrol edildi
-- [ ] Syntax hataları yok
-- [ ] Naming conventions uygulandı
-- [ ] Commented/debug kodu kaldırıldı
-- [ ] Unit tests pass ediyor
-- [ ] Performance uygun
-- [ ] Exception handling var
-- [ ] **Documentation güncellenmiş (README_ASSETS.txt, TODO.md, vb.)**
-- [ ] **TODO.md güncel (yapılan işlemler işaretlenmiş)**
+## ✅ Pre-Commit Checklist
+- [ ] Code formatting checked
+- [ ] No syntax errors
+- [ ] Naming conventions applied
+- [ ] Commented/debug code removed
+- [ ] Unit tests passing
+- [ ] Performance acceptable
+- [ ] Exception handling implemented
+- [ ] Documentation updated (README_ASSETS.txt, TODO.md, etc.)
+- [ ] TODO.md current (completed tasks marked)
 
-## 🔄 Her İşlem Sonrası Zorunlu
-**ÖNEMLİ:** Her önemli işlem tamamlandığında:
-1. İlgili README/dokümantasyon dosyalarını güncelle
-2. `docs/tasks/{TASK_NUMBER}/TODO.md` dosyasını güncelle ve işaretleri koy
-3. Bu adımları atlamadan git add/commit yapma
-- WinUI 3 Custom Window Dragging:
-    Use SetTitleBar(UIElement) for smooth, system-integrated dragging
-    Guide: docs/WINUI3_WINDOW_DRAGGING.md
-    Applies to all C# WinUI 3 projects
-    Only 2 lines of code needed
+## 🔄 After Each Important Task (Mandatory)
+**IMPORTANT:** After completing each significant task:
+1. Update relevant README/documentation files
+2. Update `docs/tasks/{TASK_NUMBER}/TODO.md` and mark completed items
+3. **Suggest commit (NEVER commit directly)** - AI suggests, developer commits
+   - Format: `[TASK_NUMBER] Description`
+   - Example: `[TTW-1] Add application icons and store logos`
+   - Task number extracted from branch name (e.g., `feature/TTW-1-complete-v1` → `TTW-1`)
