@@ -1,33 +1,41 @@
-<div align="center">
+# Task Timer Widget
+
+<p align="center">
   <img src="assets/icons/app-icon-256.png" alt="TaskTimerWidget Logo" width="128" height="128">
+</p>
 
-  # Task Timer Widget
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://www.microsoft.com/windows"><img src="https://img.shields.io/badge/platform-Windows%2011-blue.svg" alt="Platform"></a>
+  <a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/.NET-8.0-purple.svg" alt=".NET"></a>
+  <a href="https://microsoft.github.io/microsoft-ui-xaml/"><img src="https://img.shields.io/badge/WinUI-3-brightgreen.svg" alt="WinUI"></a>
+</p>
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![Platform](https://img.shields.io/badge/platform-Windows%2011-blue.svg)](https://www.microsoft.com/windows)
-  [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
-  [![WinUI](https://img.shields.io/badge/WinUI-3-brightgreen.svg)](https://microsoft.github.io/microsoft-ui-xaml/)
-
-  **A lightweight, minimal task timer widget for Windows 11.**
-
+<p align="center">
+  <strong>A lightweight, minimal task timer widget for Windows 11.</strong><br>
   Manage your tasks and track time with a simple, distraction-free interface.
+</p>
 
-  [Download](#-getting-started) • [Features](#-features) • [Documentation](docs/general/DEVELOPMENT.md) • [Privacy Policy](PRIVACY_POLICY.html)
-
-</div>
+<p align="center">
+  <a href="#-getting-started">Download</a> •
+  <a href="#-features">Features</a> •
+  <a href="docs/general/DEVELOPMENT.md">Documentation</a> •
+  <a href="https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html">Privacy Policy</a> •
+  <a href="https://melihcelenk.github.io/TaskTimerWidget/">Website</a>
+</p>
 
 ---
 
 ## 📸 Screenshots
 
-<div align="center">
+<p align="center">
   <img src="assets/screenshots/screenshot-1.png" alt="Normal Mode" width="45%">
   <img src="assets/screenshots/screenshot-2.png" alt="Compact Mode" width="45%">
-</div>
+</p>
 
-<div align="center">
+<p align="center">
   <img src="assets/screenshots/screenshot-3.png" alt="Rename Feature" width="45%">
-</div>
+</p>
 
 <p align="center">
   <em>Left: Normal mode with multiple tasks • Right: Compact mode showing active task only • Bottom: Inline rename feature</em>
