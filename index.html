@@ -95,7 +95,7 @@
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 2px solid white;
         }
@@ -103,6 +103,17 @@
         .btn-secondary:hover {
             background: white;
             color: #667eea;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
         }
 
         /* Main Content */
@@ -123,34 +134,67 @@
             color: #2c3e50;
         }
 
-        /* Screenshots */
-        .screenshots {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* Screenshots Carousel */
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            margin: 30px auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
         }
 
         .screenshot-item {
+            min-width: 100%;
             text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
         }
 
         .screenshot-item img {
             width: 100%;
-            max-width: 400px;
+            max-width: 700px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .screenshot-item img:hover {
-            transform: scale(1.05);
         }
 
         .screenshot-item p {
-            margin-top: 10px;
-            color: #666;
-            font-size: 0.9em;
+            margin-top: 15px;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Carousel Controls */
+        .carousel-dots {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin: 0 6px;
+            background: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #667eea;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .dot:hover {
+            background: #764ba2;
         }
 
         /* Features */
@@ -268,22 +312,29 @@
 
         <!-- Main Content -->
         <main>
-            <!-- Screenshots -->
+            <!-- Screenshots Carousel -->
             <section id="screenshots">
                 <h2>📸 Screenshots</h2>
-                <div class="screenshots">
-                    <div class="screenshot-item">
-                        <img src="assets/screenshots/screenshot-1.png" alt="Normal Mode">
-                        <p>Normal mode with multiple tasks</p>
+                <div class="carousel-container">
+                    <div class="carousel" id="carousel">
+                        <div class="screenshot-item">
+                            <img src="assets/screenshots/screenshot-1.png" alt="Normal Mode">
+                            <p>Normal mode with multiple tasks</p>
+                        </div>
+                        <div class="screenshot-item">
+                            <img src="assets/screenshots/screenshot-3.png" alt="Rename Feature">
+                            <p>Inline rename feature - right-click to edit</p>
+                        </div>
+                        <div class="screenshot-item">
+                            <img src="assets/screenshots/screenshot-2.png" alt="Compact Mode">
+                            <p>Compact mode - shows only active task</p>
+                        </div>
                     </div>
-                    <div class="screenshot-item">
-                        <img src="assets/screenshots/screenshot-2.png" alt="Compact Mode">
-                        <p>Compact mode showing active task only</p>
-                    </div>
-                    <div class="screenshot-item">
-                        <img src="assets/screenshots/screenshot-3.png" alt="Rename Feature">
-                        <p>Inline rename feature</p>
-                    </div>
+                </div>
+                <div class="carousel-dots" id="dots">
+                    <span class="dot active" onclick="currentSlide(0)"></span>
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
                 </div>
             </section>
 
@@ -351,7 +402,7 @@
                 <div style="text-align: center;">
                     <p style="margin-bottom: 20px;">
                         <a href="https://github.com/melihcelenk/TaskTimerWidget#readme" class="btn">Documentation</a>
-                        <a href="PRIVACY_POLICY.html" class="btn btn-secondary">Privacy Policy</a>
+                        <a href="PRIVACY_POLICY.html" class="btn btn-outline">Privacy Policy</a>
                     </p>
                     <p style="color: #666;">
                         Built with .NET 8.0 and WinUI 3 • Licensed under MIT License
@@ -372,5 +423,67 @@
             </p>
         </footer>
     </div>
+
+    <script>
+        // Carousel functionality
+        let currentSlideIndex = 0;
+        const carousel = document.getElementById('carousel');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = 3;
+        let autoSlideInterval;
+
+        function showSlide(index) {
+            currentSlideIndex = index;
+
+            // Wrap around
+            if (currentSlideIndex >= totalSlides) {
+                currentSlideIndex = 0;
+            }
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = totalSlides - 1;
+            }
+
+            // Move carousel
+            const offset = -currentSlideIndex * 100;
+            carousel.style.transform = `translateX(${offset}%)`;
+
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlideIndex);
+            });
+        }
+
+        function currentSlide(index) {
+            showSlide(index);
+            resetAutoSlide();
+        }
+
+        function nextSlide() {
+            showSlide(currentSlideIndex + 1);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000); // 5 seconds
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Start auto-sliding when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            startAutoSlide();
+        });
+
+        // Pause on hover
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        carouselContainer.addEventListener('mouseleave', () => {
+            startAutoSlide();
+        });
+    </script>
 </body>
 </html>
