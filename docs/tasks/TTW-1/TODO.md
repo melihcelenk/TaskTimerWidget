@@ -109,6 +109,10 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
     - [✅] Removed outdated SETUP_INSTRUCTIONS.md (duplicate of DEVELOPMENT.md)
     - [✅] Converted README_ASSETS.txt to English
     - [✅] Removed unnecessary 'nul' file from root
+    - [✅] Added MIT License to project
+    - [✅] Updated README.md with license info, badges, and screenshot
+    - [✅] Created GITHUB_GROWTH_STRATEGY.md in global goals folder
+    - [✅] Updated global CLAUDE.md with GitHub growth objectives
     - [ ] Repo'yu public yap (GitHub Settings)
     - [ ] Settings → Pages → Enable (master branch, root folder)
     - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/PRIVACY_POLICY.html)
