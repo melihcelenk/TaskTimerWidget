@@ -132,6 +132,12 @@ Masaüstü'nde çalışan, widget benzeri küçük bir uygulama ile tasklar olu�
       - Feature grid with icons and hover effects
       - Screenshot gallery with descriptions
       - Responsive design for mobile
+    - [✅] Landing page UX improvements:
+      - Auto-sliding screenshot carousel (5 seconds interval)
+      - Larger screenshots (max-width: 700px) for better visibility
+      - Clickable dots for manual navigation
+      - Pause on hover functionality
+      - Fixed Privacy Policy button (outline style, visible text)
     - [ ] URL'i test et (https://melihcelenk.github.io/TaskTimerWidget/)
 - [✅] Store listing: Short description (EN & TR) (STORE_LISTING.md oluşturuldu)
   - [✅] GitHub username güncelle (melihcelenk)
