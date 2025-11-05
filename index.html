@@ -105,6 +105,24 @@
             color: #667eea;
         }
 
+        .store-badge {
+            display: inline-block;
+            background: transparent;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            line-height: 0;
+        }
+
+        .store-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .store-badge img {
+            display: block;
+        }
+
         .btn-outline {
             background: transparent;
             color: #667eea;
@@ -304,10 +322,13 @@
                 <img src="https://img.shields.io/badge/WinUI-3-brightgreen.svg" alt="WinUI 3">
             </div>
 
-            <div class="cta-buttons">
-                <a href="https://apps.microsoft.com/detail/9NF0N9LN349G" class="btn" style="background: #0078d4; color: white;">
-                    <img src="https://get.microsoft.com/images/en-us%20light.svg" alt="Get it from Microsoft" style="height: 32px; vertical-align: middle;">
+            <div style="margin: 30px 0;">
+                <a href="https://apps.microsoft.com/detail/9NF0N9LN349G" class="store-badge">
+                    <img src="https://get.microsoft.com/images/en-us%20light.svg" alt="Download from Microsoft Store" style="height: 54px;">
                 </a>
+            </div>
+
+            <div class="cta-buttons">
                 <a href="https://github.com/melihcelenk/TaskTimerWidget" class="btn">View on GitHub</a>
                 <a href="https://github.com/melihcelenk/TaskTimerWidget/releases" class="btn btn-secondary">Download Release</a>
             </div>
