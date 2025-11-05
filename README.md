@@ -179,8 +179,8 @@ See [docs/general/MARKET_RESEARCH.md](./docs/general/MARKET_RESEARCH.md) for:
 - [x] Custom fonts and styling
 - [x] Time percentage display
 - [x] Drag-and-drop reordering
-- [ ] Windows Store submission (in progress)
-- [ ] MSIX packaging
+- [x] Windows Store submission
+- [x] MSIX packaging
 
 ### v2.0 (Planned)
 - [ ] Cloud synchronization (OneDrive)
