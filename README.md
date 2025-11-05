@@ -17,6 +17,12 @@
 </p>
 
 <p align="center">
+  <a href="https://apps.microsoft.com/detail/9NF0N9LN349G">
+    <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft" width="200"/>
+  </a>
+</p>
+
+<p align="center">
   <a href="#-getting-started">Download</a> •
   <a href="#-features">Features</a> •
   <a href="docs/general/DEVELOPMENT.md">Documentation</a> •
