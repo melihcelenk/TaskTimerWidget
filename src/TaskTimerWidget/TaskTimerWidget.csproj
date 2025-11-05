@@ -27,8 +27,7 @@
         <!-- Single-Project MSIX Packaging -->
         <WindowsPackageType>MSIX</WindowsPackageType>
         <GenerateAppxPackageOnBuild>false</GenerateAppxPackageOnBuild>
-        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-        <PackageCertificateThumbprint>9EBB0C075BAF2E933930DE9897322B9F7966DEF8</PackageCertificateThumbprint>
+        <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
         <AppxBundle>Always</AppxBundle>
         <AppxBundlePlatforms>x64</AppxBundlePlatforms>
         <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
@@ -39,9 +38,10 @@
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
         <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
         <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-        <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-        <GenerateTestArtifacts>True</GenerateTestArtifacts>
+        <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+        <GenerateTestArtifacts>False</GenerateTestArtifacts>
         <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+        <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     </PropertyGroup>
 
     <ItemGroup>
