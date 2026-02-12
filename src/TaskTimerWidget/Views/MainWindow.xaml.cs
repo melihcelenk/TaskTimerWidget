@@ -331,6 +331,139 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
+        /// Handles the Help button click to show tips flyout.
+        /// </summary>
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var flyout = new Flyout();
+            flyout.FlyoutPresenterStyle = CreateFlyoutStyle();
+
+            var panel = new StackPanel { Spacing = 8, MaxWidth = 160 };
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = "Tips",
+                FontSize = 14,
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                Foreground = new SolidColorBrush(new Color { A = 255, R = 0x33, G = 0x33, B = 0x33 })
+            });
+
+            panel.Children.Add(CreateHelpLine("\u25CF Tap a task to start/pause timer"));
+            panel.Children.Add(CreateHelpLine("\u25CF Right-click to rename or change time"));
+            panel.Children.Add(CreateHelpLine("\u25CF Drag tasks to reorder"));
+            panel.Children.Add(CreateHelpLine("\u25CF Compact mode shows only active task"));
+
+            flyout.Content = panel;
+            flyout.Placement = Microsoft.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top;
+            flyout.ShowAt(AddTaskButton);
+        }
+
+        /// <summary>
+        /// Creates a styled TextBlock for the Help flyout.
+        /// </summary>
+        private TextBlock CreateHelpLine(string text)
+        {
+            return new TextBlock
+            {
+                Text = text,
+                FontSize = 11,
+                Foreground = new SolidColorBrush(new Color { A = 255, R = 0x44, G = 0x44, B = 0x44 }),
+                TextWrapping = TextWrapping.Wrap
+            };
+        }
+
+        /// <summary>
+        /// Handles the About button click to show app info flyout.
+        /// </summary>
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            var flyout = new Flyout();
+            flyout.FlyoutPresenterStyle = CreateFlyoutStyle();
+
+            var panel = new StackPanel { Spacing = 6, MaxWidth = 160 };
+
+            // App name
+            panel.Children.Add(new TextBlock
+            {
+                Text = "Task Timer Widget",
+                FontSize = 14,
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                Foreground = new SolidColorBrush(new Color { A = 255, R = 0x33, G = 0x33, B = 0x33 })
+            });
+
+            // Version & date
+            var version = Windows.ApplicationModel.Package.Current.Id.Version;
+            var versionStr = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            panel.Children.Add(CreateAboutLine($"Version {versionStr}"));
+            panel.Children.Add(CreateAboutLine("2025"));
+
+            // Separator
+            panel.Children.Add(new Border
+            {
+                Height = 1,
+                Background = new SolidColorBrush(new Color { A = 255, R = 0x99, G = 0x99, B = 0x99 }),
+                Margin = new Thickness(0, 2, 0, 2)
+            });
+
+            // Developer
+            panel.Children.Add(CreateAboutLine("Melih \u00C7elenk"));
+
+            // Email link
+            panel.Children.Add(CreateAboutLink("\u2709 info@melihcelenk.com", "mailto:info@melihcelenk.com"));
+
+            // Website & Rate links
+            panel.Children.Add(CreateAboutLink("\uD83C\uDF10 Website", "https://melihcelenk.github.io/TaskTimerWidget/"));
+            panel.Children.Add(CreateAboutLink("\u2B50 Rate", "https://apps.microsoft.com/detail/9NF0N9LN349G?hl=tr-tr&gl=TR&ocid=pdpshare"));
+
+            flyout.Content = panel;
+            flyout.Placement = Microsoft.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top;
+            flyout.ShowAt(AddTaskButton);
+        }
+
+        /// <summary>
+        /// Creates the shared flyout presenter style (light gray theme).
+        /// </summary>
+        private Style CreateFlyoutStyle()
+        {
+            var style = new Style(typeof(FlyoutPresenter));
+            style.Setters.Add(new Setter(FlyoutPresenter.BackgroundProperty, new SolidColorBrush(new Color { A = 255, R = 0xC8, G = 0xE6, B = 0xC0 })));
+            style.Setters.Add(new Setter(FlyoutPresenter.BorderBrushProperty, new SolidColorBrush(new Color { A = 255, R = 0x88, G = 0xB8, B = 0x80 })));
+            style.Setters.Add(new Setter(FlyoutPresenter.BorderThicknessProperty, new Thickness(1)));
+            style.Setters.Add(new Setter(FlyoutPresenter.CornerRadiusProperty, new CornerRadius(6)));
+            style.Setters.Add(new Setter(FlyoutPresenter.PaddingProperty, new Thickness(14)));
+            style.Setters.Add(new Setter(FlyoutPresenter.MinWidthProperty, 0.0));
+            return style;
+        }
+
+        /// <summary>
+        /// Creates a styled TextBlock for the About flyout.
+        /// </summary>
+        private TextBlock CreateAboutLine(string text)
+        {
+            return new TextBlock
+            {
+                Text = text,
+                FontSize = 11,
+                Foreground = new SolidColorBrush(new Color { A = 255, R = 0x55, G = 0x55, B = 0x55 })
+            };
+        }
+
+        /// <summary>
+        /// Creates a styled HyperlinkButton for the About flyout.
+        /// </summary>
+        private HyperlinkButton CreateAboutLink(string label, string uri)
+        {
+            return new HyperlinkButton
+            {
+                Content = label,
+                NavigateUri = new System.Uri(uri),
+                FontSize = 11,
+                Foreground = new SolidColorBrush(new Color { A = 255, R = 0x1A, G = 0x5A, B = 0xB8 }),
+                Padding = new Thickness(0)
+            };
+        }
+
+        /// <summary>
         /// Handles the Close button click event.
         /// </summary>
         private void CloseButton_Click(object sender, RoutedEventArgs e)
