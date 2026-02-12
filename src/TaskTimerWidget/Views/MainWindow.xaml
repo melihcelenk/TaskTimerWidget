@@ -9,7 +9,8 @@
 
     <Grid RowSpacing="0" Background="#D0D0D0" x:Name="MainGrid"
           PointerEntered="MainGrid_PointerEntered"
-          PointerExited="MainGrid_PointerExited">
+          PointerExited="MainGrid_PointerExited"
+          Tapped="MainGrid_Tapped">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -230,10 +231,62 @@
                             Background="#2A2A2A"
                             BorderThickness="0"
                             Padding="12,8,0,8"
-                            KeyDown="NewTaskTextBox_KeyDown" />
+                            KeyDown="NewTaskTextBox_KeyDown"
+                            LostFocus="NewTaskTextBox_LostFocus" />
 
                         <!-- Empty space where timer would be -->
                         <Grid Grid.Row="1" Height="18" />
+                    </Grid>
+                </Border>
+
+                <!-- Change Time Inline Card (replaces task card at its position) -->
+                <Border
+                    x:Name="ChangeTimeBorder"
+                    Padding="10"
+                    Margin="0,4"
+                    CornerRadius="6"
+                    BorderThickness="1"
+                    BorderBrush="#1A1A1A"
+                    Background="#2A2A2A"
+                    Visibility="Collapsed"
+                    Tapped="ChangeTimeBorder_Tapped"
+                    RightTapped="ChangeTimeBorder_RightTapped">
+                    <Grid RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Task Name (read-only, same style as task card) -->
+                        <TextBlock
+                            x:Name="ChangeTimeTaskName"
+                            Grid.Row="0"
+                            FontSize="16"
+                            FontWeight="Normal"
+                            Foreground="White"
+                            TextWrapping="Wrap"
+                            MaxLines="3"
+                            TextTrimming="CharacterEllipsis"
+                            VerticalAlignment="Center" />
+
+                        <!-- Time Display (same style as task card) -->
+                        <TextBlock
+                            x:Name="ChangeTimeDisplay"
+                            Grid.Row="1"
+                            FontSize="18"
+                            FontWeight="Normal"
+                            Foreground="White"
+                            FontFamily="ms-appx:///Assets/Fonts/TrebuchetMS.ttf#Trebuchet MS" />
+
+                        <!-- Quick Adjustment Buttons -->
+                        <StackPanel
+                            Grid.Row="2"
+                            x:Name="ChangeTimeButtonPanel"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="3"
+                            Margin="0,2,0,0" />
                     </Grid>
                 </Border>
             </StackPanel>

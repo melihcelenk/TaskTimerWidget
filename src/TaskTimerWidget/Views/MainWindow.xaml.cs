@@ -7,6 +7,7 @@ using Windows.UI;
 using TaskTimerWidget.ViewModels;
 using Serilog;
 using System.Linq;
+using Microsoft.UI.Xaml.Media;
 
 namespace TaskTimerWidget
 {
@@ -20,6 +21,8 @@ namespace TaskTimerWidget
         private AppWindow? _appWindow;
         private TaskViewModel? _editingTask;
         private int _editingTaskIndex = -1;
+        private TaskViewModel? _changeTimeTask;
+        private int _changeTimeTaskIndex = -1;
         private bool _isCompactMode = false;
         private bool _isMouseOver = false;
         private bool _isWindowActive = false;
@@ -350,10 +353,40 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
+        /// Handles right-click on the Change Time card to close it and show context menu.
+        /// </summary>
+        private void ChangeTimeBorder_RightTapped(object sender, Microsoft.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            CloseChangeTimeCard();
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Handles taps on the Change Time card itself to close it.
+        /// Button clicks inside are handled separately and don't bubble here.
+        /// </summary>
+        private void ChangeTimeBorder_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            // Don't close if clicking on buttons (buttons handle their own events)
+            if (!IsInsideElement(e.OriginalSource, ChangeTimeButtonPanel))
+            {
+                CloseChangeTimeCard();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
         /// Handles the Compact Mode toggle button click event.
         /// </summary>
         private async void CompactModeButton_Click(object sender, RoutedEventArgs e)
         {
+            // Close any open inline editors first
+            if (_changeTimeTask != null)
+            {
+                CloseChangeTimeCard();
+                await System.Threading.Tasks.Task.Delay(50);
+            }
+
             _isCompactMode = !_isCompactMode;
 
             if (_isCompactMode)
@@ -377,6 +410,7 @@ namespace TaskTimerWidget
 
                 // Hide UI elements first
                 if (NewTaskBorder != null) NewTaskBorder.Visibility = Visibility.Collapsed;
+                if (ChangeTimeBorder != null) ChangeTimeBorder.Visibility = Visibility.Collapsed;
                 if (AddTaskButton != null) AddTaskButton.Visibility = Visibility.Collapsed;
                 if (EmptyStatePanel != null) EmptyStatePanel.Visibility = Visibility.Collapsed;
                 if (StatusBar != null) StatusBar.Visibility = Visibility.Collapsed;
@@ -485,6 +519,32 @@ namespace TaskTimerWidget
         }
 
         /// <summary>
+        /// Handles taps on the main grid to dismiss inline editors when clicking outside.
+        /// </summary>
+        private void MainGrid_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            // Close Change Time card if clicking outside it
+            if (_changeTimeTask != null && !IsInsideElement(e.OriginalSource, ChangeTimeBorder))
+            {
+                CloseChangeTimeCard();
+            }
+        }
+
+        /// <summary>
+        /// Checks if a source element is inside the specified parent element.
+        /// </summary>
+        private bool IsInsideElement(object source, DependencyObject parent)
+        {
+            var element = source as DependencyObject;
+            while (element != null)
+            {
+                if (element == parent) return true;
+                element = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(element);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Handles the Add Task button click event.
         /// </summary>
         private async void AddTaskButton_Click(object sender, RoutedEventArgs e)
@@ -524,6 +584,18 @@ namespace TaskTimerWidget
             }
         }
 
+
+        /// <summary>
+        /// Handles focus lost on the task textbox to save input (same as pressing Enter).
+        /// </summary>
+        private void NewTaskTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Only act if the input card is still visible (not already handled by Enter/Escape)
+            if (NewTaskBorder.Visibility == Visibility.Visible)
+            {
+                CreateTaskFromInput();
+            }
+        }
 
         /// <summary>
         /// Handles task item click to select and toggle timer.
@@ -685,8 +757,228 @@ namespace TaskTimerWidget
 
                 flyout.Items.Add(renameItem);
 
+                // Change Time menu item
+                var changeTimeItem = new MenuFlyoutItem
+                {
+                    Text = "Change Time",
+                    Icon = new SymbolIcon { Symbol = Symbol.Clock }
+                };
+
+                changeTimeItem.Click += (s, args) =>
+                {
+                    ShowChangeTimeInput(taskVm);
+                };
+
+                flyout.Items.Add(changeTimeItem);
+
                 // Show at pointer position
                 flyout.ShowAt(border, e.GetPosition(border));
+            }
+        }
+
+        /// <summary>
+        /// Shows the inline Change Time card at the task's position (like Rename).
+        /// Replaces the task card with an edit card showing name, time, and adjustment buttons.
+        /// </summary>
+        private void ShowChangeTimeInput(TaskViewModel taskVm)
+        {
+            if (_viewModel?.Tasks == null)
+                return;
+
+            // If already editing time for a different task, restore it first
+            if (_changeTimeTask != null && _changeTimeTaskIndex >= 0)
+            {
+                _viewModel.Tasks.Insert(_changeTimeTaskIndex, _changeTimeTask);
+                HideChangeTimeCard();
+            }
+
+            // Find the index of the task
+            var index = _viewModel.Tasks.IndexOf(taskVm);
+            if (index < 0)
+                return;
+
+            // Store the task and its index
+            _changeTimeTask = taskVm;
+            _changeTimeTaskIndex = index;
+
+            // Remove the task from the list
+            _viewModel.Tasks.RemoveAt(index);
+
+            // Move change time card to that position
+            MoveChangeTimeCardToPosition(index);
+
+            // Setup the card content
+            ChangeTimeTaskName.Text = taskVm.Name;
+            ChangeTimeDisplay.Text = taskVm.FormattedTime;
+
+            // Set name color based on active state
+            ChangeTimeTaskName.Foreground = new SolidColorBrush(
+                taskVm.IsActive ? Microsoft.UI.Colors.Black : Microsoft.UI.Colors.White);
+            ChangeTimeDisplay.Foreground = new SolidColorBrush(
+                taskVm.IsActive ? Microsoft.UI.Colors.Black : Microsoft.UI.Colors.White);
+
+            // Set card background based on active state (same as task card)
+            ChangeTimeBorder.Background = new SolidColorBrush(
+                taskVm.IsActive ? Microsoft.UI.Colors.Gold : new Color { A = 255, R = 0x2A, G = 0x2A, B = 0x2A });
+
+            // Build adjustment buttons
+            BuildChangeTimeButtons(taskVm);
+
+            // Subscribe to timer updates so the display stays live
+            taskVm.PropertyChanged += OnChangeTimeTaskPropertyChanged;
+        }
+
+        /// <summary>
+        /// Keeps the Change Time display in sync with live timer updates.
+        /// </summary>
+        private void OnChangeTimeTaskPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(TaskViewModel.FormattedTime) && _changeTimeTask != null)
+            {
+                ChangeTimeDisplay.Text = _changeTimeTask.FormattedTime;
+            }
+        }
+
+        /// <summary>
+        /// Creates the time adjustment buttons for the Change Time card.
+        /// </summary>
+        private void BuildChangeTimeButtons(TaskViewModel taskVm)
+        {
+            ChangeTimeButtonPanel.Children.Clear();
+
+            void AddButton(string label, long deltaSeconds, bool isNegative)
+            {
+                var btn = new Button
+                {
+                    Content = label,
+                    FontSize = 10,
+                    MinWidth = 0,
+                    Height = 24,
+                    Padding = new Thickness(6, 2, 6, 2),
+                    Background = new SolidColorBrush(isNegative
+                        ? new Color { A = 255, R = 0x50, G = 0x28, B = 0x28 }
+                        : new Color { A = 255, R = 0x28, G = 0x50, B = 0x28 }),
+                    Foreground = new SolidColorBrush(Microsoft.UI.Colors.White),
+                    BorderThickness = new Thickness(0),
+                    CornerRadius = new CornerRadius(12)
+                };
+
+                btn.Click += (s, args) =>
+                {
+                    if (_viewModel == null || _changeTimeTask == null) return;
+                    var newTotal = _changeTimeTask.ElapsedSeconds + deltaSeconds;
+                    _viewModel.SetTaskElapsedTime(_changeTimeTask, newTotal);
+                    ChangeTimeDisplay.Text = _changeTimeTask.FormattedTime;
+                };
+
+                ChangeTimeButtonPanel.Children.Add(btn);
+            }
+
+            AddButton("-1h", -3600, true);
+            AddButton("-5m", -300, true);
+            AddButton("+5m", 300, false);
+            AddButton("+1h", 3600, false);
+        }
+
+        /// <summary>
+        /// Moves the Change Time card to the specified position in the task list.
+        /// </summary>
+        private void MoveChangeTimeCardToPosition(int index)
+        {
+            try
+            {
+                if (TasksItemsControl?.ItemsPanelRoot is StackPanel itemsPanel)
+                {
+                    // Remove from current parent
+                    if (ChangeTimeBorder.Parent is StackPanel currentParent)
+                    {
+                        currentParent.Children.Remove(ChangeTimeBorder);
+                    }
+
+                    ChangeTimeBorder.Visibility = Visibility.Visible;
+                    itemsPanel.Children.Insert(index, ChangeTimeBorder);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error moving change time card to position");
+            }
+        }
+
+        /// <summary>
+        /// Hides the Change Time card and returns it to original parent.
+        /// </summary>
+        private void HideChangeTimeCard()
+        {
+            try
+            {
+                if (TasksItemsControl?.ItemsPanelRoot is StackPanel itemsPanel &&
+                    itemsPanel.Children.Contains(ChangeTimeBorder))
+                {
+                    itemsPanel.Children.Remove(ChangeTimeBorder);
+                }
+
+                if (ChangeTimeBorder.Parent == null && TaskScrollView?.Content is StackPanel scrollViewStackPanel)
+                {
+                    if (!scrollViewStackPanel.Children.Contains(ChangeTimeBorder))
+                    {
+                        scrollViewStackPanel.Children.Add(ChangeTimeBorder);
+                    }
+                }
+
+                ChangeTimeBorder.Visibility = Visibility.Collapsed;
+                ChangeTimeButtonPanel.Children.Clear();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error hiding change time card");
+            }
+        }
+
+        /// <summary>
+        /// Closes the Change Time card and restores the task to its position.
+        /// </summary>
+        private void CloseChangeTimeCard()
+        {
+            if (_changeTimeTask != null && _changeTimeTaskIndex >= 0 && _viewModel?.Tasks != null)
+            {
+                // Unsubscribe from timer updates
+                _changeTimeTask.PropertyChanged -= OnChangeTimeTaskPropertyChanged;
+
+                _viewModel.Tasks.Insert(_changeTimeTaskIndex, _changeTimeTask);
+
+                // Restore active task color after UI updates
+                var wasActive = _changeTimeTask.IsActive;
+                var restoredTask = _changeTimeTask;
+
+                _changeTimeTask = null;
+                _changeTimeTaskIndex = -1;
+                HideChangeTimeCard();
+
+                if (wasActive)
+                {
+                    _ = RestoreActiveTaskColor(restoredTask);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Restores the Gold background for an active task after re-inserting it.
+        /// </summary>
+        private async System.Threading.Tasks.Task RestoreActiveTaskColor(TaskViewModel taskVm)
+        {
+            await System.Threading.Tasks.Task.Delay(50);
+            for (int i = 0; i < TasksItemsControl.Items.Count; i++)
+            {
+                if (TasksItemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
+                {
+                    var border = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(container, 0) as Border;
+                    if (border?.Tag == taskVm)
+                    {
+                        border.Background = new SolidColorBrush(Microsoft.UI.Colors.Gold);
+                        break;
+                    }
+                }
             }
         }
 
