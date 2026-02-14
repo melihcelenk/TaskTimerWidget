@@ -52,9 +52,14 @@
 - **Minimal Design**: Widget-sized window that doesn't take up much space
 - **Task Management**: Create, delete, and manage multiple tasks
 - **Built-in Timer**: Track elapsed time for each task
+- **Manual Time Adjustment**: Right-click a task to add or subtract time (-1h, -5m, +5m, +1h)
 - **Active Task Highlighting**: Yellow highlight shows which task is currently active
 - **Pause & Resume**: Click to pause/resume timer on any task
+- **Inline Rename**: Right-click to rename tasks in-place
+- **Drag & Drop Reorder**: Drag tasks to change their order
+- **Compact Mode**: Show only the active task for minimal screen usage
 - **Persistent Storage**: Tasks are saved locally
+- **Help & About**: Built-in tips and app information
 - **Lightweight**: Minimal resource usage
 
 ## 🚀 Getting Started
@@ -73,11 +78,15 @@
 ### Usage
 
 1. **Add Task**: Click the `+` button to add a new task
-2. **Name Task**: Enter the task name in the dialog and click Create
+2. **Name Task**: Enter the task name and press Enter (or click elsewhere to save)
 3. **Start Timer**: Click on a task to activate it and start the timer
 4. **Pause Timer**: Click the active task again to pause the timer
 5. **Switch Tasks**: Click another task to pause the current one and activate the new one
 6. **Delete Task**: Click the `✕` button on a task to remove it
+7. **Rename Task**: Right-click a task and select "Rename"
+8. **Change Time**: Right-click a task and select "Change Time" to manually adjust elapsed time
+9. **Reorder Tasks**: Drag tasks up or down to change their order
+10. **Compact Mode**: Click the `◧` button in the title bar to show only the active task
 
 ## 📁 Project Structure
 
@@ -170,7 +179,7 @@ See [docs/general/MARKET_RESEARCH.md](./docs/general/MARKET_RESEARCH.md) for:
 
 ## 🎯 Roadmap
 
-### v1.0 (Current - Release Candidate) ✅
+### v1.0 ✅
 - [x] Core timer functionality
 - [x] Task management (create, delete, rename, reorder)
 - [x] Persistent storage
@@ -181,6 +190,13 @@ See [docs/general/MARKET_RESEARCH.md](./docs/general/MARKET_RESEARCH.md) for:
 - [x] Drag-and-drop reordering
 - [x] Windows Store submission
 - [x] MSIX packaging
+
+### v1.1 (Current) ✅
+- [x] Manual time adjustment (Change Time)
+- [x] Inline Change Time card (same UX as Rename)
+- [x] LostFocus save for rename and new task
+- [x] Help & About buttons with flyout panels
+- [x] Bug fixes (compact mode + change time interaction)
 
 ### v2.0 (Planned)
 - [ ] Cloud synchronization (OneDrive)
@@ -230,7 +246,7 @@ For issues, questions, or suggestions, please:
 
 ---
 
-**Version**: 1.0.0 (Release Candidate)
-**Last Updated**: November 1, 2025
-**Status**: Active Development → Public Release
+**Version**: 1.1.0
+**Last Updated**: February 13, 2026
+**Status**: Public Release
 **License**: MIT

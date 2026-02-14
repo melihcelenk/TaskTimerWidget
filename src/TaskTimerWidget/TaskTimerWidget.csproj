@@ -14,8 +14,8 @@
         <Authors>Development Team</Authors>
         <Product>Task Timer Widget</Product>
         <Description>A lightweight, minimal task timer widget for Windows 11</Description>
-        <Version>0.1.0</Version>
-        <InformationalVersion>0.1.0+build.local</InformationalVersion>
+        <Version>1.1.0</Version>
+        <InformationalVersion>1.1.0</InformationalVersion>
 
         <!-- Build Configuration -->
         <Nullable>enable</Nullable>

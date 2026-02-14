@@ -10,7 +10,7 @@
   <Identity
     Name="MelihCelenk.TaskTimerWidget"
     Publisher="CN=5D40719C-2D85-4271-9B5B-116472554ADA"
-    Version="1.0.0.0" />
+    Version="1.1.0.0" />
 
   <Properties>
     <DisplayName>Task Timer Widget</DisplayName>

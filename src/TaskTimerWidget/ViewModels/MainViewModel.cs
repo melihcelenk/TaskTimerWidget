@@ -258,6 +258,16 @@ namespace TaskTimerWidget.ViewModels
         }
 
         /// <summary>
+        /// Sets a task's elapsed time to an absolute value and updates percentages.
+        /// Used by the Change Time flyout for manual time adjustment.
+        /// </summary>
+        public void SetTaskElapsedTime(TaskViewModel taskVm, long totalSeconds)
+        {
+            taskVm.ElapsedSeconds = Math.Max(0, totalSeconds);
+            UpdateTaskPercentages();
+        }
+
+        /// <summary>
         /// Updates the order of all tasks in the database based on their current position in the collection.
         /// Called after drag-and-drop reordering.
         /// </summary>
