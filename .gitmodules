@@ -1,0 +1,3 @@
+[submodule "external/WidgetFamily"]
+	path = external/WidgetFamily
+	url = https://github.com/melihcelenk/WidgetFamily.git

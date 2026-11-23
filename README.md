@@ -134,7 +134,26 @@ This project follows the **MVVM (Model-View-ViewModel)** pattern:
 - **DI**: Microsoft.Extensions.DependencyInjection
 - **Serialization**: System.Text.Json
 
+## 🧩 Widget family
+
+Task Timer Widget is a member of a small family of widgets. When
+[My Everything Widget](https://github.com/melihcelenk/MyEverythingWidget) (the hub) runs, the timer can be opened next
+to its compact icon and leaves the taskbar; without the hub it works on its own as before.
+
+| Repository | Role |
+|------------|------|
+| [MyEverythingWidget](https://github.com/melihcelenk/MyEverythingWidget) | Hub |
+| [TaskTimerWidget](https://github.com/melihcelenk/TaskTimerWidget) (this one) | Member |
+| [WidgetFamily](https://github.com/melihcelenk/WidgetFamily) | Shared contract and library, included as the `external/WidgetFamily` submodule |
+
 ## 📋 Development
+
+### Cloning
+
+```bash
+git clone --recurse-submodules https://github.com/melihcelenk/TaskTimerWidget.git
+git submodule update --init    # in an existing clone
+```
 
 ### Building
 
