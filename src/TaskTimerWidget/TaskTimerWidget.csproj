@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -23,6 +23,8 @@
         <UseWinUI>true</UseWinUI>
         <WindowsAppSDKVersion>1.7.250310001</WindowsAppSDKVersion>
         <EnableMsixTooling>true</EnableMsixTooling>
+        <!-- Program.cs is the entry point: single instance with activation redirection (MEW-5). -->
+        <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 
         <!-- Single-Project MSIX Packaging -->
         <WindowsPackageType>MSIX</WindowsPackageType>
@@ -72,6 +74,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- Widget family contract (MEW-5): git submodule, see external/WidgetFamily/README.md. -->
+        <ProjectReference Include="..\..\external\WidgetFamily\src\WidgetFamily\WidgetFamily.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Public folder of the widget family app extension. -->
+        <Content Include="Public\README.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+
         <!-- Window Icon (.ico for taskbar) -->
         <Content Include="app.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

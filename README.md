@@ -167,6 +167,12 @@ dotnet build src/TaskTimerWidget/TaskTimerWidget.csproj
 dotnet run --project src/TaskTimerWidget/TaskTimerWidget.csproj
 ```
 
+### Testing
+
+```bash
+dotnet test tests/TaskTimerWidget.Tests/TaskTimerWidget.Tests.csproj
+```
+
 ### Code Standards
 
 Please refer to [CLAUDE.md](./CLAUDE.md) for:

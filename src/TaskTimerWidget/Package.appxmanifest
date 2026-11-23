@@ -45,6 +45,27 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#D0D0D0" />
       </uap:VisualElements>
+      <Extensions>
+        <!-- Widget family (MEW-5): opened by the hub through this protocol. -->
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="tasktimer-widget">
+            <uap:DisplayName>Task Timer Widget</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <!-- Widget family (MEW-5): lets the hub find this app. Contract: external/WidgetFamily/docs/CONTRACT.md. -->
+        <uap3:Extension Category="windows.appExtension">
+          <uap3:AppExtension Name="com.melihcelenk.widgetfamily"
+                             Id="tasktimer"
+                             DisplayName="Task Timer Widget"
+                             Description="Task timer"
+                             PublicFolder="Public">
+            <uap3:Properties>
+              <Protocol>tasktimer-widget</Protocol>
+              <PreferredEdge>Right</PreferredEdge>
+            </uap3:Properties>
+          </uap3:AppExtension>
+        </uap3:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
